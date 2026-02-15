@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0a0a1a;
+  --foreground: #e0e0f0;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a1a;
+}
+::-webkit-scrollbar-thumb {
+  background: #3b3b6b;
+  border-radius: 3px;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Glow effect for cards */
+.glow-card {
+  position: relative;
+  transition: all 0.3s ease;
+}
+.glow-card:hover {
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.15),
+    0 0 60px rgba(139, 92, 246, 0.1);
+  transform: translateY(-4px);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #6366f1, #a855f7, #6366f1);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 3s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+  100% { background-position: 0% center; }
+}
+
+/* MDX Blog Styles */
+.prose-dark {
+  color: #c4c4dc;
+}
+.prose-dark h1, .prose-dark h2, .prose-dark h3 {
+  color: #e0e0f0;
+}
+.prose-dark a {
+  color: #818cf8;
+}
+.prose-dark code {
+  background: #1e1e3f;
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: #a78bfa;
+}
+.prose-dark pre {
+  background: #111130 !important;
+  border: 1px solid #2a2a5a;
+  border-radius: 8px;
+}
+.prose-dark blockquote {
+  border-left-color: #6366f1;
+  color: #9ca3af;
+}
