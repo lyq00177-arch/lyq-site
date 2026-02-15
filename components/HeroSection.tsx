@@ -28,9 +28,9 @@ export default function HeroSection() {
           transition={{ duration: 0.8 }}
         >
           <h1 className="text-5xl sm:text-7xl font-bold mb-4">
-            <span className="gradient-text">LYQ</span>
-            <span className="text-gray-500 mx-4">/</span>
-            <span className="text-gray-200">凌逸清</span>
+            <span className="gradient-text">凌逸清</span>
+            <span className="text-gray-500 mx-3">/</span>
+            <span className="text-gray-200">LYQ</span>
           </h1>
         </motion.div>
 
@@ -38,28 +38,47 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-8"
+          className="text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto mb-4"
         >
-          AI 创作者 · 跨界探索者 · 用技术连接创意与商业
+          AI 全栈创作者 · 投资人 · 超级个体
         </motion.p>
 
-        <motion.div
+        <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="flex gap-4 justify-center"
+          transition={{ duration: 0.8, delay: 0.45 }}
+          className="text-base text-gray-500 max-w-xl mx-auto mb-3 italic"
+        >
+          「从 ChatGPT 元年起，All in AI 至今」
+        </motion.p>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.55 }}
+          className="text-sm text-gray-500 max-w-xl mx-auto mb-10"
+        >
+          深耕 AI 创作、Web3 投资与自媒体，帮助 1000+ 人拥抱 AI 时代
+        </motion.p>
+
+        {/* Subtle CTAs in a smaller style */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.8 }}
+          className="flex gap-3 justify-center"
         >
           <a
-            href="/portfolio"
-            className="px-6 py-3 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 text-white font-medium hover:shadow-lg hover:shadow-indigo-500/25 transition-all duration-300"
+            href="#services"
+            className="px-4 py-2 rounded-lg text-xs text-gray-400 border border-white/10 hover:border-indigo-500/40 hover:text-gray-200 transition-all duration-300"
           >
-            查看作品
+            预约咨询
           </a>
           <a
-            href="/about"
-            className="px-6 py-3 rounded-lg border border-gray-700 text-gray-300 hover:border-indigo-500/50 hover:text-white transition-all duration-300"
+            href="#services"
+            className="px-4 py-2 rounded-lg text-xs text-gray-400 border border-white/10 hover:border-indigo-500/40 hover:text-gray-200 transition-all duration-300"
           >
-            了解更多
+            查看作品
           </a>
         </motion.div>
       </div>

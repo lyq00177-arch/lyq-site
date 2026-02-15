@@ -6,10 +6,12 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const navLinks = [
   { href: "/", label: "首页" },
-  { href: "/about", label: "关于" },
-  { href: "/portfolio", label: "作品集" },
+  { href: "/connect", label: "链接" },
+  { href: "/business", label: "业务" },
+  { href: "/moe", label: "MOE" },
+  { href: "/story", label: "故事" },
   { href: "/blog", label: "博客" },
-  { href: "/contact", label: "联系" },
+  { href: "/portfolio", label: "作品集" },
 ];
 
 export default function Navbar() {
@@ -20,10 +22,9 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="text-xl font-bold gradient-text">
-            LYQ
+            Harry
           </Link>
 
-          {/* Desktop links */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
               <Link
@@ -36,7 +37,6 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Mobile hamburger */}
           <button
             onClick={() => setIsOpen(!isOpen)}
             className="md:hidden flex flex-col gap-1.5 p-2"
@@ -58,7 +58,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div

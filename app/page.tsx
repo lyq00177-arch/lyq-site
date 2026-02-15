@@ -1,96 +1,121 @@
 "use client";
 
-import HeroSection from "@/components/HeroSection";
-import SkillCard from "@/components/SkillCard";
-import ProjectCard from "@/components/ProjectCard";
-import BlogCard from "@/components/BlogCard";
+import Link from "next/link";
 import { motion } from "framer-motion";
 
-const skills = [
-  { icon: "🤖", title: "AI 创作者", description: "熟练运用 Midjourney、SD 等 AI 工具进行视觉创作" },
-  { icon: "📊", title: "MBA", description: "商业思维与战略分析，连接技术与商业价值" },
-  { icon: "🔍", title: "行业探索者", description: "持续关注 AI、科技领域的最新趋势与机遇" },
-  { icon: "💻", title: "技术爱好者", description: "Web 开发、自动化工具、效率提升" },
+const highlights = [
+  "3年+ AI 深度玩家",
+  "全网 10w+ 粉丝",
+  "公众号单篇 10w+ 爆款",
+  "服务 1000+ 人次",
 ];
 
-const featuredProjects = [
-  { title: "AI 概念艺术系列", description: "使用 Midjourney 创作的未来城市概念图", tags: ["Midjourney", "概念设计"], image: "" },
-  { title: "品牌视觉设计", description: "AI 辅助的品牌视觉识别系统设计", tags: ["设计", "品牌"], image: "" },
-  { title: "AI 短片项目", description: "结合多种 AI 工具制作的创意短视频", tags: ["视频", "AI"], image: "" },
-];
-
-const latestPosts = [
-  { slug: "hello-world", title: "你好，世界！这是我的第一篇博客", excerpt: "欢迎来到我的个人网站！在这篇文章中，我将分享我为什么搭建这个网站。", date: "2026-02-15", tags: ["随笔", "AI"] },
-  { slug: "ai-creative-tools", title: "2026年值得关注的AI创作工具", excerpt: "盘点当下最值得关注的AI创作工具，从图像生成到视频制作。", date: "2026-02-10", tags: ["AI", "工具"] },
+const gridCards = [
+  {
+    href: "/connect",
+    icon: "🔗",
+    title: "链接",
+    desc: "微信 / 公众号 / Twitter / 邮箱",
+    color: "from-blue-500/10 to-cyan-500/10",
+    border: "hover:border-blue-500/30",
+  },
+  {
+    href: "/business",
+    icon: "💼",
+    title: "业务",
+    desc: "社群 / 1v1 咨询 / 建站 / 陪跑",
+    color: "from-indigo-500/10 to-purple-500/10",
+    border: "hover:border-indigo-500/30",
+  },
+  {
+    href: "/moe",
+    icon: "🧠",
+    title: "MOE",
+    desc: "底层思考系统 · 工具栈 · 核心能力",
+    color: "from-purple-500/10 to-pink-500/10",
+    border: "hover:border-purple-500/30",
+  },
+  {
+    href: "/story",
+    icon: "📖",
+    title: "故事",
+    desc: "从 AI 元年到超级个体的旅程",
+    color: "from-amber-500/10 to-orange-500/10",
+    border: "hover:border-amber-500/30",
+  },
 ];
 
 export default function Home() {
   return (
-    <>
-      <HeroSection />
+    <section className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 py-20">
+      {/* Hero */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="text-center mb-12"
+      >
+        {/* Avatar */}
+        <img
+          src="/avatar.jpg"
+          alt="凌逸清 Harry"
+          className="w-32 h-32 rounded-full mx-auto mb-7 object-cover border-2 border-white/10"
+        />
+        <h1 className="text-6xl sm:text-7xl font-bold mb-5">
+          <span className="gradient-text">凌逸清</span>
+          <span className="text-gray-500 mx-3">/</span>
+          <span className="text-gray-200">Harry</span>
+        </h1>
+        <p className="text-xl sm:text-2xl text-gray-400 mb-4">
+          AI 全栈创作者 · 投资人 · 超级个体
+        </p>
+        <p className="text-lg text-gray-500 italic mb-8">
+          「从 ChatGPT 元年起，All in AI 至今」
+        </p>
 
-      {/* Skills section */}
-      <section className="py-20 px-4 sm:px-6 max-w-6xl mx-auto">
-        <motion.h2
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-3xl font-bold text-center mb-12"
-        >
-          关于 <span className="gradient-text">我</span>
-        </motion.h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {skills.map((skill, i) => (
-            <SkillCard key={skill.title} {...skill} index={i} />
+        {/* Highlight tags */}
+        <div className="flex flex-wrap justify-center gap-3">
+          {highlights.map((h) => (
+            <span
+              key={h}
+              className="px-5 py-2 rounded-full bg-dark-card border border-white/5 text-base text-gray-300"
+            >
+              {h}
+            </span>
           ))}
         </div>
-      </section>
+      </motion.div>
 
-      {/* Featured works */}
-      <section className="py-20 px-4 sm:px-6 max-w-6xl mx-auto">
-        <motion.h2
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-3xl font-bold text-center mb-12"
-        >
-          精选 <span className="gradient-text">作品</span>
-        </motion.h2>
-        <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory">
-          {featuredProjects.map((project, i) => (
-            <div key={project.title} className="snap-start shrink-0 w-[320px]">
-              <ProjectCard {...project} index={i} />
-            </div>
-          ))}
-        </div>
-        <div className="text-center mt-8">
-          <a href="/portfolio" className="text-indigo-400 hover:text-indigo-300 transition-colors text-sm">
-            查看全部作品 &rarr;
-          </a>
-        </div>
-      </section>
+      {/* 4-Grid Cards */}
+      <motion.div
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.25 }}
+        className="grid grid-cols-2 gap-5 w-full max-w-2xl mb-12"
+      >
+        {gridCards.map((card) => (
+          <Link
+            key={card.title}
+            href={card.href}
+            className={`group p-7 rounded-2xl bg-gradient-to-br ${card.color} border border-white/5 ${card.border} transition-all duration-300 hover:translate-y-[-2px]`}
+          >
+            <div className="text-4xl mb-3">{card.icon}</div>
+            <h3 className="text-lg font-bold text-gray-200 mb-2">{card.title}</h3>
+            <p className="text-base text-gray-500 leading-relaxed">{card.desc}</p>
+          </Link>
+        ))}
+      </motion.div>
 
-      {/* Latest blog */}
-      <section className="py-20 px-4 sm:px-6 max-w-6xl mx-auto">
-        <motion.h2
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          className="text-3xl font-bold text-center mb-12"
-        >
-          最新 <span className="gradient-text">博客</span>
-        </motion.h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {latestPosts.map((post, i) => (
-            <BlogCard key={post.slug} {...post} index={i} />
-          ))}
-        </div>
-        <div className="text-center mt-8">
-          <a href="/blog" className="text-indigo-400 hover:text-indigo-300 transition-colors text-sm">
-            查看全部文章 &rarr;
-          </a>
-        </div>
-      </section>
-    </>
+      {/* Bottom links */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.45 }}
+        className="flex gap-8 text-base text-gray-500"
+      >
+        <Link href="/blog" className="hover:text-gray-300 transition-colors">📝 博客</Link>
+        <Link href="/portfolio" className="hover:text-gray-300 transition-colors">🎨 作品集</Link>
+      </motion.div>
+    </section>
   );
 }

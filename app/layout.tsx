@@ -7,8 +7,8 @@ import Footer from "@/components/Footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "LYQ / 凌逸清 - AI创作者 & 跨界探索者",
-  description: "凌逸清的个人网站 - AI创作、行业洞察与技术探索",
+  title: "凌逸清 Harry - 超级个体站",
+  description: "AI 全栈创作者 · 投资人 · 超级个体 — 帮助更多人拥抱 AI 时代",
 };
 
 export default function RootLayout({
