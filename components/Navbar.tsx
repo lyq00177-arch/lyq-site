@@ -11,6 +11,7 @@ const navLinks = [
   { href: "/moe", label: "关于我" },
   { href: "/story", label: "故事" },
   { href: "/blog", label: "博客" },
+  { href: "/learn", label: "入门" },
   { href: "/portfolio", label: "作品集" },
 ];
 

@@ -153,6 +153,7 @@ export default function Home() {
         className="flex gap-8 text-base text-gray-500"
       >
         <Link href="/blog" className="hover:text-gray-300 transition-colors">📝 博客</Link>
+        <Link href="/learn" className="hover:text-gray-300 transition-colors">📚 入门</Link>
         <Link href="/portfolio" className="hover:text-gray-300 transition-colors">🎨 作品集</Link>
       </motion.div>
     </section>
