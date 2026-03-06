@@ -8,7 +8,7 @@ const navLinks = [
   { href: "/", label: "首页" },
   { href: "/connect", label: "链接" },
   { href: "/business", label: "业务" },
-  { href: "/moe", label: "MOE" },
+  { href: "/moe", label: "关于我" },
   { href: "/story", label: "故事" },
   { href: "/blog", label: "博客" },
   { href: "/portfolio", label: "作品集" },

@@ -28,7 +28,7 @@ const gridCards = [
   {
     href: "/moe",
     icon: "🧠",
-    title: "MOE",
+    title: "关于我",
     desc: "底层思考系统 · 工具栈 · 核心能力",
     color: "from-purple-500/10 to-pink-500/10",
     border: "hover:border-purple-500/30",
