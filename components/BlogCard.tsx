@@ -18,12 +18,16 @@ export default function BlogCard({ slug, title, excerpt, date, tags, index }: Bl
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+      transition={{ duration: 0.4, delay: Math.min(index * 0.06, 0.4) }}
+      whileHover={{ scale: 1.01, y: -2 }}
     >
-      <Link href={`/blog/${slug}`} className="block glow-card bg-dark-card border border-white/5 rounded-xl p-6 h-full">
+      <Link
+        href={`/blog/${slug}`}
+        className="block bg-dark-card border border-white/5 hover:border-indigo-500/30 hover:shadow-lg hover:shadow-indigo-500/5 rounded-xl p-6 h-full transition-all duration-300"
+      >
         <time className="text-xs text-gray-500">{date}</time>
-        <h3 className="text-lg font-semibold text-white mt-2 mb-2">{title}</h3>
-        <p className="text-sm text-gray-400 mb-4 line-clamp-2">{excerpt}</p>
+        <h3 className="text-lg font-semibold text-white mt-2 mb-2 leading-snug">{title}</h3>
+        <p className="text-sm text-gray-400 mb-4 line-clamp-2 leading-relaxed">{excerpt}</p>
         <div className="flex flex-wrap gap-2">
           {tags.map((tag) => (
             <span

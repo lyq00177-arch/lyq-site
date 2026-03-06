@@ -60,11 +60,18 @@ export default function MoePage() {
           transition={{ delay: 0.2 }}
           className="grid grid-cols-2 gap-5"
         >
-          {stats.map((s) => (
-            <div key={s.label} className="text-center p-8 rounded-2xl bg-dark-card border border-white/5">
+          {stats.map((s, i) => (
+            <motion.div
+              key={s.label}
+              initial={{ opacity: 0, scale: 0.9 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="text-center p-8 rounded-2xl bg-dark-card border border-white/5"
+            >
               <div className="text-4xl font-bold gradient-text mb-2">{s.number}</div>
               <div className="text-base text-gray-400">{s.label}</div>
-            </div>
+            </motion.div>
           ))}
         </motion.div>
 

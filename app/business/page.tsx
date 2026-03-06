@@ -91,9 +91,11 @@ export default function BusinessPage() {
             <motion.div
               key={s.title}
               initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 + i * 0.08 }}
-              className="flex items-center justify-between p-6 rounded-2xl bg-dark-card border border-white/5 hover:border-indigo-500/30 transition-all duration-300"
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08 }}
+              whileHover={{ scale: 1.01, x: 4 }}
+              className="flex items-center justify-between p-6 rounded-2xl bg-dark-card border border-white/5 hover:border-indigo-500/30 hover:shadow-lg hover:shadow-indigo-500/5 transition-all duration-300"
             >
               <div className="flex items-center gap-5">
                 <span className="text-3xl">{s.icon}</span>
