@@ -9,25 +9,24 @@ const stats = [
 ];
 
 const tools = [
-  { name: "ChatGPT", cat: "文本" },
   { name: "Claude", cat: "文本" },
+  { name: "ChatGPT", cat: "文本" },
+  { name: "Claude Code", cat: "开发" },
   { name: "Midjourney", cat: "图像" },
   { name: "Stable Diffusion", cat: "图像" },
   { name: "Runway", cat: "视频" },
-  { name: "GPT API", cat: "开发" },
   { name: "Next.js", cat: "开发" },
-  { name: "WordPress", cat: "开发" },
-  { name: "Cursor", cat: "开发" },
-  { name: "Notion", cat: "效率" },
+  { name: "Obsidian", cat: "效率" },
+  { name: "NAS / 自建服务器", cat: "基础设施" },
 ];
 
 const skills = [
   "AI 全链路创作",
-  "美股 & Web3 投资",
+  "投资认知与资产配置",
   "自媒体矩阵运营",
-  "独立站全栈开发",
+  "个人网站搭建（Claude Code）",
   "AI 工作流搭建",
-  "商业模式设计",
+  "优质信息筛选与提炼",
 ];
 
 export default function MoePage() {

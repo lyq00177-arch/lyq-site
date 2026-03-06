@@ -4,10 +4,30 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 
 const consultingServices = [
-  { icon: "🧠", title: "AI 全栈咨询", desc: "工具选型、工作流搭建、效率提升方案", price: "¥599/h" },
-  { icon: "📱", title: "自媒体陪跑", desc: "定位策划、内容体系、爆款方法论", price: "¥599/h" },
-  { icon: "🎯", title: "AI 工具私教", desc: "Midjourney/SD/ChatGPT/Claude 一对一教学", price: "¥599/h" },
-  { icon: "💰", title: "投资交流", desc: "美股/Web3/加密货币认知分享", price: "¥599/h" },
+  {
+    icon: "🧠",
+    title: "AI 工具入门私教",
+    desc: "从零开始，手把手带你把 AI 用起来。工具选型、工作流搭建、日常效率提升——我怎么用的，就怎么教你。",
+    price: "¥599/h",
+  },
+  {
+    icon: "📱",
+    title: "自媒体起号陪跑",
+    desc: "公众号、推特、抖音的选题、写作、发布全流程。我自己从 0 跑过来的路，帮你少踩坑。",
+    price: "¥599/h",
+  },
+  {
+    icon: "🌐",
+    title: "个人网站搭建",
+    desc: "和我一样，不会写代码也能用 Claude Code 搭出属于自己的个人站。我来带你全程走一遍。",
+    price: "¥599/h",
+  },
+  {
+    icon: "💰",
+    title: "投资认知私聊",
+    desc: "普通人如何看懂资产配置、基金、美股，以及更广的另类资产。不给建议，帮你建立独立判断。",
+    price: "¥599/h",
+  },
 ];
 
 export default function BusinessPage() {
