@@ -4,9 +4,7 @@ import { motion } from "framer-motion";
 
 const stats = [
   { number: "3年+", label: "AI 深耕" },
-  { number: "10w+", label: "全网粉丝" },
   { number: "10w+", label: "爆款文章" },
-  { number: "1000+", label: "服务人次" },
 ];
 
 const tools = [

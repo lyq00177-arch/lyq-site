@@ -5,9 +5,7 @@ import { motion } from "framer-motion";
 
 const highlights = [
   "3年+ AI 深度玩家",
-  "全网 10w+ 粉丝",
   "公众号单篇 10w+ 爆款",
-  "服务 1000+ 人次",
 ];
 
 const gridCards = [

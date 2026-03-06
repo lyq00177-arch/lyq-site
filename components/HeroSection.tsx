@@ -58,7 +58,7 @@ export default function HeroSection() {
           transition={{ duration: 0.8, delay: 0.55 }}
           className="text-sm text-gray-500 max-w-xl mx-auto mb-10"
         >
-          深耕 AI 创作、Web3 投资与自媒体，帮助 1000+ 人拥抱 AI 时代
+          文科生 · 编程小白 · 用 AI 重构自己的普通人
         </motion.p>
 
         {/* Subtle CTAs in a smaller style */}
