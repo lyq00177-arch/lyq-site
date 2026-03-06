@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
 
 const chapters = [
   {
@@ -84,55 +85,116 @@ const chapters = [
   },
 ];
 
+const variants = {
+  enter: (dir: number) => ({ opacity: 0, x: dir > 0 ? 60 : -60 }),
+  center: { opacity: 1, x: 0 },
+  exit: (dir: number) => ({ opacity: 0, x: dir > 0 ? -60 : 60 }),
+};
+
 export default function StoryPage() {
+  const [index, setIndex] = useState(0);
+  const [dir, setDir] = useState(1);
+
+  const go = (next: number) => {
+    setDir(next > index ? 1 : -1);
+    setIndex(next);
+  };
+
+  const chapter = chapters[index];
+  const total = chapters.length;
+
   return (
     <section className="min-h-screen flex flex-col items-center px-4 sm:px-6 py-20">
-      <Link href="/" className="text-base text-gray-500 hover:text-indigo-400 transition-colors mb-12">
+      <Link
+        href="/"
+        className="text-base text-gray-500 hover:text-indigo-400 transition-colors mb-12"
+      >
         ← 返回首页
       </Link>
 
       <motion.h1
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-5xl font-bold mb-4"
+        className="text-5xl font-bold mb-16"
       >
         📖 我的<span className="gradient-text">故事</span>
       </motion.h1>
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.15 }}
-        className="text-lg text-gray-500 mb-16"
-      >
-        一个文科生的 AI 摸索实录
-      </motion.p>
 
-      <div className="w-full max-w-2xl space-y-12">
-        {chapters.map((chapter, i) => (
+      {/* Chapter card */}
+      <div className="w-full max-w-2xl">
+        <AnimatePresence mode="wait" custom={dir}>
           <motion.div
-            key={chapter.tag}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1 + i * 0.08 }}
-            className="space-y-4"
+            key={index}
+            custom={dir}
+            variants={variants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.35, ease: "easeInOut" }}
+            className="rounded-2xl bg-dark-card border border-white/5 p-10 sm:p-14 min-h-[380px] flex flex-col justify-between"
           >
-            <div className="flex items-center gap-3">
-              <span className="text-sm font-mono text-indigo-400 border border-indigo-500/30 px-3 py-1 rounded-full">
-                {chapter.tag}
-              </span>
-              {chapter.title && (
-                <h2 className="text-xl font-bold text-gray-200">{chapter.title}</h2>
-              )}
+            <div>
+              {/* Tag + title */}
+              <div className="flex items-center gap-3 mb-8">
+                <span className="text-sm font-mono text-indigo-400 border border-indigo-500/30 px-3 py-1 rounded-full">
+                  {chapter.tag}
+                </span>
+                {chapter.title && (
+                  <h2 className="text-2xl font-bold text-gray-200">
+                    {chapter.title}
+                  </h2>
+                )}
+              </div>
+
+              {/* Content */}
+              <div className="space-y-5">
+                {chapter.content.map((para, i) => (
+                  <p key={i} className="text-xl text-gray-300 leading-relaxed">
+                    {para}
+                  </p>
+                ))}
+              </div>
             </div>
-            <div className="space-y-3 pl-1">
-              {chapter.content.map((para, j) => (
-                <p key={j} className="text-gray-400 leading-relaxed">
-                  {para}
-                </p>
+
+            {/* Progress dots */}
+            <div className="flex justify-center gap-2 mt-10">
+              {chapters.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => go(i)}
+                  className={`rounded-full transition-all duration-300 ${
+                    i === index
+                      ? "w-6 h-2 bg-indigo-400"
+                      : "w-2 h-2 bg-white/20 hover:bg-white/40"
+                  }`}
+                />
               ))}
             </div>
           </motion.div>
-        ))}
+        </AnimatePresence>
+
+        {/* Navigation */}
+        <div className="flex items-center justify-between mt-6 px-2">
+          <button
+            onClick={() => go(index - 1)}
+            disabled={index === 0}
+            className="px-6 py-3 rounded-xl text-base text-gray-400 hover:text-white hover:bg-white/5 transition-all disabled:opacity-20 disabled:cursor-not-allowed"
+          >
+            ← 上一节
+          </button>
+
+          <span className="text-sm text-gray-600 font-mono">
+            {index + 1} / {total}
+          </span>
+
+          <button
+            onClick={() => go(index + 1)}
+            disabled={index === total - 1}
+            className="px-6 py-3 rounded-xl text-base text-gray-400 hover:text-white hover:bg-white/5 transition-all disabled:opacity-20 disabled:cursor-not-allowed"
+          >
+            下一节 →
+          </button>
+        </div>
       </div>
     </section>
   );
