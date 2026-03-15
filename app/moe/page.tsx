@@ -85,7 +85,7 @@ export default function MoePage() {
 
         {/* Beliefs */}
         <div className="space-y-16 mb-20">
-          {beliefs.map((belief, i) => (
+          {beliefs.map((belief) => (
             <motion.div
               key={belief.tag}
               initial={{ opacity: 0, y: 20 }}
