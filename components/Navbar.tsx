@@ -22,7 +22,7 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-dark/80 backdrop-blur-md border-b border-white/5">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
-          <Link href="/" className="text-xl font-bold gradient-text">
+          <Link href="/" className="font-display text-lg text-[#e8e3d8] hover:text-amber-400 transition-colors duration-200">
             Harry
           </Link>
 
@@ -31,7 +31,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm text-gray-400 hover:text-white transition-colors duration-200"
+                className="text-sm text-[#7a746c] hover:text-amber-400 transition-colors duration-200"
               >
                 {link.label}
               </Link>
@@ -73,7 +73,7 @@ export default function Navbar() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className="text-gray-400 hover:text-white transition-colors"
+                  className="text-[#7a746c] hover:text-amber-400 transition-colors"
                 >
                   {link.label}
                 </Link>

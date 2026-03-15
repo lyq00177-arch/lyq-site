@@ -8,9 +8,9 @@ const sections = [
     id: "ai",
     icon: "🤖",
     title: "AI 工具入门",
-    color: "from-indigo-500/10 to-cyan-500/10",
-    border: "border-indigo-500/20",
-    tag: "indigo",
+    color: "from-[#d4a853]/5 to-[#d4a853]/3",
+    border: "border-[#d4a853]/15",
+    tag: "gold",
     articles: [
       {
         title: "Claude vs ChatGPT vs Gemini，你到底该用哪个？",
@@ -76,7 +76,7 @@ const sections = [
 ];
 
 const tagColors: Record<string, string> = {
-  indigo: "text-indigo-400 border-indigo-500/30 bg-indigo-500/10",
+  gold: "text-amber-400 border-amber-500/30 bg-amber-500/10",
   amber: "text-amber-400 border-amber-500/30 bg-amber-500/10",
   green: "text-green-400 border-green-500/30 bg-green-500/10",
 };
@@ -85,7 +85,7 @@ export default function LearnPage() {
   return (
     <section className="min-h-screen px-4 sm:px-6 py-20">
       <div className="max-w-3xl mx-auto">
-        <Link href="/" className="text-base text-gray-500 hover:text-indigo-400 transition-colors block mb-12">
+        <Link href="/" className="text-base text-[#7a746c] hover:text-amber-400 transition-colors block mb-12">
           ← 返回首页
         </Link>
 

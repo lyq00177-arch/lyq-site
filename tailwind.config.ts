@@ -11,13 +11,14 @@ const config: Config = {
     extend: {
       colors: {
         dark: {
-          DEFAULT: "#0a0a1a",
-          lighter: "#111130",
-          card: "#14142b",
+          DEFAULT: "#0a0a0a",
+          lighter: "#141414",
+          card: "#1c1c1c",
         },
       },
       fontFamily: {
-        sans: ["Inter", "system-ui", "-apple-system", "sans-serif"],
+        sans: ["var(--font-inter)", "system-ui", "-apple-system", "sans-serif"],
+        display: ["var(--font-playfair)", "Georgia", "serif"],
       },
       animation: {
         "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",

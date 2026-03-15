@@ -3,122 +3,152 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-const consultingServices = [
+const services = [
   {
     icon: "🧠",
-    title: "AI 工具入门私教",
-    desc: "从零开始，手把手带你把 AI 用起来。工具选型、工作流搭建、日常效率提升——我怎么用的，就怎么教你。",
-    price: "¥599/h",
+    title: "AI 工具入门",
+    desc: "我怎么用的，就怎么教你。三年踩坑，一个小时说清楚——工具选什么，怎么组合，从哪里开始。",
+    price: "¥399 / h",
   },
   {
     icon: "₿",
     title: "加密资产从零到一",
-    desc: "交易所开户（Binance / OKX / Bybit）、优卡入金、安全存储、现货基础操作——手把手带你走完第一次完整流程，不踩坑。",
-    price: "¥599/h",
+    desc: "第一次开户，第一次入金，第一次买币。全程陪你走一遍。不踩坑比赚快钱重要。",
+    price: "¥399 / h",
   },
   {
     icon: "📱",
     title: "自媒体起号陪跑",
-    desc: "公众号、推特、抖音的选题、写作、发布全流程。我自己从 0 跑过来的路，帮你少踩坑。",
-    price: "¥599/h",
+    desc: "公众号、推特、抖音——我自己摸索过的路，帮你少绕弯子。从选题到写完到发出去，实战派。",
+    price: "¥499 / h",
   },
   {
     icon: "🌐",
     title: "个人网站搭建",
-    desc: "和我一样，不会写代码也能用 Claude Code 搭出属于自己的个人站。我来带你全程走一遍。",
-    price: "¥599/h",
+    desc: "不会写代码也能做。我这个网站就是对着 Claude Code 一行行问出来的。带你全程走一遍。",
+    price: "项目制，按需报价",
   },
   {
     icon: "💰",
     title: "投资认知私聊",
-    desc: "普通人如何看懂资产配置、基金、美股、加密资产。不给操作建议，帮你建立独立判断框架。",
-    price: "¥599/h",
+    desc: "不给买什么的建议。帮你搭一个框架：你的钱，应该怎么分，为什么这么分，什么时候动。",
+    price: "¥499 / h",
   },
 ];
 
 export default function BusinessPage() {
   return (
-    <section className="min-h-screen flex flex-col items-center px-4 sm:px-6 py-20">
-      <Link href="/" className="text-base text-gray-500 hover:text-indigo-400 transition-colors mb-12">
-        ← 返回首页
-      </Link>
+    <section className="min-h-screen px-6 sm:px-12 lg:px-20 py-24">
+      <div className="max-w-[640px] mx-auto">
 
-      <motion.h1
-        initial={{ opacity: 0, y: 15 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="text-5xl font-bold mb-4"
-      >
-        💼 我的<span className="gradient-text">业务</span>
-      </motion.h1>
-      <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.15 }}
-        className="text-lg text-gray-500 mb-12"
-      >
-        社群 & 一对一咨询，为你量身定制
-      </motion.p>
+        <Link
+          href="/"
+          className="text-sm text-[#5a5450] hover:text-amber-400 transition-colors block mb-16"
+        >
+          ← 首页
+        </Link>
 
-      <div className="w-full max-w-2xl space-y-6">
-        {/* 社群卡片 */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-14"
+        >
+          <h1 className="font-display text-4xl sm:text-5xl text-[#e8e3d8] mb-4">业务</h1>
+          <p className="text-lg text-[#7a746c] leading-relaxed">
+            社群 + 一对一。付了钱，我认真对你负责。
+          </p>
+        </motion.div>
+
+        {/* 社群 - Featured */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="p-8 rounded-2xl bg-gradient-to-br from-indigo-500/10 to-purple-500/10 border border-indigo-500/20 relative overflow-hidden"
+          transition={{ delay: 0.15 }}
+          className="p-8 rounded-2xl bg-[#141414] border border-amber-500/15 mb-10 relative overflow-hidden"
         >
-          <div className="absolute top-0 right-0 px-5 py-2 bg-indigo-500/20 rounded-bl-xl text-base text-indigo-300 font-medium">
-            限时优惠
+          {/* 顶部标签 */}
+          <div className="absolute top-0 right-0 px-4 py-2 bg-amber-500/10 border-l border-b border-amber-500/15 rounded-bl-xl text-xs text-amber-400/80 font-medium tracking-wide">
+            长期社群
           </div>
-          <div className="text-4xl mb-4">🚀</div>
-          <h2 className="text-2xl font-bold text-gray-100 mb-3">AI 超级个体社群</h2>
-          <p className="text-lg text-gray-400 mb-5 leading-relaxed">
-            加入社群，与志同道合的人一起成长。覆盖 AI 工具、投资认知、自媒体运营、个人品牌等全方位内容分享。
+
+          <div className="text-3xl mb-5">🚀</div>
+          <h2 className="font-display text-2xl text-[#e8e3d8] mb-3">AI 超级个体社群</h2>
+          <p className="text-base text-[#7a746c] leading-relaxed mb-6">
+            一个小圈子，聊 AI 工具、投资逻辑、自媒体和个人成长。不是课程，不是训练营——
+            是一群想把日子过得更主动的人，在一起互相看见。
           </p>
-          <div className="flex items-center gap-3 text-lg text-indigo-300 mb-6">
-            <span className="w-2.5 h-2.5 rounded-full bg-indigo-400" />
-            加入社群即送个人网站搭建服务
-          </div>
+
+          <ul className="space-y-2 mb-8">
+            {[
+              "定期内容分享（工具、选题、资产配置）",
+              "提问可以得到真实回复，不是客服话术",
+              "加入即送个人网站搭建陪跑一次",
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-3 text-sm text-[#7a746c]">
+                <span className="text-amber-500/50 mt-0.5 shrink-0">—</span>
+                {item}
+              </li>
+            ))}
+          </ul>
+
           <div className="flex items-baseline gap-3">
-            <span className="text-4xl font-bold gradient-text">¥298</span>
-            <span className="text-base text-gray-500">前 200 名专属价 · 每新增 50 人涨 ¥50</span>
+            <span className="font-display text-3xl text-amber-400">¥298</span>
+            <span className="text-sm text-[#5a5450]">一次性，无续费</span>
           </div>
         </motion.div>
 
-        {/* 咨询服务 */}
-        <div className="space-y-4">
-          {consultingServices.map((s, i) => (
+        {/* 分割 */}
+        <div className="flex items-center gap-4 mb-8">
+          <span className="text-[11px] font-mono tracking-[0.2em] text-[#4a4440] uppercase">
+            一对一咨询
+          </span>
+          <div className="flex-1 h-px bg-white/[0.04]" />
+        </div>
+
+        {/* 服务列表 */}
+        <div className="space-y-3 mb-14">
+          {services.map((s, i) => (
             <motion.div
               key={s.title}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -10 }}
+              whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.08 }}
-              whileHover={{ scale: 1.01, x: 4 }}
-              className="flex items-center justify-between p-6 rounded-2xl bg-dark-card border border-white/5 hover:border-indigo-500/30 hover:shadow-lg hover:shadow-indigo-500/5 transition-all duration-300"
+              transition={{ delay: i * 0.06 }}
+              className="flex items-start justify-between gap-4 p-6 rounded-xl bg-[#111111] border border-white/[0.05] hover:border-amber-500/15 transition-all duration-300"
             >
-              <div className="flex items-center gap-5">
-                <span className="text-3xl">{s.icon}</span>
-                <div>
-                  <div className="text-lg font-medium text-gray-200">{s.title}</div>
-                  <div className="text-base text-gray-500">{s.desc}</div>
+              <div className="flex items-start gap-4 min-w-0">
+                <span className="text-2xl shrink-0 mt-0.5">{s.icon}</span>
+                <div className="min-w-0">
+                  <div className="text-base font-medium text-[#c8c2b8] mb-1">{s.title}</div>
+                  <div className="text-sm text-[#5a5450] leading-relaxed">{s.desc}</div>
                 </div>
               </div>
-              <span className="text-lg font-bold text-indigo-400 shrink-0 ml-4">{s.price}</span>
+              <span className="text-sm font-medium text-amber-400/70 shrink-0 ml-2 text-right">
+                {s.price}
+              </span>
             </motion.div>
           ))}
         </div>
 
+        {/* 怎么约 */}
         <motion.div
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6 }}
-          className="text-center pt-4"
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="pt-10 border-t border-white/[0.05]"
         >
-          <Link href="/blog" className="text-lg text-gray-400 hover:text-indigo-400 transition-colors">
-            查看更多作品与文章 →
+          <p className="text-sm text-[#4a4440] mb-5">怎么约？</p>
+          <p className="text-base text-[#7a746c] leading-relaxed mb-6">
+            加我微信说你想聊什么，我会告诉你适不适合做、怎么安排。不需要提前准备什么，直接说你的情况就好。
+          </p>
+          <Link
+            href="/connect"
+            className="inline-flex items-center gap-2 text-sm text-amber-500/70 hover:text-amber-400 transition-colors"
+          >
+            找到我的联系方式 →
           </Link>
         </motion.div>
+
       </div>
     </section>
   );
