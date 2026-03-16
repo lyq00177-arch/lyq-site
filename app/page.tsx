@@ -5,13 +5,13 @@ import { motion } from "framer-motion";
 
 const sealChars = ["超", "级", "个", "体"];
 
-const aiWorks = [
-  { src: "/works/创意工作室手办绘制场景.png", label: "创意工作室" },
-  { src: "/works/街头黑色电影爆发.png", label: "街头电影感" },
-  { src: "/works/真人与迷你卡通角色肖像.png", label: "真人×卡通" },
-  { src: "/works/gemini-1.png", label: "Gemini 生成" },
-  { src: "/works/南京.png", label: "南京" },
-  { src: "/works/gemini-2.png", label: "Gemini 生成" },
+const navModules = [
+  { href: "/story",    icon: "◎", label: "我的故事",   desc: "从打工人到数字创作者的真实路径" },
+  { href: "/moe",      icon: "▲", label: "关于我",     desc: "我相信什么，我不相信什么" },
+  { href: "/portfolio",icon: "◈", label: "作品集",     desc: "百万播放、公众号、AI 创作" },
+  { href: "/business", icon: "◇", label: "合作业务",   desc: "咨询、建站、AI 入门陪跑" },
+  { href: "/learn",    icon: "⬡", label: "入门指南",   desc: "AI / 加密 / 自媒体 · 从零开始" },
+  { href: "#wechat",   icon: "◉", label: "加我微信",   desc: "直接聊，比表单快" },
 ];
 
 export default function Home() {
@@ -142,7 +142,7 @@ export default function Home() {
         className="h-px bg-gradient-to-r from-amber-500/30 via-white/5 to-transparent mb-16"
       />
 
-      {/* ═══ AI 创作 ════════════════════════════════════ */}
+      {/* ═══ 导航模块 ════════════════════════════════════ */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -150,35 +150,35 @@ export default function Home() {
       >
         <div className="flex items-center gap-5 mb-10">
           <span className="text-xs font-medium tracking-[0.2em] uppercase text-[#4a4440]">
-            AI 创作
+            探索
           </span>
           <div className="flex-1 h-px bg-white/[0.04]" />
-          <Link
-            href="/portfolio"
-            className="text-xs text-[#4a4440] hover:text-amber-400 transition-colors"
-          >
-            作品集 →
-          </Link>
         </div>
 
-        {/* 图片网格 */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-          {aiWorks.map((work, i) => (
+          {navModules.map((m, i) => (
             <motion.div
-              key={work.src}
-              initial={{ opacity: 0, scale: 0.97 }}
-              animate={{ opacity: 1, scale: 1 }}
+              key={m.href}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 1.1 + i * 0.07 }}
-              className="group relative aspect-square overflow-hidden rounded-xl bg-[#111111] border border-white/[0.05]"
             >
-              <img
-                src={work.src}
-                alt={work.label}
-                className="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
-                <span className="text-xs text-[#e8e3d8]">{work.label}</span>
-              </div>
+              <Link
+                href={m.href}
+                className="group flex flex-col gap-3 p-5 rounded-xl bg-[#111111] border border-white/[0.05] hover:border-amber-500/20 hover:bg-[#141414] transition-all duration-300 h-full"
+              >
+                <span className="text-lg text-amber-500/50 group-hover:text-amber-400 transition-colors">
+                  {m.icon}
+                </span>
+                <div>
+                  <div className="text-sm font-medium text-[#c8c2b8] group-hover:text-[#e8e3d8] transition-colors mb-1">
+                    {m.label}
+                  </div>
+                  <div className="text-xs text-[#4a4440] leading-relaxed">
+                    {m.desc}
+                  </div>
+                </div>
+              </Link>
             </motion.div>
           ))}
         </div>
