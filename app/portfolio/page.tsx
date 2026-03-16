@@ -31,21 +31,21 @@ const honors = [
 const articles = [
   {
     title: "马斯克说，2026年1月是一道残酷的分界线",
-    reads: "9.6w",
+    reads: "12.4w",
     tag: "时事深读",
-    href: "https://mp.weixin.qq.com",
+    href: "/blog/musk-2026-turning-point",
   },
   {
-    title: "马斯克为什么能成为马斯克？",
-    reads: "8w+",
+    title: "投资教父芒格说，想要躺着赚钱，务必坚守这三个原则",
+    reads: "1.4w",
+    tag: "投资智慧",
+    href: "/blog/munger-three-principles",
+  },
+  {
+    title: "马斯克最新预言，你只剩五年时间变富",
+    reads: "4,570",
     tag: "人物解析",
-    href: "https://mp.weixin.qq.com",
-  },
-  {
-    title: "芒格的 100 个思维模型，我用了哪 10 个？",
-    reads: "6w+",
-    tag: "认知升级",
-    href: "https://mp.weixin.qq.com",
+    href: "/blog/musk-five-years-rich",
   },
 ];
 
@@ -162,14 +162,14 @@ export default function PortfolioPage() {
         <SectionLabel>内容创作</SectionLabel>
         <div className="space-y-3">
           {articles.map((a, i) => (
-            <motion.a
+            <motion.div
               key={a.title}
-              href={a.href}
-              target="_blank"
-              rel="noopener noreferrer"
               initial={{ opacity: 0, x: -8 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.4 + i * 0.07 }}
+            >
+            <Link
+              href={a.href}
               className="group flex items-center justify-between gap-4 p-5 rounded-xl bg-[#111111] border border-white/[0.05] hover:border-amber-500/15 transition-all duration-300"
             >
               <div className="flex items-center gap-4 min-w-0">
@@ -184,7 +184,8 @@ export default function PortfolioPage() {
                 <span>👁 {a.reads}</span>
                 <span className="text-amber-500/40 group-hover:text-amber-400 transition-colors">阅读 →</span>
               </div>
-            </motion.a>
+            </Link>
+            </motion.div>
           ))}
         </div>
       </motion.div>
