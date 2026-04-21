@@ -85,7 +85,7 @@ export default function LearnPage() {
   return (
     <section className="min-h-screen px-4 sm:px-6 py-20">
       <div className="max-w-3xl mx-auto">
-        <Link href="/" className="text-base text-[#7a746c] hover:text-amber-400 transition-colors block mb-12">
+        <Link href="/" className="text-base text-t-tertiary hover:text-accent transition-colors block mb-12">
           ← 返回首页
         </Link>
 
@@ -97,7 +97,7 @@ export default function LearnPage() {
           <h1 className="text-5xl font-bold mb-4">
             📚 知识<span className="gradient-text">入门</span>
           </h1>
-          <p className="text-lg text-gray-500">
+          <p className="text-lg text-t-muted">
             免费阅读 · 看完有问题欢迎来找我
           </p>
         </motion.div>
@@ -114,7 +114,7 @@ export default function LearnPage() {
               {/* Section header */}
               <div className="flex items-center gap-3 mb-8">
                 <span className="text-4xl">{section.icon}</span>
-                <h2 className="text-3xl font-bold text-gray-100">{section.title}</h2>
+                <h2 className="text-3xl font-bold text-t-primary">{section.title}</h2>
               </div>
 
               {/* Articles */}
@@ -128,12 +128,12 @@ export default function LearnPage() {
                     transition={{ delay: ai * 0.08 }}
                     className={`p-7 rounded-2xl bg-gradient-to-br ${section.color} border ${section.border}`}
                   >
-                    <h3 className="text-xl font-semibold text-gray-100 mb-4 leading-snug">
+                    <h3 className="text-xl font-semibold text-t-primary mb-4 leading-snug">
                       {article.title}
                     </h3>
                     <div className="space-y-3">
                       {article.body.split("\n\n").map((para, pi) => (
-                        <p key={pi} className="text-base text-gray-300 leading-relaxed">
+                        <p key={pi} className="text-base text-t-secondary leading-relaxed">
                           {para}
                         </p>
                       ))}
@@ -148,9 +148,9 @@ export default function LearnPage() {
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
                 transition={{ delay: 0.3 }}
-                className="mt-6 flex items-center justify-between p-5 rounded-xl border border-white/5 bg-dark-card"
+                className="mt-6 flex items-center justify-between p-5 rounded-xl border border-white/5 bg-card"
               >
-                <p className="text-base text-gray-400">{section.cta}</p>
+                <p className="text-base text-t-tertiary">{section.cta}</p>
                 <Link
                   href="/business"
                   className={`shrink-0 ml-4 px-5 py-2 rounded-full text-sm font-medium border transition-all hover:scale-105 ${tagColors[section.tag]}`}

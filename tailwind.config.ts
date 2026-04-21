@@ -10,6 +10,17 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        primary: "rgb(var(--bg-primary) / <alpha-value>)",
+        card: "rgb(var(--bg-card) / <alpha-value>)",
+        elevated: "rgb(var(--bg-elevated) / <alpha-value>)",
+        surface: "rgb(var(--bg-surface) / <alpha-value>)",
+        "t-primary": "rgb(var(--text-primary) / <alpha-value>)",
+        "t-secondary": "rgb(var(--text-secondary) / <alpha-value>)",
+        "t-tertiary": "rgb(var(--text-tertiary) / <alpha-value>)",
+        "t-muted": "rgb(var(--text-muted) / <alpha-value>)",
+        accent: "rgb(var(--accent) / <alpha-value>)",
+        "accent-light": "rgb(var(--accent-light) / <alpha-value>)",
+        // keep legacy aliases for existing code
         dark: {
           DEFAULT: "#0a0a0a",
           lighter: "#141414",
@@ -17,7 +28,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "-apple-system", "sans-serif"],
+        sans: ["var(--font-inter)", '"Noto Sans SC"', "system-ui", "-apple-system", "sans-serif"],
+        nunito: ["var(--font-nunito)", '"Noto Sans SC"', "sans-serif"],
         display: ["var(--font-playfair)", "Georgia", "serif"],
       },
       animation: {

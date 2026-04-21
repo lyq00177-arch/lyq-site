@@ -16,22 +16,22 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-20">
       <Link
         href="/blog"
-        className="text-sm text-indigo-400 hover:text-indigo-300 transition-colors mb-8 inline-block"
+        className="text-sm text-accent hover:text-accent-light transition-colors mb-8 inline-block"
       >
         &larr; 返回博客列表
       </Link>
 
       <article>
         <header className="mb-10">
-          <time className="text-sm text-gray-500">{post.date}</time>
-          <h1 className="text-3xl sm:text-4xl font-bold text-white mt-2 mb-4">
+          <time className="text-sm text-t-muted">{post.date}</time>
+          <h1 className="text-3xl sm:text-4xl font-bold text-t-primary mt-2 mb-4">
             {post.title}
           </h1>
           <div className="flex flex-wrap gap-2">
             {post.tags.map((tag) => (
               <span
                 key={tag}
-                className="text-xs px-3 py-1 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/20"
+                className="text-xs px-3 py-1 rounded-full bg-accent/10 text-accent-light border border-accent/20"
               >
                 {tag}
               </span>

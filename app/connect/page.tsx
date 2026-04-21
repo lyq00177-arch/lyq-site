@@ -13,7 +13,7 @@ const links = [
 export default function ConnectPage() {
   return (
     <section className="min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 py-20">
-      <Link href="/" className="text-base text-gray-500 hover:text-indigo-400 transition-colors mb-12">
+      <Link href="/" className="text-base text-t-tertiary hover:text-accent transition-colors mb-12">
         ← 返回首页
       </Link>
 
@@ -28,7 +28,7 @@ export default function ConnectPage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.15 }}
-        className="text-lg text-gray-500 mb-12"
+        className="text-lg text-t-muted mb-12"
       >
         选择你喜欢的方式找到我
       </motion.p>
@@ -51,12 +51,12 @@ export default function ConnectPage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25 + i * 0.08 }}
-            className="flex items-center gap-5 p-6 rounded-2xl bg-dark-card border border-white/5 hover:border-indigo-500/30 transition-all duration-300 w-full"
+            className="flex items-center gap-5 p-6 rounded-2xl bg-card border border-white/5 hover:border-accent/30 transition-all duration-300 w-full"
           >
             <span className="text-4xl">{link.icon}</span>
             <div>
-              <div className="text-lg font-medium text-gray-200">{link.label}</div>
-              <div className="text-base text-gray-500">{link.desc}</div>
+              <div className="text-lg font-medium text-t-primary">{link.label}</div>
+              <div className="text-base text-t-muted">{link.desc}</div>
             </div>
           </motion.a>
         ))}

@@ -2,15 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ═══ Dark mode (default) ═══ */
 :root {
-  --background: #0a0a0a;
-  --foreground: #e8e3d8;
+  --bg-primary: 10 10 10;
+  --bg-card: 17 17 17;
+  --bg-elevated: 20 20 20;
+  --bg-surface: 28 28 28;
+  --text-primary: 232 227 216;
+  --text-secondary: 184 176 160;
+  --text-tertiary: 122 116 108;
+  --text-muted: 90 84 80;
+  --accent: 212 168 83;
+  --accent-light: 232 201 122;
+  --border: 255 255 255;
+  --border-opacity: 0.05;
+}
+
+/* ═══ Light mode ═══ */
+html.light {
+  --bg-primary: 245 240 232;
+  --bg-card: 237 232 222;
+  --bg-elevated: 232 226 214;
+  --bg-surface: 240 235 227;
+  --text-primary: 42 37 32;
+  --text-secondary: 74 68 64;
+  --text-tertiary: 106 100 96;
+  --text-muted: 138 132 128;
+  --accent: 176 137 48;
+  --accent-light: 212 168 83;
+  --border: 0 0 0;
+  --border-opacity: 0.08;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  color: rgb(var(--text-primary));
+  background: rgb(var(--bg-primary));
+  font-family: var(--font-inter), "Noto Sans SC", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Scrollbar */
@@ -31,20 +60,40 @@ html {
   scroll-padding-top: 80px;
 }
 
+/* Noise texture overlay */
+.noise-bg {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.045;
+}
+html.light .noise-bg {
+  opacity: 0.05;
+}
+
+/* Ambient glow — placed behind hero area */
+.ambient-glow {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(120px);
+}
+
 /* Glow effect for cards */
 .glow-card {
   position: relative;
   transition: all 0.3s ease;
 }
 .glow-card:hover {
-  box-shadow: 0 0 30px rgba(212, 168, 83, 0.08),
-    0 0 60px rgba(212, 168, 83, 0.04);
+  box-shadow: 0 0 30px rgb(var(--accent) / 0.08),
+    0 0 60px rgb(var(--accent) / 0.04);
   transform: translateY(-4px);
 }
 
 /* Gradient text — static warm gold */
 .gradient-text {
-  background: linear-gradient(135deg, #d4a853, #e8c97a, #d4a853);
+  background: linear-gradient(135deg, rgb(var(--accent)), rgb(var(--accent-light)), rgb(var(--accent)));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

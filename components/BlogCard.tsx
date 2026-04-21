@@ -23,16 +23,16 @@ export default function BlogCard({ slug, title, excerpt, date, tags, index }: Bl
     >
       <Link
         href={`/blog/${slug}`}
-        className="block bg-dark-card border border-white/5 hover:border-indigo-500/30 hover:shadow-lg hover:shadow-indigo-500/5 rounded-xl p-6 h-full transition-all duration-300"
+        className="block bg-card border border-white/5 hover:border-accent/30 hover:shadow-lg hover:shadow-accent/5 rounded-xl p-6 h-full transition-all duration-300"
       >
-        <time className="text-xs text-gray-500">{date}</time>
-        <h3 className="text-lg font-semibold text-white mt-2 mb-2 leading-snug">{title}</h3>
-        <p className="text-sm text-gray-400 mb-4 line-clamp-2 leading-relaxed">{excerpt}</p>
+        <time className="text-xs text-t-muted">{date}</time>
+        <h3 className="text-lg font-semibold text-t-primary mt-2 mb-2 leading-snug">{title}</h3>
+        <p className="text-sm text-t-tertiary mb-4 line-clamp-2 leading-relaxed">{excerpt}</p>
         <div className="flex flex-wrap gap-2">
           {tags.map((tag) => (
             <span
               key={tag}
-              className="text-xs px-2 py-1 rounded-full bg-purple-500/10 text-purple-300 border border-purple-500/20"
+              className="text-xs px-2 py-1 rounded-full bg-accent/10 text-accent-light border border-accent/20"
             >
               {tag}
             </span>
