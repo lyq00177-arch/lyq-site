@@ -4,13 +4,17 @@ import Link from "next/link";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
+import EventsCalendar from "./EventsCalendar";
 
 const navLinks = [
   { href: "/story", label: "故事" },
   { href: "/moe", label: "关于我" },
   { href: "/portfolio", label: "作品集" },
+  { href: "/gallery", label: "画廊" },
   { href: "/business", label: "业务" },
   { href: "/blog", label: "博客" },
+  { href: "/etf", label: "ETF" },
+  { href: "/tools", label: "工具" },
 ];
 
 export default function Navbar() {
@@ -34,10 +38,12 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
+            <EventsCalendar />
             <ThemeToggle />
           </div>
 
           <div className="md:hidden flex items-center gap-2">
+            <EventsCalendar />
             <ThemeToggle />
             <button
               onClick={() => setIsOpen(!isOpen)}

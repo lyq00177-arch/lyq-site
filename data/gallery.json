@@ -1,0 +1,47 @@
+[
+  {
+    "id": "city-series",
+    "title": "城市系列",
+    "description": "用 AI 重新想象中国城市的视觉风格",
+    "model": "AI 生成",
+    "images": [
+      { "src": "/works/gallery/city/nanjing.webp", "alt": "南京" },
+      { "src": "/works/gallery/city/suzhou.webp", "alt": "苏州" },
+      { "src": "/works/gallery/city/wuxi.webp", "alt": "无锡" }
+    ]
+  },
+  {
+    "id": "portrait-series",
+    "title": "AI 肖像",
+    "description": "人物肖像的多种风格探索",
+    "model": "AI 生成",
+    "images": [
+      { "src": "/works/gallery/portrait/liu-yifei-rock.webp", "alt": "摇滚风肖像" },
+      { "src": "/works/gallery/portrait/zhang-guofeng.webp", "alt": "国风肖像" },
+      { "src": "/works/gallery/portrait/real-cartoon-portrait.webp", "alt": "真人 × 卡通" }
+    ]
+  },
+  {
+    "id": "gemini-series",
+    "title": "Gemini 生成",
+    "description": "Google Gemini 模型的视觉创作实验",
+    "model": "Gemini",
+    "images": [
+      { "src": "/works/gallery/gemini/gemini-1.webp", "alt": "Gemini #1" },
+      { "src": "/works/gallery/gemini/gemini-2.webp", "alt": "Gemini #2" },
+      { "src": "/works/gallery/gemini/gemini-3.webp", "alt": "Gemini #3" },
+      { "src": "/works/gallery/gemini/gemini-4.webp", "alt": "Gemini #4" },
+      { "src": "/works/gallery/gemini/gemini-5.webp", "alt": "Gemini #5" }
+    ]
+  },
+  {
+    "id": "scene-series",
+    "title": "场景创作",
+    "description": "电影感场景与创意空间",
+    "model": "AI 生成",
+    "images": [
+      { "src": "/works/gallery/scene/street-noir.webp", "alt": "街头黑色电影" },
+      { "src": "/works/gallery/scene/studio-figurine.webp", "alt": "工作室手办场景" }
+    ]
+  }
+]

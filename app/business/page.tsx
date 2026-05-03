@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import WeChatModal from "@/components/WeChatModal";
 
 const services = [
   {
@@ -91,9 +92,19 @@ export default function BusinessPage() {
             ))}
           </ul>
 
-          <div className="flex items-baseline gap-3">
-            <span className="font-display text-3xl text-amber-400">¥298</span>
-            <span className="text-sm text-[#5a5450]">一次性，无续费</span>
+          <div className="flex items-center gap-4 flex-wrap">
+            <div className="flex items-baseline gap-2">
+              <span className="font-display text-3xl text-amber-400">免费</span>
+              <span className="text-sm text-[#5a5450]">长期开放</span>
+            </div>
+            <WeChatModal
+              mode="group"
+              trigger={
+                <button className="px-5 py-2.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-sm font-medium hover:bg-amber-500/20 transition-colors">
+                  扫码加入群聊 →
+                </button>
+              }
+            />
           </div>
         </motion.div>
 

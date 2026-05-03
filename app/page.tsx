@@ -11,22 +11,22 @@ const navModules = [
   { href: "/story",    icon: "◎", label: "我的故事",   desc: "从打工人到数字创作者的真实路径" },
   { href: "/moe",      icon: "▲", label: "关于我",     desc: "我相信什么，我不相信什么" },
   { href: "/portfolio",icon: "◈", label: "作品集",     desc: "百万播放、公众号、AI 创作" },
+  { href: "/gallery", icon: "◆", label: "AI 画廊",    desc: "提示词工程 · 视觉创作集" },
   { href: "/business", icon: "◇", label: "合作业务",   desc: "咨询、建站、AI 入门陪跑" },
   { href: "/learn",    icon: "⬡", label: "入门指南",   desc: "AI / 加密 / 自媒体 · 从零开始" },
-  { href: "#wechat",   icon: "◉", label: "加我微信",   desc: "直接聊，比表单快" },
 ];
 
 const proofStats = [
-  { n: "9.6w", label: "单篇阅读", sub: "公众号峰值" },
+  { n: "12.4w", label: "单篇阅读", sub: "公众号峰值" },
   { n: "百万+", label: "单条播放", sub: "AI 视频" },
   { n: "3年", label: "All in AI", sub: "2023 至今" },
   { n: "品牌合作", label: "即梦 AI", sub: "Seedance 2.0" },
 ];
 
 const featuredTools = [
-  { icon: "📊", title: "复利计算器", desc: "定投多少年能翻倍？可视化复利威力", href: "/tools" },
-  { icon: "🎯", title: "仓位管理", desc: "控制风险，计算最优开仓量", href: "/tools" },
-  { icon: "😱", title: "恐慌贪婪指数", desc: "市场情绪一眼看清，辅助买卖决策", href: "/tools" },
+  { icon: "📊", title: "复利计算器", desc: "定投多少年能翻倍？可视化复利威力", href: "/tools/apy" },
+  { icon: "🎯", title: "仓位管理", desc: "控制风险，计算最优开仓量", href: "/tools/first-million" },
+  { icon: "😱", title: "恐慌贪婪指数", desc: "市场情绪一眼看清，辅助买卖决策", href: "/tools/hourly-wage" },
 ];
 
 const featuredPosts = [

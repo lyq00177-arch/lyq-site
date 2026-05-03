@@ -7,6 +7,7 @@ const footerSections = [
       { href: "/story", label: "我的故事" },
       { href: "/moe", label: "关于我" },
       { href: "/portfolio", label: "作品集" },
+      { href: "/gallery", label: "AI 画廊" },
       { href: "/blog", label: "博客" },
     ],
   },
@@ -21,6 +22,7 @@ const footerSections = [
   {
     title: "工具 & 资源",
     links: [
+      { href: "/etf", label: "ETF 追踪" },
       { href: "/tools", label: "投资工具箱" },
       { href: "/perks", label: "专属福利" },
       { href: "/nav", label: "常用导航" },

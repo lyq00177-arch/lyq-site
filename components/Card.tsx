@@ -107,6 +107,7 @@ interface PerkCardProps {
   name: string;
   desc: string;
   link: string;
+  benefit?: string; // 核心利益，大字显示，如"永久 20% 手续费减免"
   tutorialLink?: string;
   code?: string;
 }
@@ -115,14 +116,20 @@ export function PerkCard({
   name,
   desc,
   link,
+  benefit,
   tutorialLink,
   code,
 }: PerkCardProps) {
   return (
-    <div
-      className={`flex flex-col p-5 rounded-2xl bg-card border border-[rgb(var(--border)_/_var(--border-opacity))] hover:border-accent/20 transition-all duration-300`}
-    >
-      <h3 className="text-base font-semibold text-t-primary mb-1">{name}</h3>
+    <div className="flex flex-col p-5 rounded-2xl bg-card border border-[rgb(var(--border)_/_var(--border-opacity))] hover:border-accent/20 transition-all duration-300">
+      <div className="flex items-start justify-between gap-2 mb-2">
+        <h3 className="text-base font-semibold text-t-primary">{name}</h3>
+      </div>
+
+      {benefit && (
+        <p className="text-xl font-bold text-accent mb-1">{benefit}</p>
+      )}
+
       <p className="text-sm text-t-tertiary mb-4 flex-1">{desc}</p>
 
       <div className="flex gap-2">
