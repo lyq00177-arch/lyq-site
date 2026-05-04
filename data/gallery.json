@@ -1,9 +1,44 @@
 [
   {
-    "id": "city-series",
-    "title": "城市系列",
-    "description": "用 AI 重新想象中国城市的视觉风格",
-    "model": "AI 生成",
+    "id": "changzhou-1988",
+    "title": "1988年常州",
+    "description": "用 AI 还原那个年代的常州日常——供销社、弄堂、南大街、电视机前的夏夜。像是从旧相册里翻出来的东西。",
+    "model": "ChatGPT & Gemini",
+    "prompt": "",
+    "images": [
+      { "src": "/works/gallery/changzhou-1988/alley-breakfast.png", "alt": "弄堂清晨油条摊" },
+      { "src": "/works/gallery/changzhou-1988/south-street.png", "alt": "南大街夜景" },
+      { "src": "/works/gallery/changzhou-1988/general-store.png", "alt": "供销社" },
+      { "src": "/works/gallery/changzhou-1988/newspaper.png", "alt": "看常州日报" },
+      { "src": "/works/gallery/changzhou-1988/apartment-tv.jpg", "alt": "公寓夜晚电视机前" },
+      { "src": "/works/gallery/changzhou-1988/courtyard-tv.png", "alt": "院子里看电视的夏夜" },
+      { "src": "/works/gallery/changzhou-1988/outdoor-tv.png", "alt": "凌家村11号户外看电视" },
+      { "src": "/works/gallery/changzhou-1988/old-calendar.png", "alt": "老屋日历" },
+      { "src": "/works/gallery/changzhou-1988/repair-shop.png", "alt": "修理铺" }
+    ]
+  },
+  {
+    "id": "genshin-poetry",
+    "title": "古典诗画·原神",
+    "description": "把原神角色画进宋代工笔画里，配上自己写的诗句。每一张都有「逸清」落款。",
+    "model": "ChatGPT",
+    "prompt": "",
+    "images": [
+      { "src": "/works/gallery/genshin-poetry/liuying.png", "alt": "流萤" },
+      { "src": "/works/gallery/genshin-poetry/ganyu.png", "alt": "甘雨" },
+      { "src": "/works/gallery/genshin-poetry/yaemiko.png", "alt": "八重神子" },
+      { "src": "/works/gallery/genshin-poetry/yoimiya.png", "alt": "宵宫" },
+      { "src": "/works/gallery/genshin-poetry/hutao.png", "alt": "胡桃" },
+      { "src": "/works/gallery/genshin-poetry/furina.png", "alt": "芙宁娜" },
+      { "src": "/works/gallery/genshin-poetry/raiden.png", "alt": "雷电将军" }
+    ]
+  },
+  {
+    "id": "city-miniature",
+    "title": "城市微缩沙盘",
+    "description": "把中国城市做成 3D 沙盘模型，摆在桌上，地标可辨，每座城市一张图。",
+    "model": "ChatGPT",
+    "prompt": "",
     "images": [
       { "src": "/works/gallery/city/nanjing.webp", "alt": "南京" },
       { "src": "/works/gallery/city/suzhou.webp", "alt": "苏州" },
@@ -11,37 +46,75 @@
     ]
   },
   {
-    "id": "portrait-series",
-    "title": "AI 肖像",
-    "description": "人物肖像的多种风格探索",
-    "model": "AI 生成",
+    "id": "changzhou-painting",
+    "title": "常州·古今映画",
+    "description": "同一套宋代山水画风格，一张画古代常州，一张画今天的常州。时间轴叠在一起了。",
+    "model": "ChatGPT",
+    "prompt": "",
     "images": [
-      { "src": "/works/gallery/portrait/liu-yifei-rock.webp", "alt": "摇滚风肖像" },
-      { "src": "/works/gallery/portrait/zhang-guofeng.webp", "alt": "国风肖像" },
-      { "src": "/works/gallery/portrait/real-cartoon-portrait.webp", "alt": "真人 × 卡通" }
+      { "src": "/works/gallery/changzhou-painting/ancient.png", "alt": "古代常州" },
+      { "src": "/works/gallery/changzhou-painting/modern.png", "alt": "现代常州" }
     ]
   },
   {
-    "id": "gemini-series",
-    "title": "Gemini 生成",
-    "description": "Google Gemini 模型的视觉创作实验",
-    "model": "Gemini",
+    "id": "me-movie-poster",
+    "title": "AI版我·电影海报",
+    "description": "把自己的脸放进电影海报里。神话、赛博朋克、火影，每一张都有导演署名「逸清」。",
+    "model": "ChatGPT",
+    "prompt": "",
     "images": [
-      { "src": "/works/gallery/gemini/gemini-1.webp", "alt": "Gemini #1" },
-      { "src": "/works/gallery/gemini/gemini-2.webp", "alt": "Gemini #2" },
-      { "src": "/works/gallery/gemini/gemini-3.webp", "alt": "Gemini #3" },
-      { "src": "/works/gallery/gemini/gemini-4.webp", "alt": "Gemini #4" },
-      { "src": "/works/gallery/gemini/gemini-5.webp", "alt": "Gemini #5" }
+      { "src": "/works/gallery/me-movie-poster/night-city.png", "alt": "夜之城崛起" },
+      { "src": "/works/gallery/me-movie-poster/shinobi.png", "alt": "忍道之光" },
+      { "src": "/works/gallery/me-movie-poster/the-myth.png", "alt": "翻拍《神话》" }
     ]
   },
   {
-    "id": "scene-series",
-    "title": "场景创作",
-    "description": "电影感场景与创意空间",
-    "model": "AI 生成",
+    "id": "me-scenes",
+    "title": "AI版我·日常场景",
+    "description": "用 AI 把自己放进各种不可能出现的场景里——敞篷车、机器人搭档、真人×卡通二合一。",
+    "model": "ChatGPT",
+    "prompt": "",
     "images": [
-      { "src": "/works/gallery/scene/street-noir.webp", "alt": "街头黑色电影" },
-      { "src": "/works/gallery/scene/studio-figurine.webp", "alt": "工作室手办场景" }
+      { "src": "/works/gallery/me-scenes/red-car.png", "alt": "复古红色敞篷车" },
+      { "src": "/works/gallery/me-scenes/robot-selfie.png", "alt": "和机器人自拍" },
+      { "src": "/works/gallery/me-scenes/balcony.png", "alt": "现代奢华阳台" },
+      { "src": "/works/gallery/scene/street-noir.webp", "alt": "街头黑色电影感" },
+      { "src": "/works/gallery/portrait/real-cartoon-portrait.webp", "alt": "真人 × 卡通" },
+      { "src": "/works/gallery/scene/studio-figurine.webp", "alt": "创意工作室手办" }
+    ]
+  },
+  {
+    "id": "game-scenes",
+    "title": "AI游戏场景",
+    "description": "AI 生成的「游戏截图」——有 HUD、有任务标记、有战斗 UI，看起来像真的。",
+    "model": "ChatGPT",
+    "prompt": "",
+    "images": [
+      { "src": "/works/gallery/game-scenes/assassin-shanghai.png", "alt": "刺客信条·上海" },
+      { "src": "/works/gallery/game-scenes/night-city-view.png", "alt": "夜之城俯瞰" },
+      { "src": "/works/gallery/game-scenes/quarantine-zone.png", "alt": "隔离区" },
+      { "src": "/works/gallery/game-scenes/moba-battle.png", "alt": "MOBA 战场" }
+    ]
+  },
+  {
+    "id": "concert-poster",
+    "title": "明星演唱会海报",
+    "description": "复古做旧风格的演唱会海报，周杰伦和滨崎步，字体和构图都是那个年代的味道。",
+    "model": "ChatGPT",
+    "prompt": "",
+    "images": [
+      { "src": "/works/gallery/concert-poster/jay-chou.png", "alt": "周杰伦 Live Tour" },
+      { "src": "/works/gallery/concert-poster/ayumi.png", "alt": "滨崎步 A Best Live" }
+    ]
+  },
+  {
+    "id": "city-poster",
+    "title": "城市国风海报",
+    "description": "国风插画风格的城市宣传海报，第一张是常州。",
+    "model": "ChatGPT",
+    "prompt": "",
+    "images": [
+      { "src": "/works/gallery/city-poster/changzhou-spring.png", "alt": "千年龙城·魅力常州" }
     ]
   }
 ]
