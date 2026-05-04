@@ -18,7 +18,7 @@ const modeConfig: Record<ModalMode, { emoji: string; title: string; subtitle: st
 
 function QrPlaceholder({ mode }: { mode: "official" | "group" }) {
   const [err, setErr] = useState(false);
-  const src = mode === "official" ? "/qr-official.png" : "/qr-group.png";
+  const src = mode === "official" ? "/qr-official.jpg" : "/qr-group.png";
 
   return (
     <div className="w-44 h-44 bg-white rounded-xl overflow-hidden flex items-center justify-center mx-auto">

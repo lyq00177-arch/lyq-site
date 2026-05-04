@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 /* ── 顶部成就数字 ── */
 const stats = [
   { n: "百万+", label: "抖音单条播放", sub: "AI 视频" },
-  { n: "9.6w", label: "公众号峰值", sub: "单篇阅读" },
+  { n: "10w+", label: "公众号峰值", sub: "单篇阅读" },
   { n: "5w+", label: "推特单帖阅读", sub: "两条均突破" },
   { n: "品牌合作", label: "即梦 AI", sub: "Seedance 2.0" },
 ];

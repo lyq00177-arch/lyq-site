@@ -17,7 +17,7 @@ const navModules = [
 ];
 
 const proofStats = [
-  { n: "12.4w", label: "单篇阅读", sub: "公众号峰值" },
+  { n: "10w+", label: "单篇阅读", sub: "公众号峰值" },
   { n: "百万+", label: "单条播放", sub: "AI 视频" },
   { n: "3年", label: "All in AI", sub: "2023 至今" },
   { n: "品牌合作", label: "即梦 AI", sub: "Seedance 2.0" },
@@ -104,15 +104,22 @@ export default function Home() {
           </motion.div>
 
           {/* 简介 */}
-          <motion.p
+          <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.45, duration: 0.6 }}
-            className="text-base sm:text-lg text-[#7a746c] leading-relaxed max-w-sm"
+            className="space-y-2 max-w-sm"
           >
-            从 ChatGPT 元年开始，用三年时间把 AI 塞进工作流的每一个角落。
-            文科生，合同工，写字的人。
-          </motion.p>
+            <p className="text-base sm:text-lg text-[#7a746c] leading-relaxed">
+              一个从常州出发的超级个体实践者。
+            </p>
+            <p className="text-base sm:text-lg text-[#7a746c] leading-relaxed">
+              白天在现实系统里工作，晚上用 AI、投资和自媒体，搭建自己的第二套人生系统。
+            </p>
+            <p className="text-sm text-[#5a5450] leading-relaxed">
+              我不预测未来，我只把自己放进未来里试一遍。
+            </p>
+          </motion.div>
 
           {/* ── 微信入口（点击弹出微信号） ── */}
           <motion.div

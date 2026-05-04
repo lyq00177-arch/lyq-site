@@ -7,13 +7,12 @@ import ThemeToggle from "./ThemeToggle";
 import EventsCalendar from "./EventsCalendar";
 
 const navLinks = [
-  { href: "/story", label: "故事" },
   { href: "/moe", label: "关于我" },
-  { href: "/portfolio", label: "作品集" },
+  { href: "/learn", label: "学习路线" },
+  { href: "/etf", label: "ETF" },
+  { href: "/blog", label: "博客" },
   { href: "/gallery", label: "画廊" },
   { href: "/business", label: "业务" },
-  { href: "/blog", label: "博客" },
-  { href: "/etf", label: "ETF" },
   { href: "/tools", label: "工具" },
 ];
 
@@ -38,6 +37,12 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
+            <Link
+              href="/perks"
+              className="text-sm font-medium px-3 py-1 rounded-lg bg-accent/15 text-accent border border-accent/25 hover:bg-accent/25 transition-colors duration-200"
+            >
+              福利
+            </Link>
             <EventsCalendar />
             <ThemeToggle />
           </div>
@@ -86,6 +91,13 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
+              <Link
+                href="/perks"
+                onClick={() => setIsOpen(false)}
+                className="self-start text-sm font-medium px-3 py-1 rounded-lg bg-accent/15 text-accent border border-accent/25"
+              >
+                福利
+              </Link>
             </div>
           </motion.div>
         )}

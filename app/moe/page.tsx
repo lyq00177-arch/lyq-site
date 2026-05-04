@@ -1,7 +1,9 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
+import WeChatModal from "@/components/WeChatModal";
 
 const beliefs = [
   {
@@ -125,16 +127,21 @@ export default function MoePage() {
               超级个体 · AI × 投资 × 自媒体
             </p>
 
-            <div className="space-y-3 text-t-secondary leading-relaxed mb-8">
+            <div className="space-y-4 text-t-secondary leading-relaxed mb-8">
               <p>
-                我有一个信条：<span className="text-t-primary font-medium">透明的自私，比伪装的无私更可信。</span>
+                我理解的超级个体，不是一个人什么都会。而是一个普通人，借助 AI、投资和内容，把自己的能力放大到原本不可能到达的地方。
               </p>
-              <p>
-                AI 给了我一个接入口——我用它写作、建站、分析市场。三条支线同时跑：AI 工具的实际使用、投资的逻辑与记录、内容创作的方法论。
-              </p>
-              <p>
-                不是专家，但我把自己当成一个在实践中思考的人，把过程写出来。
-              </p>
+              <div className="space-y-1 py-2 border-l-2 border-accent/25 pl-4">
+                <p className="text-t-primary font-medium">AI 是生产力。</p>
+                <p className="text-t-primary font-medium">投资是判断力。</p>
+                <p className="text-t-primary font-medium">自媒体是影响力。</p>
+              </div>
+              <p>三件事合在一起，就是我正在搭建的个人系统。</p>
+              <div className="space-y-3 pt-1">
+                <p><span className="text-t-primary font-medium">AI：</span>我不是程序员，但 AI 让我拥有了接近工程师、编辑、分析师、设计师的能力。</p>
+                <p><span className="text-t-primary font-medium">投资：</span>我不提供答案，只训练自己理解世界、控制欲望、管理风险。</p>
+                <p><span className="text-t-primary font-medium">自媒体：</span>我把自己暴露到外界视野里，让能力有机会被看见。</p>
+              </div>
             </div>
 
             {/* 统计数据行 */}
@@ -147,22 +154,46 @@ export default function MoePage() {
               ))}
             </div>
 
+            {/* 荣誉 */}
+            <div className="space-y-2 mb-8">
+              <div className="flex items-center gap-3 p-3 rounded-xl bg-card border border-accent/10">
+                <span className="text-xl shrink-0">🎖</span>
+                <div>
+                  <p className="text-sm font-medium text-t-primary">即梦 AI · Seedance 2.0 官方推广合作</p>
+                  <p className="text-xs text-t-muted">字节跳动旗下，官方主动邀约</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 p-3 rounded-xl bg-card border border-white/[0.05]">
+                <span className="text-xl shrink-0">🥈</span>
+                <div>
+                  <p className="text-sm font-medium text-t-primary">AI 生图创作大赛 · 二等奖</p>
+                  <p className="text-xs text-t-muted">奖金 1000 元</p>
+                </div>
+              </div>
+            </div>
+
             {/* CTA */}
             <div className="flex gap-3 flex-wrap">
-              <a
-                href="https://mp.weixin.qq.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-5 py-2.5 rounded-xl bg-accent text-[#0a0a0a] text-sm font-semibold hover:opacity-90 transition-opacity"
-              >
-                关注公众号
-              </a>
-              <a
+              <WeChatModal
+                mode="official"
+                trigger={
+                  <button className="px-5 py-2.5 rounded-xl bg-accent text-[#0a0a0a] text-sm font-semibold hover:opacity-90 transition-opacity">
+                    关注公众号
+                  </button>
+                }
+              />
+              <Link
                 href="/business"
                 className="px-5 py-2.5 rounded-xl border border-accent/30 text-accent text-sm font-semibold hover:bg-accent/10 transition-colors"
               >
                 业务合作
-              </a>
+              </Link>
+              <Link
+                href="/story"
+                className="px-5 py-2.5 rounded-xl border border-white/[0.08] text-t-secondary text-sm font-semibold hover:text-accent hover:border-accent/20 transition-colors"
+              >
+                我的故事 →
+              </Link>
             </div>
           </motion.div>
         </div>
@@ -223,6 +254,22 @@ export default function MoePage() {
               </span>
             ))}
           </div>
+        </motion.div>
+
+        {/* ── 故事入口 ── */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="max-w-[640px] mt-16 pt-10 border-t border-white/[0.05]"
+        >
+          <p className="text-sm text-t-muted mb-4">想了解我是怎么走到这里的？</p>
+          <Link
+            href="/story"
+            className="inline-flex items-center gap-2 text-accent hover:gap-3 transition-all duration-200 text-sm font-medium"
+          >
+            读完整故事 →
+          </Link>
         </motion.div>
 
       </div>
