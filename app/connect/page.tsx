@@ -5,7 +5,6 @@ import { motion } from "framer-motion";
 import WeChatModal from "@/components/WeChatModal";
 
 const links = [
-  { icon: "📢", label: "公众号", desc: "凌逸清的小茶馆", href: "#" },
   { icon: "🐦", label: "Twitter/X", desc: "@ykszs017", href: "https://x.com/ykszs017" },
   { icon: "📧", label: "邮箱", desc: "863730738@qq.com", href: "mailto:863730738@qq.com" },
 ];
@@ -40,6 +39,14 @@ export default function ConnectPage() {
           transition={{ delay: 0.2 }}
         >
           <WeChatModal />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.28 }}
+        >
+          <WeChatModal mode="official" />
         </motion.div>
 
         {links.map((link, i) => (
