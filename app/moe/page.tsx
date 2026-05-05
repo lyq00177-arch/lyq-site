@@ -133,13 +133,13 @@ export default function MoePage() {
               </p>
               <div className="space-y-1 py-2 border-l-2 border-accent/25 pl-4">
                 <p className="text-t-primary font-medium">AI 是生产力。</p>
-                <p className="text-t-primary font-medium">投资是判断力。</p>
+                <p className="text-t-primary font-medium">投资是复利。</p>
                 <p className="text-t-primary font-medium">自媒体是影响力。</p>
               </div>
               <p>三件事合在一起，就是我正在搭建的个人系统。</p>
               <div className="space-y-3 pt-1">
                 <p><span className="text-t-primary font-medium">AI：</span>我不是程序员，但 AI 让我拥有了接近工程师、编辑、分析师、设计师的能力。</p>
-                <p><span className="text-t-primary font-medium">投资：</span>我不提供答案，只训练自己理解世界、控制欲望、管理风险。</p>
+                <p><span className="text-t-primary font-medium">投资：</span>越早开始，复利越早替你工作。它不是玄学，是普通人能产生睡后收入的唯一真实路径。我不给买什么的建议，但我相信这件事值得每个人尽早认真对待。</p>
                 <p><span className="text-t-primary font-medium">自媒体：</span>我把自己暴露到外界视野里，让能力有机会被看见。</p>
               </div>
             </div>
