@@ -76,7 +76,7 @@ export default function Home() {
                 initial={{ opacity: 0, scale: 0.85 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2 + i * 0.12, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                className="font-display text-[3.2rem] sm:text-[4.5rem] lg:text-[5.8rem] xl:text-[7rem] leading-none text-[#e8e3d8] tracking-tight flex items-center justify-center w-[1em] h-[1em]"
+                className="font-display text-[3.2rem] sm:text-[4.5rem] lg:text-[5.8rem] xl:text-[7rem] leading-none text-t-primary tracking-tight flex items-center justify-center w-[1em] h-[1em]"
               >
                 {char}
               </motion.span>
@@ -94,11 +94,11 @@ export default function Home() {
             transition={{ delay: 0.2, duration: 0.6 }}
           >
             <div className="flex items-baseline gap-3 mb-1">
-              <p className="font-display text-2xl sm:text-3xl text-[#d4a853]">Harry</p>
+              <p className="font-display text-2xl sm:text-3xl text-accent">Harry</p>
               <span className="text-[#3a3428]">/</span>
-              <p className="font-display text-xl sm:text-2xl text-[#7a746c]">凌逸清</p>
+              <p className="font-display text-xl sm:text-2xl text-t-tertiary">凌逸清</p>
             </div>
-            <p className="text-sm text-[#5a5450] tracking-widest uppercase">
+            <p className="text-sm text-t-muted tracking-widest uppercase">
               AI 创作者 · 投资人
             </p>
           </motion.div>
@@ -110,13 +110,13 @@ export default function Home() {
             transition={{ delay: 0.45, duration: 0.6 }}
             className="space-y-2 max-w-sm"
           >
-            <p className="text-base sm:text-lg text-[#7a746c] leading-relaxed">
+            <p className="text-base sm:text-lg text-t-tertiary leading-relaxed">
               一个从常州出发的超级个体实践者。
             </p>
-            <p className="text-base sm:text-lg text-[#7a746c] leading-relaxed">
+            <p className="text-base sm:text-lg text-t-tertiary leading-relaxed">
               白天在现实系统里工作，晚上用 AI、投资和自媒体，搭建自己的第二套人生系统。
             </p>
-            <p className="text-sm text-[#5a5450] leading-relaxed">
+            <p className="text-sm text-t-muted leading-relaxed">
               我不预测未来，我只把自己放进未来里试一遍。
             </p>
           </motion.div>

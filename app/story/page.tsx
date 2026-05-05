@@ -118,7 +118,7 @@ export default function StoryPage() {
 
         <Link
           href="/"
-          className="text-sm text-[#5a5450] hover:text-amber-400 transition-colors block mb-16"
+          className="text-sm text-t-muted hover:text-amber-400 transition-colors block mb-16"
         >
           ← 首页
         </Link>
@@ -128,8 +128,8 @@ export default function StoryPage() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-20"
         >
-          <h1 className="font-display text-4xl sm:text-5xl text-[#e8e3d8] mb-3">故事</h1>
-          <p className="text-sm text-[#4a4440]">约 12 分钟 · {chapters.length} 个章节</p>
+          <h1 className="font-display text-4xl sm:text-5xl text-t-primary mb-3">故事</h1>
+          <p className="text-sm text-t-muted">约 12 分钟 · {chapters.length} 个章节</p>
         </motion.div>
 
         <div>
@@ -149,7 +149,7 @@ export default function StoryPage() {
                   {chapter.tag}
                 </span>
                 {chapter.title && (
-                  <h2 className="font-display text-xl text-[#b8b0a0]">
+                  <h2 className="font-display text-xl text-t-secondary">
                     {chapter.title}
                   </h2>
                 )}
@@ -161,8 +161,8 @@ export default function StoryPage() {
                     key={j}
                     className={`leading-relaxed ${
                       chapter.large
-                        ? "text-xl sm:text-2xl text-[#c8c2b8] font-light"
-                        : "text-lg text-[#7a746c]"
+                        ? "text-xl sm:text-2xl text-t-secondary font-light"
+                        : "text-lg text-t-tertiary"
                     }`}
                   >
                     {para}
@@ -179,7 +179,7 @@ export default function StoryPage() {
           viewport={{ once: true }}
           className="mt-8 pt-10 border-t border-white/[0.05]"
         >
-          <p className="text-sm text-[#4a4440] mb-6">谢谢你读到这里。</p>
+          <p className="text-sm text-t-muted mb-6">谢谢你读到这里。</p>
           <div className="flex gap-8">
             <Link
               href="/connect"
@@ -189,7 +189,7 @@ export default function StoryPage() {
             </Link>
             <Link
               href="/business"
-              className="text-sm text-[#4a4440] hover:text-amber-400 transition-colors"
+              className="text-sm text-t-muted hover:text-amber-400 transition-colors"
             >
               了解 1v1 →
             </Link>

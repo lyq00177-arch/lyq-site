@@ -76,7 +76,7 @@ const categories: Category[] = [
   {
     id: "api",
     emoji: "🔌",
-    title: "AI 周边",
+    title: "API 工具",
     perks: [
       {
         name: "OpenClaw API 中转站",
@@ -86,6 +86,12 @@ const categories: Category[] = [
         code: "TMSWGAVB",
       },
     ],
+  },
+  {
+    id: "broker",
+    emoji: "🏦",
+    title: "券商 & 银行",
+    perks: [],
   },
 ];
 
@@ -138,7 +144,7 @@ export default function PerksPage() {
         <div className="flex gap-8 items-start">
 
           {/* Left sticky sidebar */}
-          <aside className="hidden lg:block w-48 shrink-0 sticky top-24 self-start">
+          <aside className="hidden md:block w-48 shrink-0 sticky top-24 self-start">
             <p className="text-xs font-mono tracking-widest text-t-muted uppercase mb-3">分类导航</p>
             <nav className="flex flex-col gap-1">
               {categories.map(cat => {
@@ -192,19 +198,25 @@ export default function PerksPage() {
                   <span className="text-sm font-normal text-t-muted">{cat.perks.length} 个</span>
                 </h2>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-                  {cat.perks.map((perk, pi) => (
-                    <motion.div
-                      key={perk.name}
-                      initial={{ opacity: 0, y: 10 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: pi * 0.06 }}
-                    >
-                      <PerkCard {...perk} />
-                    </motion.div>
-                  ))}
-                </div>
+                {cat.perks.length === 0 ? (
+                  <p className="text-sm text-t-muted border border-dashed border-white/[0.07] rounded-xl px-5 py-8 text-center">
+                    正在整理中，敬请期待
+                  </p>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                    {cat.perks.map((perk, pi) => (
+                      <motion.div
+                        key={perk.name}
+                        initial={{ opacity: 0, y: 10 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: pi * 0.06 }}
+                      >
+                        <PerkCard {...perk} />
+                      </motion.div>
+                    ))}
+                  </div>
+                )}
               </motion.section>
             ))}
 

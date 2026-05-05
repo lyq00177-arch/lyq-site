@@ -44,7 +44,7 @@ export default function BusinessPage() {
 
         <Link
           href="/"
-          className="text-sm text-[#5a5450] hover:text-amber-400 transition-colors block mb-16"
+          className="text-sm text-t-muted hover:text-amber-400 transition-colors block mb-16"
         >
           ← 首页
         </Link>
@@ -54,9 +54,9 @@ export default function BusinessPage() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-14"
         >
-          <h1 className="font-display text-4xl sm:text-5xl text-[#e8e3d8] mb-4">业务</h1>
-          <p className="text-lg text-[#7a746c] leading-relaxed">
-            社群 + 一对一。付了钱，我认真对你负责。
+          <h1 className="font-display text-4xl sm:text-5xl text-t-primary mb-4">业务</h1>
+          <p className="text-lg text-t-tertiary leading-relaxed">
+            社群免费开放，一对一按需约起。
           </p>
         </motion.div>
 
@@ -65,7 +65,7 @@ export default function BusinessPage() {
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15 }}
-          className="p-8 rounded-2xl bg-[#141414] border border-amber-500/15 mb-10 relative overflow-hidden"
+          className="p-8 rounded-2xl bg-elevated border border-amber-500/15 mb-10 relative overflow-hidden"
         >
           {/* 顶部标签 */}
           <div className="absolute top-0 right-0 px-4 py-2 bg-amber-500/10 border-l border-b border-amber-500/15 rounded-bl-xl text-xs text-amber-400/80 font-medium tracking-wide">
@@ -73,8 +73,8 @@ export default function BusinessPage() {
           </div>
 
           <div className="text-3xl mb-5">🚀</div>
-          <h2 className="font-display text-2xl text-[#e8e3d8] mb-3">AI 超级个体社群</h2>
-          <p className="text-base text-[#7a746c] leading-relaxed mb-6">
+          <h2 className="font-display text-2xl text-t-primary mb-3">AI 超级个体社群</h2>
+          <p className="text-base text-t-tertiary leading-relaxed mb-6">
             一个小圈子，聊 AI 工具、投资逻辑、自媒体和个人成长。不是课程，不是训练营——
             是一群想把日子过得更主动的人，在一起互相看见。
           </p>
@@ -83,9 +83,8 @@ export default function BusinessPage() {
             {[
               "定期内容分享（工具、选题、资产配置）",
               "提问可以得到真实回复，不是客服话术",
-              "加入即送个人网站搭建陪跑一次",
             ].map((item) => (
-              <li key={item} className="flex items-start gap-3 text-sm text-[#7a746c]">
+              <li key={item} className="flex items-start gap-3 text-sm text-t-tertiary">
                 <span className="text-amber-500/50 mt-0.5 shrink-0">—</span>
                 {item}
               </li>
@@ -95,7 +94,7 @@ export default function BusinessPage() {
           <div className="flex items-center gap-4 flex-wrap">
             <div className="flex items-baseline gap-2">
               <span className="font-display text-3xl text-amber-400">免费</span>
-              <span className="text-sm text-[#5a5450]">长期开放</span>
+              <span className="text-sm text-t-muted">长期开放</span>
             </div>
             <WeChatModal
               mode="group"
@@ -110,7 +109,7 @@ export default function BusinessPage() {
 
         {/* 分割 */}
         <div className="flex items-center gap-4 mb-8">
-          <span className="text-[11px] font-mono tracking-[0.2em] text-[#4a4440] uppercase">
+          <span className="text-[11px] font-mono tracking-[0.2em] text-t-muted uppercase">
             一对一咨询
           </span>
           <div className="flex-1 h-px bg-white/[0.04]" />
@@ -125,13 +124,13 @@ export default function BusinessPage() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.06 }}
-              className="flex items-start justify-between gap-4 p-6 rounded-xl bg-[#111111] border border-white/[0.05] hover:border-amber-500/15 transition-all duration-300"
+              className="flex items-start justify-between gap-4 p-6 rounded-xl bg-card border border-white/[0.05] hover:border-amber-500/15 transition-all duration-300"
             >
               <div className="flex items-start gap-4 min-w-0">
                 <span className="text-2xl shrink-0 mt-0.5">{s.icon}</span>
                 <div className="min-w-0">
-                  <div className="text-base font-medium text-[#c8c2b8] mb-1">{s.title}</div>
-                  <div className="text-sm text-[#5a5450] leading-relaxed">{s.desc}</div>
+                  <div className="text-base font-medium text-t-secondary mb-1">{s.title}</div>
+                  <div className="text-sm text-t-muted leading-relaxed">{s.desc}</div>
                 </div>
               </div>
               <span className="text-sm font-medium text-amber-400/70 shrink-0 ml-2 text-right">
@@ -148,8 +147,8 @@ export default function BusinessPage() {
           viewport={{ once: true }}
           className="pt-10 border-t border-white/[0.05]"
         >
-          <p className="text-sm text-[#4a4440] mb-5">怎么约？</p>
-          <p className="text-base text-[#7a746c] leading-relaxed mb-6">
+          <p className="text-sm text-t-muted mb-5">怎么约？</p>
+          <p className="text-base text-t-tertiary leading-relaxed mb-6">
             加我微信说你想聊什么，我会告诉你适不适合做、怎么安排。不需要提前准备什么，直接说你的情况就好。
           </p>
           <Link

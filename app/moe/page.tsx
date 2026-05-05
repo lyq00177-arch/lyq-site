@@ -96,8 +96,8 @@ export default function MoePage() {
               transition={{ delay: 0.5 }}
               className="absolute top-4 right-4 bg-card/90 backdrop-blur-md border border-white/10 rounded-xl px-4 py-3 shadow-lg"
             >
-              <p className="text-xs text-t-muted mb-0.5">单篇最高阅读</p>
-              <p className="text-lg font-bold text-accent">10w+</p>
+              <p className="text-xs text-t-muted mb-0.5">公众号</p>
+              <p className="text-lg font-bold text-accent">10w+ 作者</p>
             </motion.div>
           </motion.div>
 
@@ -167,7 +167,6 @@ export default function MoePage() {
                 <span className="text-xl shrink-0">🥈</span>
                 <div>
                   <p className="text-sm font-medium text-t-primary">AI 生图创作大赛 · 二等奖</p>
-                  <p className="text-xs text-t-muted">奖金 1000 元</p>
                 </div>
               </div>
             </div>

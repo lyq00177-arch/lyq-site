@@ -51,7 +51,7 @@ const articles = [
 
 /* ── AI 创作图库 ── */
 const gallery = [
-  { src: "/works/刘亦菲垃圾摇滚肖像.png",    label: "AI 肖像 · 摇滚风" },
+  { src: "/works/ai-portrait-liu.png",        label: "AI 肖像 · 摇滚风" },
   { src: "/works/街头黑色电影爆发.png",       label: "街头电影感" },
   { src: "/works/ai-portrait-zhang.png",      label: "AI 肖像 · 国风" },
   { src: "/works/创意工作室手办绘制场景.png", label: "工作室场景" },
@@ -68,7 +68,7 @@ const gallery = [
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-4 mb-8">
-      <span className="text-[11px] font-mono tracking-[0.2em] uppercase text-[#4a4440]">
+      <span className="text-[11px] font-mono tracking-[0.2em] uppercase text-t-muted">
         {children}
       </span>
       <div className="flex-1 h-px bg-white/[0.04]" />
@@ -82,7 +82,7 @@ export default function PortfolioPage() {
 
       <Link
         href="/"
-        className="text-sm text-[#5a5450] hover:text-amber-400 transition-colors block mb-16"
+        className="text-sm text-t-muted hover:text-amber-400 transition-colors block mb-16"
       >
         ← 首页
       </Link>
@@ -92,8 +92,8 @@ export default function PortfolioPage() {
         animate={{ opacity: 1, y: 0 }}
         className="mb-16"
       >
-        <h1 className="font-display text-4xl sm:text-5xl text-[#e8e3d8] mb-3">作品集</h1>
-        <p className="text-base text-[#5a5450]">真实发生的事情。</p>
+        <h1 className="font-display text-4xl sm:text-5xl text-t-primary mb-3">作品集</h1>
+        <p className="text-base text-t-muted">真实发生的事情。</p>
       </motion.div>
 
       {/* ═══ 成就数据 ═══════════════════════════════ */}
@@ -109,13 +109,13 @@ export default function PortfolioPage() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 + i * 0.07 }}
-            className="p-5 rounded-xl bg-[#111111] border border-white/[0.05] text-center"
+            className="p-5 rounded-xl bg-card border border-white/[0.05] text-center"
           >
             <div className="font-display text-xl sm:text-2xl text-amber-400/80 mb-1 leading-tight">
               {s.n}
             </div>
-            <div className="text-xs text-[#c8c2b8] mb-0.5">{s.label}</div>
-            <div className="text-[10px] text-[#4a4440]">{s.sub}</div>
+            <div className="text-xs text-t-secondary mb-0.5">{s.label}</div>
+            <div className="text-[10px] text-t-muted">{s.sub}</div>
           </motion.div>
         ))}
       </motion.div>
@@ -135,7 +135,7 @@ export default function PortfolioPage() {
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 + i * 0.08 }}
-              className="p-6 rounded-xl bg-[#111111] border border-amber-500/10 hover:border-amber-500/20 transition-colors duration-300"
+              className="p-6 rounded-xl bg-card border border-amber-500/10 hover:border-amber-500/20 transition-colors duration-300"
             >
               <div className="flex items-center gap-3 mb-4">
                 <span className="text-2xl">{h.icon}</span>
@@ -143,10 +143,10 @@ export default function PortfolioPage() {
                   {h.tag}
                 </span>
               </div>
-              <h3 className="text-sm font-medium text-[#c8c2b8] mb-2 leading-snug">
+              <h3 className="text-sm font-medium text-t-secondary mb-2 leading-snug">
                 {h.title}
               </h3>
-              <p className="text-sm text-[#5a5450] leading-relaxed">{h.desc}</p>
+              <p className="text-sm text-t-muted leading-relaxed">{h.desc}</p>
             </motion.div>
           ))}
         </div>
@@ -170,17 +170,17 @@ export default function PortfolioPage() {
             >
             <Link
               href={a.href}
-              className="group flex items-center justify-between gap-4 p-5 rounded-xl bg-[#111111] border border-white/[0.05] hover:border-amber-500/15 transition-all duration-300"
+              className="group flex items-center justify-between gap-4 p-5 rounded-xl bg-card border border-white/[0.05] hover:border-amber-500/15 transition-all duration-300"
             >
               <div className="flex items-center gap-4 min-w-0">
                 <span className="shrink-0 text-[10px] font-medium tracking-wide text-amber-500/50 border border-amber-500/15 px-2 py-0.5 rounded">
                   {a.tag}
                 </span>
-                <span className="text-sm text-[#b8b0a0] group-hover:text-[#e8e3d8] transition-colors truncate">
+                <span className="text-sm text-t-secondary group-hover:text-t-primary transition-colors truncate">
                   {a.title}
                 </span>
               </div>
-              <div className="shrink-0 flex items-center gap-4 text-xs text-[#4a4440]">
+              <div className="shrink-0 flex items-center gap-4 text-xs text-t-muted">
                 <span>👁 {a.reads}</span>
                 <span className="text-amber-500/40 group-hover:text-amber-400 transition-colors">阅读 →</span>
               </div>
@@ -199,13 +199,13 @@ export default function PortfolioPage() {
         <SectionLabel>AI 创作</SectionLabel>
 
         {/* 科比视频 highlight */}
-        <div className="mb-4 p-4 rounded-xl bg-[#111111] border border-white/[0.04] flex items-center gap-4">
+        <div className="mb-4 p-4 rounded-xl bg-card border border-white/[0.04] flex items-center gap-4">
           <span className="text-2xl shrink-0">🎬</span>
           <div>
-            <p className="text-sm text-[#c8c2b8] mb-0.5">
+            <p className="text-sm text-t-secondary mb-0.5">
               AI 复原科比经典扣篮 · <span className="text-amber-400/70">百万+ 播放</span>
             </p>
-            <p className="text-xs text-[#4a4440]">春节期间破圈，后因人脸版权下架。视频已不在，数字是真实的。</p>
+            <p className="text-xs text-t-muted">春节期间破圈，后因人脸版权下架。视频已不在，数字是真实的。</p>
           </div>
         </div>
 
@@ -217,7 +217,7 @@ export default function PortfolioPage() {
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.5 + i * 0.04 }}
-              className="group relative aspect-square overflow-hidden rounded-lg bg-[#111111] border border-white/[0.04]"
+              className="group relative aspect-square overflow-hidden rounded-lg bg-card border border-white/[0.04]"
             >
               <img
                 src={item.src}
@@ -225,7 +225,7 @@ export default function PortfolioPage() {
                 className="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 group-hover:scale-107 transition-all duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-2.5">
-                <span className="text-[11px] text-[#e8e3d8]">{item.label}</span>
+                <span className="text-[11px] text-t-primary">{item.label}</span>
               </div>
             </motion.div>
           ))}

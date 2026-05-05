@@ -118,7 +118,6 @@ export function PerkCard({
   link,
   benefit,
   tutorialLink,
-  code,
 }: PerkCardProps) {
   return (
     <div className="flex flex-col p-5 rounded-2xl bg-card border border-[rgb(var(--border)_/_var(--border-opacity))] hover:border-accent/20 transition-all duration-300">
@@ -153,7 +152,6 @@ export function PerkCard({
         )}
       </div>
 
-      {code !== undefined && <CopyCode code={code} />}
     </div>
   );
 }

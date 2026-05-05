@@ -64,8 +64,7 @@
     "prompt": "",
     "images": [
       { "src": "/works/gallery/me-movie-poster/night-city.png", "alt": "夜之城崛起" },
-      { "src": "/works/gallery/me-movie-poster/shinobi.png", "alt": "忍道之光" },
-      { "src": "/works/gallery/me-movie-poster/the-myth.png", "alt": "翻拍《神话》" }
+      { "src": "/works/gallery/me-movie-poster/shinobi.png", "alt": "忍道之光" }
     ]
   },
   {
