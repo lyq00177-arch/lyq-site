@@ -22,7 +22,7 @@ const honors = [
   {
     icon: "🥈",
     title: "AI 生图创作大赛 · 二等奖",
-    desc: "参加 AI 图像生成创作比赛，从众多参赛者中脱颖而出，斩获二等奖，奖金 1000 元。",
+    desc: "参加 AI 图像生成创作比赛，从众多参赛者中脱颖而出，斩获二等奖。",
     tag: "竞赛荣誉",
   },
 ];
@@ -51,18 +51,18 @@ const articles = [
 
 /* ── AI 创作图库 ── */
 const gallery = [
-  { src: "/works/ai-portrait-liu.png",        label: "AI 肖像 · 摇滚风" },
-  { src: "/works/街头黑色电影爆发.png",       label: "街头电影感" },
-  { src: "/works/ai-portrait-zhang.png",      label: "AI 肖像 · 国风" },
-  { src: "/works/创意工作室手办绘制场景.png", label: "工作室场景" },
-  { src: "/works/真人与迷你卡通角色肖像.png", label: "真人×卡通" },
-  { src: "/works/gemini-1.png",              label: "Gemini 生成" },
-  { src: "/works/南京.png",                  label: "南京" },
-  { src: "/works/gemini-2.png",              label: "Gemini 生成" },
-  { src: "/works/苏州.png",                  label: "苏州" },
-  { src: "/works/gemini-3.png",             label: "Gemini 生成" },
-  { src: "/works/无锡.png",                  label: "无锡" },
-  { src: "/works/gemini-4.png",             label: "Gemini 生成" },
+  { src: "/works/ai-portrait-liu.webp",        label: "AI 肖像 · 摇滚风" },
+  { src: "/works/街头黑色电影爆发.webp",       label: "街头电影感" },
+  { src: "/works/ai-portrait-zhang.webp",      label: "AI 肖像 · 国风" },
+  { src: "/works/创意工作室手办绘制场景.webp", label: "工作室场景" },
+  { src: "/works/真人与迷你卡通角色肖像.webp", label: "真人×卡通" },
+  { src: "/works/gemini-1.webp",              label: "Gemini 生成" },
+  { src: "/works/南京.webp",                  label: "南京" },
+  { src: "/works/gemini-2.webp",              label: "Gemini 生成" },
+  { src: "/works/苏州.webp",                  label: "苏州" },
+  { src: "/works/gemini-3.webp",             label: "Gemini 生成" },
+  { src: "/works/无锡.webp",                  label: "无锡" },
+  { src: "/works/gemini-4.webp",             label: "Gemini 生成" },
 ];
 
 function SectionLabel({ children }: { children: React.ReactNode }) {

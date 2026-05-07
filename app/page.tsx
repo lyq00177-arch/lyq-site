@@ -24,9 +24,9 @@ const proofStats = [
 ];
 
 const featuredTools = [
-  { icon: "📊", title: "复利计算器", desc: "定投多少年能翻倍？可视化复利威力", href: "/tools/apy" },
-  { icon: "🎯", title: "仓位管理", desc: "控制风险，计算最优开仓量", href: "/tools/first-million" },
-  { icon: "😱", title: "恐慌贪婪指数", desc: "市场情绪一眼看清，辅助买卖决策", href: "/tools/hourly-wage" },
+  { icon: "📊", title: "复利计算器", desc: "定投多少年能翻倍？可视化复利威力", href: "/tools/compound" },
+  { icon: "🎯", title: "仓位管理", desc: "控制风险，计算最优开仓量", href: "/tools/position-size" },
+  { icon: "⏳", title: "财富时光机", desc: "输入资产和年限，看复利把钱变成什么样", href: "/tools/wealth-machine" },
 ];
 
 const featuredPosts = [
