@@ -68,9 +68,10 @@ export default function MoePage() {
             {/* 照片容器 */}
             <div className="relative rounded-2xl overflow-hidden aspect-[3/4] max-w-sm mx-auto lg:max-w-none shadow-2xl">
               <Image
-                src="/avatar.jpg"
+                src="/avatar.webp"
                 alt="凌逸清 Harry"
                 fill
+                sizes="(min-width: 1024px) 42vw, (min-width: 640px) 384px, 100vw"
                 className="object-cover object-top"
                 priority
               />

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import WeChatModal from "@/components/WeChatModal";
 import { ToolCard } from "@/components/Card";
@@ -170,9 +171,12 @@ export default function Home() {
           transition={{ delay: 0.3, duration: 0.8 }}
           className="hidden xl:block shrink-0 pt-4"
         >
-          <img
-            src="/avatar.jpg"
+          <Image
+            src="/avatar.webp"
             alt="Harry"
+            width={224}
+            height={224}
+            priority
             className="w-28 h-28 rounded-2xl object-cover border border-white/5 grayscale hover:grayscale-0 transition-all duration-700"
           />
         </motion.div>

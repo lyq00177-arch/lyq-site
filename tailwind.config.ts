@@ -29,7 +29,6 @@ const config: Config = {
       },
       fontFamily: {
         sans: ["var(--font-inter)", '"Noto Sans SC"', "system-ui", "-apple-system", "sans-serif"],
-        nunito: ["var(--font-nunito)", '"Noto Sans SC"', "sans-serif"],
         display: ["var(--font-playfair)", "Georgia", "serif"],
       },
       animation: {

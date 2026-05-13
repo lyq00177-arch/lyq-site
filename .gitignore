@@ -31,6 +31,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# 归档（不部署，本地保留作为冗余 PNG 的归档点）
+/.archive/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

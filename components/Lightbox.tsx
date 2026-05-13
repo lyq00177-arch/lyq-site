@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useCallback, useState } from "react";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface LightboxProps {
@@ -99,11 +100,16 @@ export default function Lightbox({
           className="flex flex-col items-center gap-4 max-w-[90vw] max-h-[90vh]"
           onClick={(e) => e.stopPropagation()}
         >
-          <img
-            src={current.src}
-            alt={current.alt}
-            className="max-w-full max-h-[80vh] object-contain rounded-lg"
-          />
+          <div className="relative w-[90vw] h-[80vh]">
+            <Image
+              src={current.src}
+              alt={current.alt}
+              fill
+              sizes="90vw"
+              className="object-contain rounded-lg"
+              priority
+            />
+          </div>
           <div className="text-center">
             <span className="text-white/90 text-sm">{current.alt}</span>
             <span className="text-white/40 text-xs ml-3">

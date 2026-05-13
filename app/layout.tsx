@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
-import { Inter, Nunito, Playfair_Display } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ThemeProvider from "@/components/ThemeProvider";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const nunito = Nunito({ subsets: ["latin"], variable: "--font-nunito" });
 const playfair = Playfair_Display({
   subsets: ["latin"],
   variable: "--font-playfair",
@@ -36,7 +35,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.variable} ${nunito.variable} ${playfair.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${playfair.variable} font-sans antialiased`}>
         <ThemeProvider>
           {/* Noise texture overlay */}
           <div className="noise-bg" aria-hidden="true">
