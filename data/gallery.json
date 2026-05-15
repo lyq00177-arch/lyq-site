@@ -6,15 +6,62 @@
     "model": "ChatGPT & Gemini",
     "prompt": "",
     "images": [
-      { "src": "/works/gallery/changzhou-1988/alley-breakfast.webp", "alt": "弄堂清晨油条摊" },
-      { "src": "/works/gallery/changzhou-1988/south-street.webp", "alt": "南大街夜景" },
-      { "src": "/works/gallery/changzhou-1988/general-store.webp", "alt": "供销社" },
-      { "src": "/works/gallery/changzhou-1988/newspaper.webp", "alt": "看常州日报" },
-      { "src": "/works/gallery/changzhou-1988/apartment-tv.webp", "alt": "公寓夜晚电视机前" },
-      { "src": "/works/gallery/changzhou-1988/courtyard-tv.webp", "alt": "院子里看电视的夏夜" },
-      { "src": "/works/gallery/changzhou-1988/outdoor-tv.webp", "alt": "凌家村11号户外看电视" },
-      { "src": "/works/gallery/changzhou-1988/old-calendar.webp", "alt": "老屋日历" },
-      { "src": "/works/gallery/changzhou-1988/repair-shop.webp", "alt": "修理铺" }
+      {
+        "src": "/works/gallery/changzhou-1988/alley-breakfast.webp",
+        "alt": "弄堂清晨油条摊"
+      },
+      {
+        "src": "/works/gallery/changzhou-1988/south-street.webp",
+        "alt": "南大街夜景"
+      },
+      {
+        "src": "/works/gallery/changzhou-1988/general-store.webp",
+        "alt": "供销社"
+      },
+      {
+        "src": "/works/gallery/changzhou-1988/newspaper.webp",
+        "alt": "看常州日报"
+      },
+      {
+        "src": "/works/gallery/changzhou-1988/apartment-tv.webp",
+        "alt": "公寓夜晚电视机前"
+      },
+      {
+        "src": "/works/gallery/changzhou-1988/courtyard-tv.webp",
+        "alt": "院子里看电视的夏夜"
+      },
+      {
+        "src": "/works/gallery/changzhou-1988/outdoor-tv.webp",
+        "alt": "凌家村11号户外看电视"
+      },
+      {
+        "src": "/works/gallery/changzhou-1988/old-calendar.webp",
+        "alt": "老屋日历"
+      },
+      {
+        "src": "/works/gallery/changzhou-1988/repair-shop.webp",
+        "alt": "修理铺"
+      },
+      {
+        "src": "/works/gallery/changzhou-1988/neighbors-tv.webp",
+        "alt": "弄堂夜晚围坐看电视"
+      },
+      {
+        "src": "/works/gallery/changzhou-1988/red-star-hotpot.webp",
+        "alt": "红星火锅夜市摊"
+      },
+      {
+        "src": "/works/gallery/changzhou-1988/elder-reading.webp",
+        "alt": "老人窗边读常州日报"
+      },
+      {
+        "src": "/works/gallery/changzhou-1988/state-store.webp",
+        "alt": "老式国营商店柜台"
+      },
+      {
+        "src": "/works/gallery/changzhou-1988/repair-night.webp",
+        "alt": "昏黄灯下修理铺"
+      }
     ]
   },
   {
@@ -24,13 +71,62 @@
     "model": "ChatGPT",
     "prompt": "",
     "images": [
-      { "src": "/works/gallery/genshin-poetry/liuying.webp", "alt": "流萤" },
-      { "src": "/works/gallery/genshin-poetry/ganyu.webp", "alt": "甘雨" },
-      { "src": "/works/gallery/genshin-poetry/yaemiko.webp", "alt": "八重神子" },
-      { "src": "/works/gallery/genshin-poetry/yoimiya.webp", "alt": "宵宫" },
-      { "src": "/works/gallery/genshin-poetry/hutao.webp", "alt": "胡桃" },
-      { "src": "/works/gallery/genshin-poetry/furina.webp", "alt": "芙宁娜" },
-      { "src": "/works/gallery/genshin-poetry/raiden.webp", "alt": "雷电将军" }
+      {
+        "src": "/works/gallery/genshin-poetry/liuying.webp",
+        "alt": "流萤"
+      },
+      {
+        "src": "/works/gallery/genshin-poetry/ganyu.webp",
+        "alt": "甘雨"
+      },
+      {
+        "src": "/works/gallery/genshin-poetry/yaemiko.webp",
+        "alt": "八重神子"
+      },
+      {
+        "src": "/works/gallery/genshin-poetry/yoimiya.webp",
+        "alt": "宵宫"
+      },
+      {
+        "src": "/works/gallery/genshin-poetry/hutao.webp",
+        "alt": "胡桃"
+      },
+      {
+        "src": "/works/gallery/genshin-poetry/furina.webp",
+        "alt": "芙宁娜"
+      },
+      {
+        "src": "/works/gallery/genshin-poetry/raiden.webp",
+        "alt": "雷电将军"
+      },
+      {
+        "src": "/works/gallery/genshin-poetry/silver-sword.webp",
+        "alt": "白发持剑女角色配诗"
+      },
+      {
+        "src": "/works/gallery/genshin-poetry/furina-fan.webp",
+        "alt": "芙宁娜执扇"
+      },
+      {
+        "src": "/works/gallery/genshin-poetry/hutao-plum.webp",
+        "alt": "胡桃执梅枝"
+      },
+      {
+        "src": "/works/gallery/genshin-poetry/yaemiko-fireworks.webp",
+        "alt": "八重神子焰火"
+      },
+      {
+        "src": "/works/gallery/genshin-poetry/ayaka.webp",
+        "alt": "神里绫华"
+      },
+      {
+        "src": "/works/gallery/genshin-poetry/ganyu-umbrella.webp",
+        "alt": "甘雨持伞"
+      },
+      {
+        "src": "/works/gallery/genshin-poetry/ningguang.webp",
+        "alt": "凝光背影"
+      }
     ]
   },
   {
@@ -40,9 +136,22 @@
     "model": "ChatGPT",
     "prompt": "",
     "images": [
-      { "src": "/works/gallery/city/nanjing.webp", "alt": "南京" },
-      { "src": "/works/gallery/city/suzhou.webp", "alt": "苏州" },
-      { "src": "/works/gallery/city/wuxi.webp", "alt": "无锡" }
+      {
+        "src": "/works/gallery/city/nanjing.webp",
+        "alt": "南京"
+      },
+      {
+        "src": "/works/gallery/city/suzhou.webp",
+        "alt": "苏州"
+      },
+      {
+        "src": "/works/gallery/city/wuxi.webp",
+        "alt": "无锡"
+      },
+      {
+        "src": "/works/gallery/city-miniature/human-hive.webp",
+        "alt": "摩天楼人类蜂巢"
+      }
     ]
   },
   {
@@ -52,8 +161,22 @@
     "model": "ChatGPT",
     "prompt": "",
     "images": [
-      { "src": "/works/gallery/changzhou-painting/ancient.webp", "alt": "古代常州" },
-      { "src": "/works/gallery/changzhou-painting/modern.webp", "alt": "现代常州" }
+      {
+        "src": "/works/gallery/changzhou-painting/ancient.webp",
+        "alt": "古代常州"
+      },
+      {
+        "src": "/works/gallery/changzhou-painting/modern.webp",
+        "alt": "现代常州"
+      },
+      {
+        "src": "/works/gallery/changzhou-painting/modern-river.webp",
+        "alt": "工笔现代常州河景"
+      },
+      {
+        "src": "/works/gallery/changzhou-painting/ancient-tower.webp",
+        "alt": "工笔古城楼塔"
+      }
     ]
   },
   {
@@ -63,8 +186,22 @@
     "model": "ChatGPT",
     "prompt": "",
     "images": [
-      { "src": "/works/gallery/me-movie-poster/night-city.webp", "alt": "夜之城崛起" },
-      { "src": "/works/gallery/me-movie-poster/shinobi.webp", "alt": "忍道之光" }
+      {
+        "src": "/works/gallery/me-movie-poster/night-city.webp",
+        "alt": "夜之城崛起"
+      },
+      {
+        "src": "/works/gallery/me-movie-poster/shinobi.webp",
+        "alt": "忍道之光"
+      },
+      {
+        "src": "/works/gallery/me-movie-poster/naruto-style.webp",
+        "alt": "火影忍者风戴眼镜男"
+      },
+      {
+        "src": "/works/gallery/me-movie-poster/cyberpunk-2077.webp",
+        "alt": "赛博朋克 2077 夜之城"
+      }
     ]
   },
   {
@@ -74,12 +211,50 @@
     "model": "ChatGPT",
     "prompt": "",
     "images": [
-      { "src": "/works/gallery/me-scenes/red-car.webp", "alt": "复古红色敞篷车" },
-      { "src": "/works/gallery/me-scenes/robot-selfie.webp", "alt": "和机器人自拍" },
-      { "src": "/works/gallery/me-scenes/balcony.webp", "alt": "现代奢华阳台" },
-      { "src": "/works/gallery/scene/street-noir.webp", "alt": "街头黑色电影感" },
-      { "src": "/works/gallery/portrait/real-cartoon-portrait.webp", "alt": "真人 × 卡通" },
-      { "src": "/works/gallery/scene/studio-figurine.webp", "alt": "创意工作室手办" }
+      {
+        "src": "/works/gallery/me-scenes/red-car.webp",
+        "alt": "复古红色敞篷车"
+      },
+      {
+        "src": "/works/gallery/me-scenes/robot-selfie.webp",
+        "alt": "和机器人自拍"
+      },
+      {
+        "src": "/works/gallery/me-scenes/balcony.webp",
+        "alt": "现代奢华阳台"
+      },
+      {
+        "src": "/works/gallery/scene/street-noir.webp",
+        "alt": "街头黑色电影感"
+      },
+      {
+        "src": "/works/gallery/portrait/real-cartoon-portrait.webp",
+        "alt": "真人 × 卡通"
+      },
+      {
+        "src": "/works/gallery/scene/studio-figurine.webp",
+        "alt": "创意工作室手办"
+      },
+      {
+        "src": "/works/gallery/me-scenes/plant-wall-selfie.webp",
+        "alt": "植物墙前自拍"
+      },
+      {
+        "src": "/works/gallery/me-scenes/suit-portrait.webp",
+        "alt": "黑西装正装"
+      },
+      {
+        "src": "/works/gallery/me-scenes/cyber-rooftop.webp",
+        "alt": "赛博城市天台俯瞰"
+      },
+      {
+        "src": "/works/gallery/me-scenes/indoor-selfie.webp",
+        "alt": "室内自拍"
+      },
+      {
+        "src": "/works/gallery/me-scenes/ai-workstation.webp",
+        "alt": "AI Agent 工作站"
+      }
     ]
   },
   {
@@ -89,10 +264,50 @@
     "model": "ChatGPT",
     "prompt": "",
     "images": [
-      { "src": "/works/gallery/game-scenes/assassin-shanghai.webp", "alt": "刺客信条·上海" },
-      { "src": "/works/gallery/game-scenes/night-city-view.webp", "alt": "夜之城俯瞰" },
-      { "src": "/works/gallery/game-scenes/quarantine-zone.webp", "alt": "隔离区" },
-      { "src": "/works/gallery/game-scenes/moba-battle.webp", "alt": "MOBA 战场" }
+      {
+        "src": "/works/gallery/game-scenes/assassin-shanghai.webp",
+        "alt": "刺客信条·上海"
+      },
+      {
+        "src": "/works/gallery/game-scenes/night-city-view.webp",
+        "alt": "夜之城俯瞰"
+      },
+      {
+        "src": "/works/gallery/game-scenes/quarantine-zone.webp",
+        "alt": "隔离区"
+      },
+      {
+        "src": "/works/gallery/game-scenes/moba-battle.webp",
+        "alt": "MOBA 战场"
+      },
+      {
+        "src": "/works/gallery/game-scenes/panoramic-night.webp",
+        "alt": "360 度全景室内夜景"
+      },
+      {
+        "src": "/works/gallery/game-scenes/mmorpg-battle.webp",
+        "alt": "MMORPG 战斗场景"
+      },
+      {
+        "src": "/works/gallery/game-scenes/warrior-vs-giant.webp",
+        "alt": "战士对战巨型怪物"
+      },
+      {
+        "src": "/works/gallery/game-scenes/crystal-library.webp",
+        "alt": "水晶藏书馆全息"
+      },
+      {
+        "src": "/works/gallery/game-scenes/magic-runes.webp",
+        "alt": "古书桌蓝色魔法符文"
+      },
+      {
+        "src": "/works/gallery/game-scenes/ai-framework.webp",
+        "alt": "AI Agent 框架办公桌"
+      },
+      {
+        "src": "/works/gallery/game-scenes/data-burst.webp",
+        "alt": "数据爆裂虚拟世界"
+      }
     ]
   },
   {
@@ -102,8 +317,26 @@
     "model": "ChatGPT",
     "prompt": "",
     "images": [
-      { "src": "/works/gallery/concert-poster/jay-chou.webp", "alt": "周杰伦 Live Tour" },
-      { "src": "/works/gallery/concert-poster/ayumi.webp", "alt": "滨崎步 A Best Live" }
+      {
+        "src": "/works/gallery/concert-poster/jay-chou.webp",
+        "alt": "周杰伦 Live Tour"
+      },
+      {
+        "src": "/works/gallery/concert-poster/ayumi.webp",
+        "alt": "滨崎步 A Best Live"
+      },
+      {
+        "src": "/works/gallery/concert-poster/ayumi-red.webp",
+        "alt": "滨崎步红黑海报"
+      },
+      {
+        "src": "/works/gallery/concert-poster/jay-orange.webp",
+        "alt": "周杰伦橙黑海报"
+      },
+      {
+        "src": "/works/gallery/concert-poster/beyond-faith.webp",
+        "alt": "Beyond 信仰红"
+      }
     ]
   },
   {
@@ -113,7 +346,30 @@
     "model": "ChatGPT",
     "prompt": "",
     "images": [
-      { "src": "/works/gallery/city-poster/changzhou-spring.webp", "alt": "千年龙城·魅力常州" }
+      {
+        "src": "/works/gallery/city-poster/changzhou-spring.webp",
+        "alt": "千年龙城·魅力常州"
+      },
+      {
+        "src": "/works/gallery/city-poster/huaiyan-mono.webp",
+        "alt": "黑白水墨淮盐"
+      },
+      {
+        "src": "/works/gallery/city-poster/huaiyan-village.webp",
+        "alt": "千年淮盐古镇少女"
+      },
+      {
+        "src": "/works/gallery/city-poster/swallow-mountain.webp",
+        "alt": "国风燕子金色山河"
+      },
+      {
+        "src": "/works/gallery/city-poster/suchao-football.webp",
+        "alt": "苏超江苏足球海报"
+      },
+      {
+        "src": "/works/gallery/city-poster/longcheng-spring.webp",
+        "alt": "千年龙城春日海报"
+      }
     ]
   }
 ]
