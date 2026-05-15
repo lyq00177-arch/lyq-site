@@ -9,12 +9,12 @@ import { ToolCard } from "@/components/Card";
 const sealChars = ["超", "级", "个", "体"];
 
 const navModules = [
-  { href: "/story",    icon: "◎", label: "我的故事",   desc: "从打工人到数字创作者的真实路径" },
   { href: "/moe",      icon: "▲", label: "关于我",     desc: "我相信什么，我不相信什么" },
-  { href: "/portfolio",icon: "◈", label: "作品集",     desc: "百万播放、公众号、AI 创作" },
-  { href: "/gallery", icon: "◆", label: "AI 画廊",    desc: "提示词工程 · 视觉创作集" },
-  { href: "/business", icon: "◇", label: "合作业务",   desc: "咨询、建站、AI 入门陪跑" },
-  { href: "/learn",    icon: "⬡", label: "入门指南",   desc: "AI / 加密 / 自媒体 · 从零开始" },
+  { href: "/ai",       icon: "◆", label: "AI 学习",    desc: "工具 · 提示词 · 画廊三件套" },
+  { href: "/learn",    icon: "◇", label: "投资认知",   desc: "复利、加密、长期主义" },
+  { href: "/tools",    icon: "⬡", label: "工具箱",     desc: "8 个计算器，复利到合约" },
+  { href: "/business", icon: "◎", label: "聊聊",       desc: "一对一咨询 · 社群闲聊" },
+  { href: "/blog",     icon: "◈", label: "博客",       desc: "公众号精选 + 长文随笔" },
 ];
 
 const proofStats = [
