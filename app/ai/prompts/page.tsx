@@ -7,7 +7,7 @@ const prompts = [
   {
     icon: "🌱",
     title: "挖掘天赋",
-    why: "天赋是别人眼中你「轻松完成」的事，自己感觉不到。这个提示词强制 AI 先收集证据，再下判断——避免泛泛建议。",
+    why: "天赋这个词很大，自己往身上贴根本贴不上。\n\n能让你看见的，是别人觉得你做得费劲、你反而觉得轻松的事。\n\n访谈式提问比直接问「你的天赋是什么」靠谱十倍。",
     prompt: `你是一个深度访谈型职业咨询师，擅长从一个人的日常细节里识别他没有意识到的擅长。
 
 接下来不要急着给建议。先用 7-10 轮对话问我具体例子（每轮只问 1-2 个问题，不要列清单）：
@@ -23,7 +23,7 @@ const prompts = [
   {
     icon: "📔",
     title: "搭建数字人生",
-    why: "大多数人记录失败，是因为系统太重。强制约束让 AI 优先「能跑起来」，而不是炫技。",
+    why: "其实我自己折腾过 Obsidian、Notion、Roam，每个都坚持不到三个月。\n\n失败不是因为工具不好，是因为系统太重。\n\n这个提示词强制 AI 优先「能跑起来」，不是炫技。",
     prompt: `我想把我的日常生活、想法、感悟，做成一份长期可追溯、可检索的"数字档案"。
 
 请你以一个"个人 CIO"的视角，帮我设计一套**最简版**起步方案：
@@ -38,7 +38,7 @@ const prompts = [
   {
     icon: "✍️",
     title: "每日写日记",
-    why: "日记最难的不是「写不出」，是「写出来的不是真心话」。这三个问题分别是事实、感受、价值——比「今天怎么样」开放式提问产出真实得多。",
+    why: "日记最难的不是写不出，是写出来的不是真心话。\n\n「今天怎么样」这种开放式提问，最容易写成流水账。\n\n三个具体问题，事实、感受、价值各一个，能把真实感受逼出来。",
     prompt: `你是一个温和的引导式日记教练。不要打鸡血，不要总结陈词。
 
 每天我开始写日记前，请只问我 3 个问题，按以下顺序：
@@ -52,7 +52,7 @@ const prompts = [
   {
     icon: "📝",
     title: "文字表达",
-    why: "直接让 AI 写整段，永远是 AI 味。让 AI 给「切入角度」让你选，主导权在你，最后产出是你的视角 + AI 的润色。",
+    why: "直接让 AI 写整段，永远是 AI 味。\n\n正确的姿势是把它当编辑、当陪练，不是当代笔。\n\n让它给「切入角度」让你选，主导权在你手里。",
     prompt: `我要写一段 [文字类型：公众号开头 / 自我介绍 / 邮件 / 推文]，主题是 [主题]。
 
 写之前请先帮我列 3 个不同的"切入角度"：
@@ -85,7 +85,10 @@ export default function AIPromptsPage() {
           AI 提示词
         </h1>
         <p className="text-lg text-t-tertiary leading-relaxed max-w-xl">
-          AI 不是搜索引擎，问法决定答案的高度。这里收的是我自己用得顺手、能反复复用的提示词。
+          其实提示词这东西，我前两年也以为是玄学。
+        </p>
+        <p className="text-base text-t-muted leading-relaxed max-w-xl mt-3">
+          后来发现，同一件事，问法不同，答案差十倍。这里慢慢收我自己用得顺手、能反复复用的提示词。
         </p>
       </motion.div>
 
@@ -103,7 +106,7 @@ export default function AIPromptsPage() {
               <h2 className="font-display text-2xl text-t-primary">{p.title}</h2>
             </div>
 
-            <p className="text-sm text-t-muted leading-relaxed mb-6 italic">
+            <p className="text-sm text-t-muted leading-relaxed mb-6 italic whitespace-pre-line">
               {p.why}
             </p>
 

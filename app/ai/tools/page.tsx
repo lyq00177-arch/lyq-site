@@ -7,11 +7,11 @@ const categories = [
   {
     icon: "💬",
     title: "对话类",
-    desc: "日常问问题、写东西、做分析的主力",
+    desc: "问问题、写东西、做分析的主力",
     tools: [
-      { name: "Claude", note: "写作、长文档、逻辑严密，不爱编数据。新手首选。" },
-      { name: "ChatGPT", note: "生态最全，插件最多。联网搜索、调工具时用它。" },
-      { name: "Gemini", note: "Google 系产品里嵌得最深。重度用 Gmail / Docs 的人最顺手。" },
+      { name: "Claude", note: "写作和长文档我只用它。逻辑不飘，不爱编数据。" },
+      { name: "ChatGPT", note: "生态最全。要联网搜索或者调插件的时候用它。" },
+      { name: "Gemini", note: "Google 系嵌得最深。重度用 Gmail 和 Docs 的人最顺手。" },
     ],
   },
   {
@@ -19,19 +19,19 @@ const categories = [
     title: "创作类",
     desc: "图、视频、音乐生成",
     tools: [
-      { name: "Midjourney", note: "美学统一，风格化最强。出图慢但出片率高。" },
-      { name: "Sora", note: "目前最稳的文生视频。短片 / 概念片首选。" },
-      { name: "Suno", note: "一句歌词出曲，可以生成可商用的背景音乐。" },
+      { name: "Midjourney", note: "美学统一，风格化最强。出图慢，但出片率高。" },
+      { name: "Sora", note: "目前最稳的文生视频。做过几个短片，没怎么翻车。" },
+      { name: "Suno", note: "一句歌词出曲。配公众号用过几次，免费版够用。" },
     ],
   },
   {
     icon: "🛠️",
     title: "生产力类",
-    desc: "改文件、搭工具、做笔记的辅助",
+    desc: "改文件、搭工具、做笔记",
     tools: [
-      { name: "Cursor", note: "程序员的 AI IDE。团队协作场景友好。" },
-      { name: "Claude Code", note: "终端里的 Claude。我这个网站就是用它一行行搭出来的。" },
-      { name: "Obsidian Copilot", note: "笔记里的 AI 助手，优先调用你本地的知识库。" },
+      { name: "Cursor", note: "程序员朋友推荐的 AI IDE。我用得不多，团队场景挺顺。" },
+      { name: "Claude Code", note: "终端里的 Claude。这个网站就是用它一行行问出来的。" },
+      { name: "Obsidian Copilot", note: "笔记里的 AI。优先调本地知识库，不会乱串数据。" },
     ],
   },
 ];
@@ -39,15 +39,15 @@ const categories = [
 const faqs = [
   {
     q: "Claude / ChatGPT / Gemini，到底该用哪个？",
-    a: "不要纠结「选」，要想「分工」。Claude 写东西、ChatGPT 调插件、Gemini 跟 Google 文档绑死。新手只用 Claude 一个就够，等你需要联网或者绑邮箱了，再加另外两个。",
+    a: "其实不是「选」的问题，是「分工」。\n\nClaude 写东西，ChatGPT 调插件，Gemini 跟 Google 文档绑死。\n\n如果只能装一个，我会选 Claude。",
   },
   {
     q: "什么是提示词？为什么大家都在研究它？",
-    a: "提示词就是你给 AI 的指令。同一个问题，问法不同，答案质量差十倍不夸张。最简单的提升：给 AI 一个角色 + 一个任务 + 一个格式要求。不要说「帮我写自我介绍」，说「你是资深 HR，写一段 200 字以内的自我介绍，用于互联网大厂求职，突出数据分析能力」——区别试一下就知道。",
+    a: "提示词就是你给 AI 的指令。同一件事，问法不同，答案差十倍。\n\n最简单的提升：给 AI 一个角色 + 一个任务 + 一个格式要求。\n\n不要说「帮我写自我介绍」。说「你是资深 HR，写一段 200 字以内的自我介绍，用于互联网大厂求职，突出数据分析能力」。\n\n区别试一下就知道。",
   },
   {
     q: "文科生怎么搭自己的 AI 工作流？",
-    a: "不需要懂代码。最小可用栈：Obsidian 做知识库 + Claude 写作分析 + Claude Code 帮你搭小工具。从一个工具开始，搞透它，再加下一个。工具选太多，反而都用不起来。",
+    a: "不需要懂代码。\n\n最小可用栈：Obsidian 做知识库 + Claude 写东西 + Claude Code 帮你搭小工具。\n\n从一个工具开始，搞透它，再加下一个。工具选太多，反而都用不起来。",
   },
 ];
 
@@ -70,7 +70,10 @@ export default function AIToolsPage() {
           AI 工具
         </h1>
         <p className="text-lg text-t-tertiary leading-relaxed max-w-xl">
-          三年里试过的 AI 工具不下几十个。这里只列还在用的，按场景分三类。
+          其实市面上叫「AI」的东西，差距比你想象的大。
+        </p>
+        <p className="text-base text-t-muted leading-relaxed max-w-xl mt-3">
+          三年里我试过的不下几十个。有些试两次就再没打开过，有些用了半年才发现新功能。这里只列现在还在用的，按场景分三类。
         </p>
       </motion.div>
 
@@ -121,7 +124,7 @@ export default function AIToolsPage() {
               <h3 className="text-base font-medium text-t-primary mb-3 leading-snug">
                 {f.q}
               </h3>
-              <p className="text-sm text-t-tertiary leading-relaxed">{f.a}</p>
+              <p className="text-sm text-t-tertiary leading-relaxed whitespace-pre-line">{f.a}</p>
             </motion.div>
           ))}
         </div>
