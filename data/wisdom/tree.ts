@@ -354,7 +354,7 @@ export const wisdomMasters: WisdomMaster[] = [
             "path": "munger/speeches/2018_94岁查理芒格2018年2月访谈.md",
             "ext": "md",
             "type": "article",
-            "hasAnalysis": false
+            "hasAnalysis": true
           },
           {
             "id": "munger__speeches__2018_《喻见》专访芒格对话实录（上）",
@@ -362,7 +362,7 @@ export const wisdomMasters: WisdomMaster[] = [
             "path": "munger/speeches/2018_《喻见》专访芒格对话实录（上）.md",
             "ext": "md",
             "type": "article",
-            "hasAnalysis": false
+            "hasAnalysis": true
           },
           {
             "id": "munger__speeches__2018_《喻见》专访芒格对话实录（下）",
@@ -370,7 +370,7 @@ export const wisdomMasters: WisdomMaster[] = [
             "path": "munger/speeches/2018_《喻见》专访芒格对话实录（下）.md",
             "ext": "md",
             "type": "article",
-            "hasAnalysis": false
+            "hasAnalysis": true
           },
           {
             "id": "munger__speeches__2018_《红周刊》独家对话查理芒格",
@@ -378,7 +378,7 @@ export const wisdomMasters: WisdomMaster[] = [
             "path": "munger/speeches/2018_《红周刊》独家对话查理芒格.md",
             "ext": "md",
             "type": "article",
-            "hasAnalysis": false
+            "hasAnalysis": true
           },
           {
             "id": "munger__speeches__2019_CNBC专访芒格",
@@ -386,7 +386,7 @@ export const wisdomMasters: WisdomMaster[] = [
             "path": "munger/speeches/2019_CNBC专访芒格.md",
             "ext": "md",
             "type": "article",
-            "hasAnalysis": false
+            "hasAnalysis": true
           },
           {
             "id": "munger__speeches__2019_DailyJournal年会文字记录",
@@ -394,7 +394,7 @@ export const wisdomMasters: WisdomMaster[] = [
             "path": "munger/speeches/2019_DailyJournal年会文字记录.md",
             "ext": "md",
             "type": "article",
-            "hasAnalysis": false
+            "hasAnalysis": true
           },
           {
             "id": "munger__speeches__2019_独家专访查理·芒格：我是孔子思想在美国的实践者",
@@ -402,7 +402,7 @@ export const wisdomMasters: WisdomMaster[] = [
             "path": "munger/speeches/2019_独家专访查理·芒格：我是孔子思想在美国的实践者.md",
             "ext": "md",
             "type": "article",
-            "hasAnalysis": false
+            "hasAnalysis": true
           },
           {
             "id": "munger__speeches__2020年_芒格对话：谈人生人性与投资",
@@ -410,7 +410,7 @@ export const wisdomMasters: WisdomMaster[] = [
             "path": "munger/speeches/2020年_芒格对话：谈人生人性与投资.md",
             "ext": "md",
             "type": "article",
-            "hasAnalysis": false
+            "hasAnalysis": true
           },
           {
             "id": "munger__speeches__2020年_芒格最新访谈：对中国进行了非常大的投资，从现在开始的一年，最糟糕的情况将会彻底地被抛在后面",
@@ -418,7 +418,7 @@ export const wisdomMasters: WisdomMaster[] = [
             "path": "munger/speeches/2020年_芒格最新访谈：对中国进行了非常大的投资，从现在开始的一年，最糟糕的情况将会彻底地被抛在后面.md",
             "ext": "md",
             "type": "article",
-            "hasAnalysis": false
+            "hasAnalysis": true
           },
           {
             "id": "munger__speeches__2022_Daily Journal 年会文字记录（问题1-30）",
@@ -426,7 +426,7 @@ export const wisdomMasters: WisdomMaster[] = [
             "path": "munger/speeches/2022_Daily Journal 年会文字记录（问题1-30）.md",
             "ext": "md",
             "type": "article",
-            "hasAnalysis": false
+            "hasAnalysis": true
           },
           {
             "id": "munger__speeches__2022_Daily Journal 年会文字记录（问题31-40）",
@@ -434,7 +434,7 @@ export const wisdomMasters: WisdomMaster[] = [
             "path": "munger/speeches/2022_Daily Journal 年会文字记录（问题31-40）.md",
             "ext": "md",
             "type": "article",
-            "hasAnalysis": false
+            "hasAnalysis": true
           },
           {
             "id": "munger__speeches__2022_Daily Journal 年会文字记录（问题41-49）",
@@ -442,7 +442,7 @@ export const wisdomMasters: WisdomMaster[] = [
             "path": "munger/speeches/2022_Daily Journal 年会文字记录（问题41-49）.md",
             "ext": "md",
             "type": "article",
-            "hasAnalysis": false
+            "hasAnalysis": true
           },
           {
             "id": "munger__speeches__查理-芒格十大演讲",
@@ -450,7 +450,7 @@ export const wisdomMasters: WisdomMaster[] = [
             "path": "munger/speeches/查理-芒格十大演讲.md",
             "ext": "md",
             "type": "article",
-            "hasAnalysis": false
+            "hasAnalysis": true
           }
         ]
       }
