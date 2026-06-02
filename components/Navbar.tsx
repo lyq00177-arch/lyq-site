@@ -10,6 +10,8 @@ const navLinks = [
   { href: "/moe", label: "关于我" },
   { href: "/learn", label: "学习路线" },
   { href: "/etf", label: "ETF" },
+  { href: "/holdings", label: "持仓" },
+  { href: "/wisdom", label: "文集" },
   { href: "/blog", label: "博客" },
   { href: "/gallery", label: "画廊" },
   { href: "/business", label: "业务" },
