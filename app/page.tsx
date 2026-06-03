@@ -36,6 +36,12 @@ const featuredPosts = [
   { title: "马斯克最新预言，你只剩五年时间变富", tag: "人物解析", reads: "4,570", href: "/blog/musk-five-years-rich" },
 ];
 
+const investHub = [
+  { icon: "📈", title: "ETF 追踪", desc: "纳指100 / 标普500 实时行情 + 开户引导", href: "/etf" },
+  { icon: "🏛️", title: "名人持仓", desc: "21 位投资大师持仓，按思维范式分类追踪", href: "/holdings" },
+  { icon: "📜", title: "智慧文集", desc: "巴菲特·芒格·段永平·李录 原始文献 + 我的解读", href: "/wisdom" },
+];
+
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex items-center gap-5 mb-10">
@@ -117,6 +123,9 @@ export default function Home() {
             <p className="text-base sm:text-lg text-t-tertiary leading-relaxed">
               白天在现实系统里工作，晚上用 AI、投资和自媒体，搭建自己的第二套人生系统。
             </p>
+            <p className="text-base sm:text-lg text-t-secondary leading-relaxed">
+              我踩过的 AI 与投资的坑，都变成了这里的工具、认知和实战记录——你可以少走一遍。
+            </p>
             <p className="text-sm text-t-muted leading-relaxed">
               我不预测未来，我只把自己放进未来里试一遍。
             </p>
@@ -146,7 +155,7 @@ export default function Home() {
                   </div>
                   <div>
                     <p className="text-sm font-semibold text-t-primary group-hover:text-accent transition-colors">
-                      加我微信
+                      扫码加我微信
                     </p>
                     <p className="text-xs text-t-muted">聊 AI · 聊投资 · 聊人生</p>
                   </div>
@@ -223,6 +232,30 @@ export default function Home() {
                   </div>
                 </div>
               </Link>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* ═══ 投资追踪 ════════════════════════════════════ */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="mt-24"
+      >
+        <SectionLabel>投资追踪</SectionLabel>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {investHub.map((t, i) => (
+            <motion.div
+              key={t.title}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08 }}
+            >
+              <ToolCard {...t} />
             </motion.div>
           ))}
         </div>

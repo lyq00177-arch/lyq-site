@@ -11,28 +11,38 @@ interface WeChatModalProps {
 }
 
 const modeConfig: Record<ModalMode, { emoji: string; title: string; subtitle: string }> = {
-  wechat:   { emoji: "💬", title: "添加微信",   subtitle: "搜索微信号添加好友" },
+  wechat:   { emoji: "💬", title: "扫码加我",   subtitle: "扫描二维码，添加我为好友" },
   official: { emoji: "📱", title: "关注公众号", subtitle: "扫码关注，获取最新内容" },
   group:    { emoji: "👥", title: "加入群聊",   subtitle: "扫码进入交流群" },
 };
 
-function QrPlaceholder({ mode }: { mode: "official" | "group" }) {
+const qrSrc: Record<ModalMode, string> = {
+  wechat: "/qr-wechat.jpg",
+  official: "/qr-official.jpg",
+  group: "/qr-group.png",
+};
+const qrAlt: Record<ModalMode, string> = {
+  wechat: "微信二维码",
+  official: "公众号二维码",
+  group: "群聊二维码",
+};
+
+function QrPlaceholder({ mode }: { mode: ModalMode }) {
   const [err, setErr] = useState(false);
-  const src = mode === "official" ? "/qr-official.jpg" : "/qr-group.png";
 
   return (
     <div className="w-44 h-44 bg-white rounded-xl overflow-hidden flex items-center justify-center mx-auto">
       {!err ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={src}
-          alt={mode === "official" ? "公众号二维码" : "群聊二维码"}
+          src={qrSrc[mode]}
+          alt={qrAlt[mode]}
           className="w-full h-full object-contain"
           onError={() => setErr(true)}
         />
       ) : (
         <div className="text-center p-4">
-          <div className="text-4xl mb-2">{mode === "official" ? "📱" : "👥"}</div>
+          <div className="text-4xl mb-2">{modeConfig[mode].emoji}</div>
           <div className="text-xs text-gray-400 leading-relaxed">
             二维码即将上线
           </div>
@@ -101,22 +111,17 @@ export default function WeChatModal({ trigger, mode = "wechat" }: WeChatModalPro
               <h3 className="text-xl font-bold text-t-primary mb-2">{config.title}</h3>
               <p className="text-t-tertiary text-sm mb-6">{config.subtitle}</p>
 
-              {mode === "wechat" ? (
-                <>
-                  <div className="bg-elevated rounded-xl p-4 mb-6 flex items-center justify-center">
-                    <span className="text-lg font-mono text-accent tracking-wider">{wechatId}</span>
-                  </div>
-                  <button
-                    onClick={handleCopy}
-                    className="w-full py-3 rounded-xl bg-accent text-primary font-medium hover:bg-accent-light transition-all duration-300"
-                  >
-                    {copied ? "✓ 已复制" : "一键复制微信号"}
-                  </button>
-                </>
-              ) : (
-                <div className="mb-6">
-                  <QrPlaceholder mode={mode} />
-                </div>
+              <div className="mb-4">
+                <QrPlaceholder mode={mode} />
+              </div>
+
+              {mode === "wechat" && (
+                <button
+                  onClick={handleCopy}
+                  className="w-full py-2.5 rounded-xl bg-elevated text-sm font-mono text-t-secondary hover:text-accent transition-all duration-300"
+                >
+                  {copied ? "✓ 已复制" : `微信号 ${wechatId}（点击复制）`}
+                </button>
               )}
 
               <button

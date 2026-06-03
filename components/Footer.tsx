@@ -1,30 +1,41 @@
 import Link from "next/link";
 
+// 与顶栏 5 大类呼应(博客并入"博客 & 合作"列),并补全 holdings/wisdom/ai 子页
 const footerSections = [
   {
-    title: "内容",
+    title: "关于我",
     links: [
+      { href: "/moe", label: "我是谁" },
       { href: "/story", label: "我的故事" },
-      { href: "/moe", label: "关于我" },
       { href: "/portfolio", label: "作品集" },
-      { href: "/gallery", label: "AI 画廊" },
-      { href: "/blog", label: "博客" },
     ],
   },
   {
-    title: "服务",
-    links: [
-      { href: "/business", label: "合作业务" },
-      { href: "/learn", label: "入门指南" },
-      { href: "/connect", label: "联系方式" },
-    ],
-  },
-  {
-    title: "工具 & 资源",
+    title: "投资",
     links: [
       { href: "/etf", label: "ETF 追踪" },
+      { href: "/holdings", label: "名人持仓" },
+      { href: "/wisdom", label: "智慧文集" },
       { href: "/tools", label: "投资工具箱" },
+      { href: "/learn", label: "投资入门" },
+    ],
+  },
+  {
+    title: "AI",
+    links: [
+      { href: "/ai", label: "AI 总览" },
+      { href: "/ai/tools", label: "AI 工具" },
+      { href: "/ai/prompts", label: "提示词库" },
+      { href: "/gallery", label: "AI 画廊" },
+    ],
+  },
+  {
+    title: "博客 & 合作",
+    links: [
+      { href: "/blog", label: "博客" },
+      { href: "/business", label: "业务咨询" },
       { href: "/perks", label: "专属福利" },
+      { href: "/connect", label: "联系方式" },
       { href: "/nav", label: "常用导航" },
     ],
   },
@@ -35,7 +46,7 @@ export default function Footer() {
     <footer className="border-t border-[rgb(var(--border)_/_var(--border-opacity))] bg-card">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-12">
         {/* Link sections */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-8 mb-10">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-10">
           {footerSections.map((section) => (
             <div key={section.title}>
               <h4 className="text-xs font-medium tracking-[0.15em] uppercase text-t-muted mb-4">
