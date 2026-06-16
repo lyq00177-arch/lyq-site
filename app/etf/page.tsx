@@ -6,6 +6,13 @@ import {
 import EtfTable from "./EtfTable";
 import { EtfSocialBar } from "./EtfSocialBar";
 import { DonutChart } from "@/components/DonutChart";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "ETF 追踪 · 纳指100 / 标普500 实时行情与开户引导",
+  description:
+    "纳斯达克100、标普500 场内外 ETF 实时行情、费率对比、定投测算与新手开户引导，数据每小时自动更新。",
+};
 
 async function fetchEtfData() {
   try {

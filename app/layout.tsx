@@ -43,6 +43,11 @@ export default function RootLayout({
               <filter id="noise">
                 <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="4" stitchTiles="stitch" />
               </filter>
+              {/* 首页篆刻印框的做旧滤镜 —— 定义在此（服务端渲染）供 page.tsx 的印框 url(#seal-rough) 引用，避免 client 组件内 SVG filter 的 hydration mismatch */}
+              <filter id="seal-rough" x="-15%" y="-15%" width="130%" height="130%">
+                <feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="4" seed="7" result="noise" />
+                <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" />
+              </filter>
               <rect width="100%" height="100%" filter="url(#noise)" />
             </svg>
           </div>
