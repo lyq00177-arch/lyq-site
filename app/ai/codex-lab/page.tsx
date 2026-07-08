@@ -10,11 +10,15 @@ export const metadata: Metadata = {
 // 与网站全局样式隔离、零冲突；静态文件位于 public/codex-lab.html。
 export default function CodexLabPage() {
   return (
-    <iframe
-      src="/codex-lab.html"
-      title="Codex 上手记 · 玩中学"
-      className="block w-full border-0"
-      style={{ height: "calc(100dvh - 4rem)" }}
-    />
+    <>
+      {/* 手机端全屏沉浸：隐藏网站页脚，减少干扰 */}
+      <style dangerouslySetInnerHTML={{ __html: `@media (max-width:768px){footer{display:none!important}}` }} />
+      <iframe
+        src="/codex-lab.html"
+        title="Codex 上手记 · 玩中学"
+        className="block w-full border-0"
+        style={{ height: "calc(100dvh - 4rem)" }}
+      />
+    </>
   );
 }
