@@ -284,6 +284,20 @@
   .shop:hover{border-color:rgb(var(--accent));transform:translateY(-2px)}
   .shop.reached{border-color:rgb(var(--ok));background:rgb(var(--ok)/.12)}
   .shop.shake{animation:shake .3s;border-color:rgb(var(--danger))}
+  /* §5 NPC 地图 */
+  .npcmap{margin-top:12px}
+  .blds{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+  .bld{flex:1 1 0;min-width:82px;max-width:130px;background:rgb(var(--bg-elevated));border:1px solid rgb(var(--line)/.12);border-radius:12px;padding:14px 6px;text-align:center;cursor:pointer;transition:.15s}
+  .bld:hover{border-color:rgb(var(--accent));transform:translateY(-2px)}
+  .bld .bi{font-size:26px;line-height:1}
+  .bld .bn{font-size:12px;margin-top:6px;color:rgb(var(--text-muted))}
+  .bld.right{border-color:rgb(var(--ok));background:rgb(var(--ok)/.14)}
+  .bld.wrong{animation:shake .3s;border-color:rgb(var(--danger))}
+  .npcstage{position:relative;height:118px;margin-top:16px}
+  .npc{position:absolute;left:50%;bottom:0;transform:translateX(-50%);transition:transform .5s cubic-bezier(.4,1.1,.5,1),opacity .35s;text-align:center;width:min(240px,82vw)}
+  .npc .nface{font-size:34px;line-height:1}
+  .npcbubble{background:rgb(var(--bg-card));border:1px solid rgb(var(--line)/.14);border-radius:12px;padding:8px 12px;font-size:13px;margin:0 auto 8px;line-height:1.45}
+  .npc.gone{opacity:0;transform:translateX(-50%) translateY(-56px) scale(.4)}
   /* §11 旋钮 */
   .dial-wrap{background:rgb(var(--bg-card));border:1px solid rgb(var(--line)/.1);border-radius:16px;padding:20px;margin-top:8px}
   .dial-ends{display:flex;justify-content:space-between;font-size:13px;color:rgb(var(--text-muted));margin-bottom:10px}
@@ -620,17 +634,55 @@
   }
   // ---- §5 导航钥匙（小镇跑腿）----
   function rTown(c){
-    const shops=[{k:'search',n:'🔍 搜索塔'},{k:'project',n:'📁 项目工坊'},{k:'plugin',n:'🧩 插件铺'},{k:'auto',n:'⏱ 自动化钟楼'}];
+    const BLDS=[
+      {k:'newchat',i:'🆕',n:'新对话'},
+      {k:'search', i:'🔍',n:'搜索'},
+      {k:'plugin', i:'🧩',n:'插件'},
+      {k:'auto',   i:'⏰',n:'自动化'},
+      {k:'project',i:'📁',n:'项目'}
+    ];
+    const NPCS=[
+      {say:'我想让它读我电脑里那个项目文件夹，帮我改代码', want:'project'},
+      {say:'我上周跟它聊的营销方案，翻不到了…', want:'search'},
+      {say:'我想让它每天早上八点，自动帮我总结行业新闻', want:'auto'},
+      {say:'我就随口问问它，今天穿什么合适', want:'newchat'},
+      {say:'我想给它接上我的 Notion，让它能读我的笔记', want:'plugin'}
+    ];
     $(`<div class="chapter-tag">${c.tag}</div><h2 class="title">${c.sec}</h2>
-      <p class="lead">NPC 委托：<b>"帮我改一下本地的这个文件。"</b><br>点亮该去的那间铺子，让勇者跑腿。</p>
-      <div class="town" id="town">${shops.map(s=>`<button class="shop" data-k="${s.k}">${s.n}</button>`).join('')}</div>
-      <div class="nudge" id="ndg">${c.nudge}</div>
-      <div class="takeaway" id="tk"><span class="kw">${c.kw}</span>${c.good}</div>
+      <p class="lead">村民来找 Codex 帮忙，<b>点建筑，把每个人带到该去的入口</b>。送对 <b id="tprog">0</b>/${NPCS.length} 个，拿下「导航钥匙」。</p>
+      <div class="npcmap">
+        <div class="blds" id="blds">
+          ${BLDS.map(b=>`<div class="bld" data-k="${b.k}"><div class="bi">${b.i}</div><div class="bn">${b.n}</div></div>`).join('')}
+        </div>
+        <div class="npcstage"><div class="npc" id="npc"><div class="npcbubble" id="npcsay"></div><div class="nface">🧑</div></div></div>
+      </div>
+      <div class="nudge" id="ndg" style="display:none"></div>
+      <div class="takeaway" id="tk"><span class="kw">${c.kw||'必须带走'}</span>左侧每个入口干不同的活：随便问用<b>新对话</b>、找旧记录用<b>搜索</b>、装能力用<b>插件</b>、设定时任务用<b>自动化</b>、读改你本地文件用<b>项目</b>。</div>
       <div class="center mt"><button class="btn" id="jNext" style="display:none">继续 →</button></div>`);
-    document.querySelectorAll('#town .shop').forEach(b=>b.onclick=()=>{
-      if(b.dataset.k==='project'){ document.querySelectorAll('#town .shop').forEach(x=>x.style.pointerEvents='none'); b.classList.add('reached'); b.textContent='🧑 '+b.textContent; document.getElementById('tk').classList.add('on'); document.getElementById('ndg').classList.remove('on'); unlock('key'); const n=document.getElementById('jNext'); n.style.display='inline-flex'; n.classList.add('glow'); n.onclick=next; }
-      else { b.classList.add('shake'); setTimeout(()=>b.classList.remove('shake'),320); document.getElementById('ndg').classList.add('on'); }
+    let idx=0, done=0;
+    const npc=document.getElementById('npc'), say=document.getElementById('npcsay'), ndg=document.getElementById('ndg');
+    const blds=[...document.querySelectorAll('#blds .bld')];
+    const stage=document.querySelector('.npcstage');
+    const show=()=>{ if(idx>=NPCS.length)return; say.textContent='「'+NPCS[idx].say+'」'; npc.classList.remove('gone'); npc.style.transform='translateX(-50%)'; };
+    blds.forEach(b=>b.onclick=()=>{
+      if(idx>=NPCS.length)return;
+      if(b.dataset.k===NPCS[idx].want){
+        const sRect=stage.getBoundingClientRect(), bRect=b.getBoundingClientRect();
+        const tx=Math.round(bRect.left+bRect.width/2-(sRect.left+sRect.width/2));
+        npc.style.transform=`translateX(calc(-50% + ${tx}px))`;
+        b.classList.add('right'); ndg.style.display='none';
+        setTimeout(()=>{ npc.classList.add('gone'); done++; document.getElementById('tprog').textContent=done;
+          setTimeout(()=>{ b.classList.remove('right'); idx++;
+            if(idx>=NPCS.length){ document.getElementById('tk').classList.add('on'); unlock('key'); const n=document.getElementById('jNext'); n.style.display='inline-flex'; n.classList.add('glow'); n.onclick=next; blds.forEach(x=>x.style.pointerEvents='none'); }
+            else show();
+          },420);
+        },520);
+      } else {
+        b.classList.add('wrong'); setTimeout(()=>b.classList.remove('wrong'),320);
+        ndg.textContent='他要的不是这个——再琢磨下这个需求该去哪个入口。'; ndg.style.display='block';
+      }
     });
+    show();
   }
   // ---- §11 人话之戒（拧旋钮）----
   function rDial(c){
