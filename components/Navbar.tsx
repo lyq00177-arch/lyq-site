@@ -35,6 +35,7 @@ const navGroups: NavGroup[] = [
       { href: "/ai", label: "AI 总览" },
       { href: "/ai/tools", label: "AI 工具" },
       { href: "/ai/prompts", label: "提示词库" },
+      { href: "/ai/codex-lab", label: "Codex 上手记" },
       { href: "/gallery", label: "AI 画廊" },
     ],
   },
