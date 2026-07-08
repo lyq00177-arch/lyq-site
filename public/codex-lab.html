@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 勇者上手记 · Codex 篇</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-primary:10 10 10; --bg-card:17 17 17; --bg-elevated:26 26 26;
+    --text-primary:232 227 216; --text-muted:138 130 120;
+    --accent:212 168 83; --danger:232 90 80; --ok:90 200 140; --line:255 255 255;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:rgb(var(--bg-primary));color:rgb(var(--text-primary));
+    font-family:'Inter','Noto Sans SC',sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;
+    display:flex;flex-direction:column;align-items:center;padding:20px 16px 80px;min-height:100%}
+  .wrap{width:100%;max-width:760px}
+  .display{font-family:'Playfair Display',serif}
+  .accent{color:rgb(var(--accent))}
+  .muted{color:rgb(var(--text-muted))}
+
+  /* ===== HUD ===== */
+  .hud{display:flex;align-items:center;justify-content:space-between;gap:12px;
+    background:rgb(var(--bg-card));border:1px solid rgb(var(--line)/.1);border-radius:14px;
+    padding:10px 14px;margin-bottom:20px;position:sticky;top:8px;z-index:20}
+  .hud-lv{font-size:13px;font-weight:600;white-space:nowrap}
+  .hud-lv b{color:rgb(var(--accent))}
+  .slots{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+  .slot{width:30px;height:30px;border-radius:8px;border:1px dashed rgb(var(--line)/.15);
+    display:flex;align-items:center;justify-content:center;font-size:15px;
+    background:rgb(var(--line)/.03);transition:.3s}
+  .slot.on{border:1px solid rgb(var(--accent)/.6);background:rgb(var(--accent)/.12);
+    animation:pop .4s ease}
+  @keyframes pop{0%{transform:scale(.4);opacity:0}60%{transform:scale(1.2)}100%{transform:scale(1)}}
+
+  /* ===== stage ===== */
+  #stage{animation:fade .45s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .chapter-tag{font-size:11px;letter-spacing:1px;color:rgb(var(--accent));margin-bottom:8px}
+  h1.title{font-size:32px;line-height:1.2;margin-bottom:14px;font-weight:700}
+  h2.title{font-size:23px;margin-bottom:8px;font-weight:700}
+  .lead{color:rgb(var(--text-muted));font-size:16px;margin-bottom:26px}
+  .lead b{color:rgb(var(--text-primary))}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;cursor:pointer;border:none;
+    background:rgb(var(--accent));color:#171310;font-weight:600;font-size:15px;
+    padding:12px 24px;border-radius:12px;transition:.2s;font-family:inherit}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgb(var(--accent)/.28)}
+  .btn.ghost{background:transparent;color:rgb(var(--text-primary));border:1px solid rgb(var(--line)/.16)}
+  .btn.ghost:hover{border-color:rgb(var(--accent));color:rgb(var(--accent));box-shadow:none}
+  .glow{animation:glow 1.6s infinite}
+  @keyframes glow{0%{box-shadow:0 0 0 0 rgb(var(--accent)/.5)}70%{box-shadow:0 0 0 14px rgb(var(--accent)/0)}100%{box-shadow:0 0 0 0 rgb(var(--accent)/0)}}
+  .center{display:flex;justify-content:center}
+  .mt{margin-top:24px}
+
+  /* ===== §1 召唤 ===== */
+  .summon{display:flex;flex-wrap:wrap;gap:10px;margin:8px 0 24px}
+  .ability{background:rgb(var(--bg-elevated));border:1px solid rgb(var(--line)/.1);border-radius:10px;
+    padding:9px 13px;font-size:13px;opacity:0;transform:translateY(8px);animation:flyin .5s forwards}
+  .ability b{color:rgb(var(--accent))}
+  @keyframes flyin{to{opacity:1;transform:none}}
+
+  /* ===== §2 宝箱 ===== */
+  .chests{display:flex;gap:18px;justify-content:center;margin:10px 0 24px;flex-wrap:wrap}
+  .chest{flex:1;min-width:180px;background:rgb(var(--bg-card));border:1px solid rgb(var(--accent)/.25);
+    border-radius:16px;padding:24px 18px;text-align:center;cursor:pointer;transition:.2s}
+  .chest:hover{transform:translateY(-4px);border-color:rgb(var(--accent))}
+  .chest.opened{border-style:solid;border-color:rgb(var(--ok)/.5);background:rgb(var(--ok)/.06);cursor:default;transform:none}
+  .chest .ic{font-size:40px;line-height:1}
+  .chest .nm{font-weight:600;margin:8px 0 4px}
+  .chest .dt{font-size:12.5px;color:rgb(var(--text-muted))}
+  .chest .lk{font-size:12.5px;color:rgb(var(--accent));word-break:break-all}
+
+  /* ===== 判断题 ===== */
+  .choices{display:flex;flex-direction:column;gap:12px;margin-top:8px}
+  .choice{text-align:left;background:rgb(var(--bg-elevated));border:1px solid rgb(var(--line)/.1);
+    border-radius:12px;padding:14px 18px;cursor:pointer;font-family:inherit;font-size:15px;
+    color:rgb(var(--text-primary));transition:.15s}
+  .choice:hover{border-color:rgb(var(--accent));transform:translateX(4px)}
+  .choice.right{border-color:rgb(var(--ok));background:rgb(var(--ok)/.1)}
+  .choice.wrong{border-color:rgb(var(--danger));background:rgb(var(--danger)/.1)}
+  .nudge{margin-top:14px;padding:12px 14px;border-radius:10px;font-size:13.5px;display:none;
+    background:rgb(var(--danger)/.08);border:1px solid rgb(var(--danger)/.25);line-height:1.55}
+  .nudge.on{display:block}
+  .takeaway{margin-top:16px;padding:14px 16px;border-radius:12px;display:none;line-height:1.6;
+    background:rgb(var(--ok)/.08);border:1px solid rgb(var(--ok)/.3);font-size:14px}
+  .takeaway.on{display:block}
+  .takeaway b{color:rgb(var(--accent))}
+  .takeaway .kw{font-size:12px;letter-spacing:1px;color:rgb(var(--ok));display:block;margin-bottom:6px}
+
+  /* ===== §4 探照灯（仿真界面）===== */
+  .app{display:grid;grid-template-columns:150px 1fr 150px;border:1px solid rgb(var(--line)/.1);
+    border-radius:16px;overflow:hidden;background:rgb(var(--bg-card));height:300px;margin-top:8px}
+  .app-region{position:relative;padding:14px;overflow:hidden}
+  .app-left{border-right:1px solid rgb(var(--line)/.07);background:rgb(var(--bg-elevated))}
+  .app-right{border-left:1px solid rgb(var(--line)/.07);background:rgb(var(--bg-elevated))}
+  .region-label{position:absolute;top:6px;left:10px;font-size:10px;letter-spacing:1px;color:rgb(var(--text-muted)/.6)}
+  .nav-item{font-size:12px;color:rgb(var(--text-muted));padding:7px 9px;border-radius:7px;margin-top:4px}
+  .nav-item.first{margin-top:22px}
+  .nav-item.sel{background:rgb(var(--accent)/.12);color:rgb(var(--accent))}
+  .chat-bubble{background:rgb(var(--line)/.05);border-radius:10px;padding:10px 12px;font-size:12px;color:rgb(var(--text-muted));margin-top:24px}
+  .chat-input{position:absolute;bottom:12px;left:14px;right:14px;background:rgb(var(--line)/.06);border-radius:9px;padding:8px 10px;font-size:11px;color:rgb(var(--text-muted)/.7)}
+  .rc{background:rgb(var(--line)/.05);border-radius:8px;height:44px;margin-top:24px}
+  .rc+.rc{margin-top:8px;height:30px}
+  .hotspot{position:absolute;inset:0;cursor:pointer;z-index:5}
+  .hotspot::after{content:'?';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:30px;height:30px;border-radius:50%;background:rgb(var(--accent));color:#171310;font-weight:700;
+    display:flex;align-items:center;justify-content:center;font-size:16px;animation:glow 1.6s infinite}
+  .hotspot.found{pointer-events:none;background:rgb(var(--ok)/.06);box-shadow:inset 0 0 0 2px rgb(var(--ok)/.4)}
+  .hotspot.found::after{content:'✓';background:rgb(var(--ok));animation:none}
+  .popover{position:fixed;inset:0;background:rgb(0 0 0/.55);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+  .popover.on{display:flex}
+  .popcard{background:rgb(var(--bg-elevated));border:1px solid rgb(var(--line)/.12);border-radius:16px;padding:26px;max-width:400px;animation:pop2 .3s ease}
+  @keyframes pop2{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
+  .popcard h3{font-size:19px;margin-bottom:6px}
+  .popcard p{color:rgb(var(--text-muted));font-size:14.5px;margin:10px 0 18px}
+
+  /* ===== §21 任务 ===== */
+  .coach{background:rgb(var(--accent)/.1);border:1px solid rgb(var(--accent)/.28);border-radius:12px;
+    padding:12px 15px;font-size:14px;margin-bottom:14px;line-height:1.5}
+  .coach b{color:rgb(var(--accent))}
+  .coach.done{background:rgb(var(--ok)/.1);border-color:rgb(var(--ok)/.3)}
+  .tph{color:rgb(var(--text-muted)/.6);font-size:11px;text-align:center;margin-top:34px;line-height:1.6}
+  .tdim{opacity:.3;pointer-events:none}
+  .tstep{cursor:pointer;position:relative;border:1px dashed rgb(var(--accent)/.6);background:rgb(var(--accent)/.08);color:rgb(var(--accent))}
+  .tstep::after{content:'?';position:absolute;right:6px;top:50%;transform:translateY(-50%);width:16px;height:16px;border-radius:50%;background:rgb(var(--accent));color:#171310;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;animation:glow 1.6s infinite}
+  .tstep.locked::after{content:'✓';background:rgb(var(--ok));animation:none}
+  .folder{display:flex;align-items:center;gap:8px;background:rgb(var(--line)/.05);border:1px solid rgb(var(--line)/.1);border-radius:9px;padding:10px 12px;margin-top:9px;font-size:12.5px;cursor:pointer;transition:.15s}
+  .folder:first-of-type{margin-top:24px}
+  .folder:hover{border-color:rgb(var(--accent));background:rgb(var(--accent)/.08)}
+  .folder.picked{border-color:rgb(var(--ok));background:rgb(var(--ok)/.1)}
+  .chip{background:rgb(var(--line)/.06);border-radius:9px;padding:11px 13px;font-size:12.5px;margin-top:24px;line-height:1.5}
+  .thinking{margin-top:24px;font-size:12.5px;color:rgb(var(--text-muted))}
+  .blink{display:inline-block;animation:blink 1s steps(2) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .perm{margin-top:14px;background:rgb(var(--danger)/.06);border:1px solid rgb(var(--danger)/.25);border-radius:12px;padding:13px}
+  .perm .pt{font-size:12.5px;margin-bottom:10px;line-height:1.5}
+  .perm .pt b{color:rgb(var(--accent))}
+  .perm-btns{display:flex;gap:8px}
+  .perm-btns button{flex:1;font-size:13px;padding:9px;border-radius:9px;cursor:pointer;font-family:inherit;border:none}
+  .p-allow{background:rgb(var(--ok));color:#0d1a12;font-weight:600}
+  .p-deny{background:rgb(var(--line)/.08);color:rgb(var(--text-primary))}
+  .md-out{margin-top:24px;font-size:11.5px;line-height:1.6;font-family:ui-monospace,Menlo,monospace;white-space:pre-wrap;word-break:break-word}
+  .md-out .h{color:rgb(var(--accent));font-weight:700}
+
+  /* ===== BOSS / 出师 ===== */
+  .boss-box{text-align:center;padding:20px 0}
+  .boss-emoji{font-size:56px}
+  .badge{display:inline-block;background:rgb(var(--accent)/.12);color:rgb(var(--accent));border:1px solid rgb(var(--accent)/.3);border-radius:999px;padding:6px 16px;font-size:14px;margin:14px 0}
+  .cta{background:rgb(var(--accent));color:#171310;font-weight:700;border-radius:14px;padding:16px;margin:22px 0;font-size:16px;text-decoration:none;display:block;transition:.2s}
+  .cta:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgb(var(--accent)/.3)}
+  .cta small{display:block;font-weight:400;font-size:12px;opacity:.75;margin-top:4px}
+  .tease{background:rgb(var(--bg-card));border:1px dashed rgb(var(--line)/.15);border-radius:12px;padding:14px 16px;font-size:13.5px;color:rgb(var(--text-muted));line-height:1.6;margin-bottom:8px}
+  .tease b{color:rgb(var(--accent))}
+  .handbook{text-align:left;background:rgb(var(--bg-card));border:1px solid rgb(var(--accent)/.22);border-radius:16px;padding:18px;margin:8px 0}
+  .hb-head{text-align:center;font-size:14px;font-weight:600;color:rgb(var(--accent));margin-bottom:12px}
+  .hb-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .hb-card{background:rgb(var(--bg-elevated));border:1px solid rgb(var(--line)/.1);border-radius:10px;padding:12px 14px}
+  .hb-card.dgr{border-color:rgb(var(--danger)/.3);background:rgb(var(--danger)/.05)}
+  .hb-t{font-size:13px;font-weight:600;margin-bottom:7px}
+  .hb-card li{font-size:12px;line-height:1.6;color:rgb(var(--text-muted));margin-left:16px}
+  .row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+
+  /* ===== 最终 BOSS·跑酷 ===== */
+  .run-hud{display:flex;justify-content:space-between;align-items:center;font-size:14px;margin:6px 0}
+  #hearts{letter-spacing:2px;font-size:16px}
+  #seg{color:rgb(var(--text-muted));font-size:12.5px}
+  .pbar-wrap{height:9px;background:rgb(var(--line)/.08);border-radius:99px;overflow:hidden;margin-bottom:10px}
+  .pbar{height:100%;width:0;background:linear-gradient(90deg,rgb(var(--accent)),rgb(var(--ok)));transition:width .12s linear}
+  .scene{position:relative;height:200px;background:linear-gradient(180deg,rgb(21 21 28),rgb(13 13 13));
+    border:1px solid rgb(var(--line)/.12);border-radius:14px;overflow:hidden;cursor:pointer;outline:none;user-select:none}
+  .scene.flash{animation:sflash .2s}
+  @keyframes sflash{0%,100%{filter:none}50%{filter:brightness(1.6) sepia(1) hue-rotate(-40deg)}}
+  .ground{position:absolute;bottom:0;left:0;right:0;height:2px;background:rgb(var(--line)/.16)}
+  .runhint{position:absolute;top:10px;left:0;right:0;text-align:center;font-size:12px;color:rgb(var(--text-muted)/.6)}
+  .player{position:absolute;left:54px;bottom:4px;font-size:30px;line-height:1;z-index:3;will-change:transform}
+  .ent{position:absolute;font-size:26px;line-height:1;z-index:2;will-change:left}
+  .ent.pk{filter:drop-shadow(0 0 6px rgb(var(--accent)/.5))}
+  .ent.got{animation:gotpop .3s forwards}
+  @keyframes gotpop{to{transform:translateY(-26px);opacity:0}}
+
+  /* ===== 最终 BOSS · 五阶段战役 ===== */
+  .boss-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px}
+  .boss-name{font-weight:700;font-size:15px}
+  .boss-name .em{font-size:20px;margin-right:2px}
+  .boss-name small{font-weight:400;font-size:11.5px;color:rgb(var(--text-muted))}
+  .boss-phase{font-size:12px;color:rgb(var(--text-muted));white-space:nowrap}
+  .shield-wrap{height:13px;background:rgb(var(--line)/.08);border-radius:99px;overflow:hidden;margin-bottom:16px;border:1px solid rgb(var(--danger)/.3)}
+  .shield-bar{height:100%;width:100%;background:linear-gradient(90deg,rgb(var(--danger)),rgb(var(--accent)));transition:width .6s cubic-bezier(.3,1,.4,1)}
+  .pcards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .pcard{background:rgb(var(--bg-elevated));border:1px solid rgb(var(--line)/.12);border-radius:12px;padding:14px;font-size:14px;cursor:pointer;transition:.15s;text-align:left;color:rgb(var(--text-primary));font-family:inherit}
+  .pcard:hover{border-color:rgb(var(--accent))}
+  .pcard.sel{border-color:rgb(var(--accent));background:rgb(var(--accent)/.16);transform:translateX(3px)}
+  .pcard.done{border-color:rgb(var(--ok)/.5);background:rgb(var(--ok)/.08);opacity:.55;pointer-events:none}
+  .pcard.drag{cursor:grab;touch-action:none;-webkit-user-select:none;user-select:none}
+  .pcard.dragging{cursor:grabbing;opacity:.97;border-color:rgb(var(--accent));box-shadow:0 16px 38px rgb(0 0 0/.55);position:relative;z-index:30;transition:none;will-change:transform}
+  .bucket.hot{border-style:solid;border-color:rgb(var(--accent));background:rgb(var(--accent)/.16);transform:scale(1.04)}
+  .buckets{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+  .bucket{background:rgb(var(--bg-card));border:1px dashed rgb(var(--line)/.22);border-radius:12px;padding:12px;text-align:center;cursor:pointer;min-height:58px;transition:.15s}
+  .bucket:hover{border-color:rgb(var(--accent))}
+  .bucket .bt{font-weight:600;font-size:13px}
+  .bucket .bfill{font-size:11.5px;color:rgb(var(--ok));margin-top:4px;min-height:14px}
+  .bucket.flash{animation:shake .3s;border-color:rgb(var(--danger))}
+  .eqpick{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .eqbtn{background:rgb(var(--bg-elevated));border:1px solid rgb(var(--line)/.12);border-radius:10px;padding:9px 12px;font-size:13px;cursor:pointer;transition:.15s;color:rgb(var(--text-primary));font-family:inherit}
+  .eqbtn.on{border-color:rgb(var(--accent));background:rgb(var(--accent)/.16)}
+  .permwrap{text-align:center}
+  .permcard{background:rgb(var(--bg-elevated));border:1px solid rgb(var(--line)/.15);border-radius:14px;padding:20px;max-width:380px;margin:0 auto}
+  .shieldbtns{display:flex;gap:12px;margin-top:16px}
+  .sbtn{flex:1;padding:14px;border-radius:12px;border:none;cursor:pointer;font-family:inherit;font-weight:700;font-size:15px;transition:.15s}
+  .sbtn:hover{transform:translateY(-2px)}
+  .sbtn.allow{background:rgb(70 130 235);color:#fff}
+  .sbtn.deny{background:rgb(var(--danger));color:#fff}
+  /* 禁区迷宫 */
+  .maze{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;max-width:320px;margin:10px auto 0}
+  .mcell{aspect-ratio:1;border-radius:8px;background:rgb(var(--line)/.05);border:1px solid rgb(var(--line)/.08);display:flex;align-items:center;justify-content:center;font-size:20px;transition:.12s}
+  .mcell.danger{background:rgb(var(--danger)/.18);border-color:rgb(var(--danger)/.5)}
+  .mcell.goal{background:rgb(var(--ok)/.14);border-color:rgb(var(--ok)/.5)}
+  .mcell.you{background:rgb(var(--accent)/.22);border-color:rgb(var(--accent));box-shadow:0 0 12px rgb(var(--accent)/.5)}
+  .mcell.zap{animation:zap .3s}
+  @keyframes zap{0%,100%{transform:scale(1)}50%{transform:scale(1.18);background:rgb(var(--danger)/.55)}}
+  .dpad{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:14px}
+  .dpad>div{display:flex;gap:36px}
+  .dpad button{width:50px;height:40px;border-radius:10px;border:1px solid rgb(var(--line)/.18);background:rgb(var(--bg-elevated));color:rgb(var(--text-primary));font-size:16px;cursor:pointer;font-family:inherit}
+  .dpad button:hover{border-color:rgb(var(--accent));color:rgb(var(--accent))}
+  /* 禁区飞行 Flappy */
+  .flappy{width:100%;height:360px;display:block;margin:10px auto 0;
+    background:linear-gradient(180deg,rgb(22 24 32),rgb(13 13 16));border:1px solid rgb(var(--line)/.12);
+    border-radius:12px;cursor:pointer;touch-action:manipulation}
+  .run-tip{text-align:center;font-size:13px;color:rgb(var(--text-muted));margin-top:10px;line-height:1.5}
+  .run-tip b{color:rgb(var(--accent))}
+  /* 权限打地鼠 */
+  .whack-hud{display:flex;justify-content:space-between;font-size:13px;margin:6px auto 4px;max-width:440px}
+  .whack-hud b{color:rgb(var(--accent))}
+  .whack{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;max-width:440px;margin:8px auto 0}
+  .hole{aspect-ratio:1.35;background:rgb(var(--line)/.06);border:1px solid rgb(var(--line)/.1);border-radius:14px;position:relative;overflow:hidden}
+  .mole{position:absolute;bottom:-105%;left:6%;right:6%;border-radius:12px 12px 9px 9px;padding:8px 4px;text-align:center;font-size:12px;font-weight:600;line-height:1.25;cursor:pointer;transition:bottom .16s ease-out;user-select:none}
+  .mole.up{bottom:8%}
+  .mole.danger{background:rgb(var(--danger)/.92);color:#fff}
+  .mole.safe{background:rgb(70 130 235);color:#fff}
+  .mole.hit{animation:squish .2s}
+  @keyframes squish{50%{transform:scaleY(.55)}}
+  /* §7 能力商店闯关 */
+  .quest-scene{display:flex;align-items:center;justify-content:space-around;height:96px;
+    background:linear-gradient(180deg,rgb(var(--line)/.05),transparent);border-radius:14px;margin-top:8px;font-size:42px;position:relative;overflow:hidden}
+  .quest-scene .hero{transition:transform .3s}
+  .quest-scene .hero.hop{animation:hop .8s ease-out}
+  @keyframes hop{0%{transform:translate(0,0)}45%{transform:translate(60px,-34px)}100%{transform:translate(150px,0);opacity:0}}
+  .quest-scene .obst.shake{animation:shake .3s}
+  .powers{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+  .pow{background:rgb(var(--bg-elevated));border:1px solid rgb(var(--line)/.12);border-radius:12px;padding:14px;font-size:14px;cursor:pointer;color:rgb(var(--text-primary));font-family:inherit;transition:.15s}
+  .pow:hover{border-color:rgb(var(--accent));transform:translateY(-2px)}
+  .qdef{display:none;margin-top:14px;background:rgb(var(--ok)/.1);border:1px solid rgb(var(--ok)/.3);border-radius:10px;padding:12px 14px;font-size:13px;line-height:1.5}
+  .qdef.on{display:block;animation:fade .3s}
+  /* §6 擦除迷雾 */
+  .fogwrap{position:relative;width:100%;height:200px;border-radius:14px;overflow:hidden;margin-top:8px;background:rgb(var(--bg-elevated))}
+  .memo{position:absolute;transform:translate(-50%,-50%);background:rgb(var(--line)/.08);border:1px solid rgb(var(--line)/.14);border-radius:18px;padding:8px 13px;font-size:13px;color:rgb(var(--text-muted));cursor:pointer;font-family:inherit;white-space:nowrap}
+  .memo.target.lit{color:rgb(var(--accent));border-color:rgb(var(--accent));box-shadow:0 0 16px rgb(var(--accent)/.6);animation:bob 1.6s ease-in-out infinite;z-index:5}
+  .memo.caught{border-color:rgb(var(--ok));background:rgb(var(--ok)/.15);color:rgb(var(--ok));animation:none}
+  .fog{position:absolute;inset:0;cursor:crosshair;touch-action:none;z-index:3}
+  /* §7 超级玛丽 */
+  .mario{width:100%;height:280px;display:block;margin:8px auto 0;background:linear-gradient(180deg,rgb(18 22 34),rgb(12 12 16));border:1px solid rgb(var(--line)/.12);border-radius:12px;touch-action:none}
+  .mario-pad{display:flex;justify-content:center;gap:12px;margin-top:12px;position:relative;z-index:45}
+  .mbtn{min-width:64px;height:46px;border-radius:12px;border:1px solid rgb(var(--line)/.18);background:rgb(var(--bg-elevated));color:rgb(var(--text-primary));font-size:16px;font-family:inherit;cursor:pointer;user-select:none;touch-action:manipulation}
+  .mbtn:hover{border-color:rgb(var(--accent));color:rgb(var(--accent))}
+  .mbtn:active{background:rgb(var(--accent)/.18)}
+  /* 试玩菜单 */
+  #testBtn{position:fixed;right:16px;bottom:16px;z-index:70;background:rgb(var(--accent));color:#171310;border:none;border-radius:999px;padding:10px 16px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 8px 24px rgb(0 0 0/.4);font-family:inherit}
+  .credit{position:fixed;left:12px;bottom:12px;z-index:40;font-size:11.5px;line-height:1.5;color:rgb(255 255 255/.45);background:rgb(0 0 0/.38);backdrop-filter:blur(4px);padding:5px 10px;border-radius:8px;border:1px solid rgb(255 255 255/.08);max-width:min(72vw,360px)}
+  .credit a{color:rgb(var(--accent));text-decoration:none;font-weight:600}
+  .credit a:hover{text-decoration:underline}
+  @media (max-width:600px){ .credit{font-size:10px;left:8px;bottom:8px;padding:4px 8px} }
+  .tmenu{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+  .tmenu button{background:rgb(var(--bg-elevated));border:1px solid rgb(var(--line)/.12);border-radius:12px;padding:14px;font-size:14px;cursor:pointer;color:rgb(var(--text-primary));font-family:inherit;text-align:left;transition:.15s}
+  .tmenu button:hover{border-color:rgb(var(--accent));transform:translateY(-2px)}
+  /* §5 小镇跑腿 */
+  .town{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+  .shop{background:rgb(var(--bg-elevated));border:1px solid rgb(var(--line)/.12);border-radius:14px;padding:20px 14px;font-size:15px;cursor:pointer;color:rgb(var(--text-primary));font-family:inherit;transition:.15s}
+  .shop:hover{border-color:rgb(var(--accent));transform:translateY(-2px)}
+  .shop.reached{border-color:rgb(var(--ok));background:rgb(var(--ok)/.12)}
+  .shop.shake{animation:shake .3s;border-color:rgb(var(--danger))}
+  /* §11 旋钮 */
+  .dial-wrap{background:rgb(var(--bg-card));border:1px solid rgb(var(--line)/.1);border-radius:16px;padding:20px;margin-top:8px}
+  .dial-ends{display:flex;justify-content:space-between;font-size:13px;color:rgb(var(--text-muted));margin-bottom:10px}
+  .dial{width:100%;accent-color:rgb(var(--accent));height:8px;cursor:grab}
+  .dial-reply{margin-top:16px;background:rgb(var(--bg-elevated));border:1px solid rgb(var(--line)/.1);border-radius:10px;padding:13px 15px;font-size:13.5px;line-height:1.55;transition:color .2s}
+  /* §6 捞碎片 */
+  .pool{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;min-height:120px;padding:18px;background:rgb(var(--line)/.04);border:1px solid rgb(var(--line)/.08);border-radius:14px;margin-top:8px}
+  .frag{background:rgb(var(--bg-elevated));border:1px solid rgb(var(--line)/.12);border-radius:20px;padding:9px 15px;font-size:13px;color:rgb(var(--text-muted));cursor:pointer;font-family:inherit;animation:bob 2.6s ease-in-out infinite;animation-delay:calc(var(--i)*.3s)}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+  .frag.target{color:rgb(var(--accent));border-color:rgb(var(--accent)/.6);box-shadow:0 0 14px rgb(var(--accent)/.45)}
+  .frag.caught{border-color:rgb(var(--ok));background:rgb(var(--ok)/.14);color:rgb(var(--ok));animation:none}
+  .frag.shake{animation:shake .3s}
+  /* §1 吸泡泡 */
+  .arena{position:relative;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;min-height:150px;padding:18px;background:radial-gradient(circle at 50% 55%,rgb(var(--accent)/.07),transparent 70%);border-radius:16px;margin:6px 0}
+  .buddy-core{font-size:52px;line-height:1;flex-basis:100%;text-align:center;transition:.3s}
+  .buddy-core.hatched{animation:eqpop .6s cubic-bezier(.2,1.5,.4,1)}
+  .buddy-core.gulp{animation:gulp .35s ease}
+  @keyframes gulp{45%{transform:scale(1.28)}}
+  .bubble{background:rgb(var(--bg-elevated));border:1px solid rgb(var(--accent)/.3);border-radius:22px;padding:10px 16px;font-size:14px;color:rgb(var(--text-primary));cursor:pointer;font-family:inherit;animation:bob 2.6s ease-in-out infinite;transition:transform .3s,opacity .3s}
+  .bubble:nth-child(3){animation-delay:.5s}.bubble:nth-child(4){animation-delay:1s}.bubble:nth-child(5){animation-delay:.3s}.bubble:nth-child(6){animation-delay:.8s}
+  .bubble:hover{border-color:rgb(var(--accent));transform:translateY(-3px)}
+  .bubble.eaten{opacity:0;transform:scale(.2);pointer-events:none}
+
+  /* ===== 勇者形象框 ===== */
+  #avatar{position:fixed;left:16px;top:50%;transform:translateY(-50%);width:140px;z-index:30;
+    background:rgb(var(--bg-card));border:1px solid rgb(var(--line)/.1);border-radius:16px;padding:14px 12px;text-align:center}
+  .ava-title{font-size:12px;color:rgb(var(--accent));font-weight:600;margin-bottom:6px}
+  .ava-stage{position:relative;width:114px;height:150px;margin:0 auto}
+  .ava-svg{width:100%;height:100%;display:block}
+  #avaGear{position:absolute;inset:0;pointer-events:none}
+  .gear{position:absolute;font-size:17px;transform:translate(-50%,-50%);filter:drop-shadow(0 1px 2px rgb(0 0 0/.5));animation:gpop .35s ease}
+  @keyframes gpop{0%{transform:translate(-50%,-50%) scale(0)}70%{transform:translate(-50%,-50%) scale(1.35)}100%{transform:translate(-50%,-50%) scale(1)}}
+  .ava-count{font-size:12px;margin-top:6px}.ava-count b{color:rgb(var(--accent))}
+  .ava-hint{font-size:10.5px;color:rgb(var(--text-muted));margin-top:2px;line-height:1.3}
+  @media(max-width:1160px){
+    #avatar{position:static;transform:none;width:100%;max-width:760px;margin:0 auto 14px;
+      display:flex;align-items:center;gap:14px;text-align:left}
+    .ava-stage{width:66px;height:88px;margin:0;flex:none}
+    .ava-title{margin:0}
+    .gear{font-size:11px}
+  }
+
+  /* ===== 获得装备·大正方形卡（居中跳出、自动消失、不挡操作）===== */
+  .reward{position:fixed;left:50%;top:44%;transform:translate(-50%,-50%) scale(.8);
+    width:266px;max-width:82vw;background:linear-gradient(180deg,rgb(34 28 18),rgb(20 18 14));
+    border:1px solid rgb(var(--accent)/.6);border-radius:20px;padding:28px 22px;text-align:center;
+    z-index:80;opacity:0;pointer-events:none;transition:transform .32s cubic-bezier(.2,1.4,.4,1),opacity .25s;
+    box-shadow:0 26px 74px rgb(0 0 0/.62)}
+  .reward.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  .reward .r-lbl{font-size:12px;letter-spacing:2px;color:rgb(var(--accent));margin-bottom:12px}
+  .reward .r-ic{font-size:64px;line-height:1;display:inline-block}
+  .reward.pop .r-ic{animation:eqpop .6s cubic-bezier(.2,1.5,.4,1)}
+  @keyframes eqpop{0%{transform:scale(.2) rotate(-30deg)}60%{transform:scale(1.3) rotate(8deg)}100%{transform:scale(1) rotate(0)}}
+  .reward .r-name{font-size:21px;font-weight:700;margin:14px 0 6px}
+  .reward .r-power{font-size:12.5px;color:rgb(var(--text-muted));line-height:1.55}
+
+  /* ===== toast ===== */
+  .toast{position:fixed;left:50%;bottom:30px;transform:translateX(-50%) translateY(80px);
+    background:rgb(var(--bg-elevated));border:1px solid rgb(var(--accent)/.5);border-radius:12px;
+    padding:12px 20px;font-size:14px;font-weight:600;z-index:60;opacity:0;transition:.4s;white-space:nowrap;
+    box-shadow:0 10px 40px rgb(0 0 0/.5)}
+  .toast .em{font-size:18px;margin-right:6px}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .toast b{color:rgb(var(--accent))}
+
+  /* ===== 支线·装备台 hub ===== */
+  .hub-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+  .node{background:rgb(var(--bg-elevated));border:1px solid rgb(var(--line)/.1);border-radius:14px;padding:16px;cursor:pointer;transition:.15s;text-align:left}
+  .node:hover{border-color:rgb(var(--accent));transform:translateY(-3px)}
+  .node.done{border-color:rgb(var(--ok)/.5);background:rgb(var(--ok)/.06)}
+  .node .ni{font-size:30px;line-height:1}
+  .node .nn{font-weight:600;margin-top:6px}
+  .node .ns{font-size:11px;color:rgb(var(--text-muted));margin-top:2px}
+  .node .nd{font-size:12px;color:rgb(var(--ok));margin-top:6px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .flip{background:rgb(var(--bg-elevated));border:1px solid rgb(var(--line)/.12);border-radius:12px;padding:14px;cursor:pointer;text-align:center;min-height:96px;display:flex;flex-direction:column;justify-content:center;transition:.15s}
+  .flip:hover{border-color:rgb(var(--accent))}
+  .flip.open{border-color:rgb(var(--ok)/.5);background:rgb(var(--ok)/.06);cursor:default}
+  .flip .ft{font-weight:600;font-size:14px}
+  .flip .fen{font-size:11px;color:rgb(var(--accent))}
+  .flip .fm{font-size:12px;color:rgb(var(--text-muted));margin-top:7px;line-height:1.5;display:none}
+  .flip.open .fm{display:block}
+  .backbtn{margin-top:20px}
+
+  @media(max-width:680px){
+    .hub-grid,.grid2{grid-template-columns:1fr}
+    .app{grid-template-columns:1fr;height:auto}
+    .app-left,.app-right{border:none;border-bottom:1px solid rgb(var(--line)/.07)}
+    .chat-input{position:static;margin-top:12px}
+    .hb-grid{grid-template-columns:1fr}
+    h1.title{font-size:26px}
+  }
+</style>
+</head>
+<body>
+<div id="avatar">
+  <div class="ava-title">🗡 AI 勇者</div>
+  <div class="ava-stage">
+    <svg viewBox="0 0 100 140" class="ava-svg">
+      <rect x="38" y="92" width="9" height="34" rx="4" fill="#2b2f3a"/>
+      <rect x="53" y="92" width="9" height="34" rx="4" fill="#2b2f3a"/>
+      <rect x="22" y="52" width="9" height="33" rx="4" fill="#efe9dd"/>
+      <rect x="69" y="52" width="9" height="33" rx="4" fill="#efe9dd"/>
+      <rect x="30" y="48" width="40" height="46" rx="11" fill="#f2efe8"/>
+      <rect x="44" y="39" width="12" height="9" fill="#e8c9a0"/>
+      <circle cx="50" cy="27" r="15" fill="#e8c9a0"/>
+      <path d="M34 24 a16 16 0 0 1 32 0 q-16 -11 -32 0 z" fill="#3a3027"/>
+    </svg>
+    <div id="avaGear"></div>
+  </div>
+  <div class="ava-count">装备 <b id="avaCount">0/14</b></div>
+  <div class="ava-hint" id="avaHint">白 T 小白 · 待装备</div>
+</div>
+<div class="wrap">
+  <div class="hud">
+    <div class="hud-lv">🗡 AI 勇者 <b id="lv">Lv.1</b> · 装备 <b id="eqcount">0/8</b></div>
+    <div class="slots" id="slots"></div>
+  </div>
+  <div id="stage"></div>
+</div>
+<button id="testBtn" onclick="testMenu()">🎮 试玩</button>
+
+<div class="popover" id="pop"><div class="popcard">
+  <div class="chapter-tag" id="popTag"></div>
+  <h3 id="popTitle"></h3>
+  <p id="popBody"></p>
+  <div class="center"><button class="btn" onclick="closePop()">懂了懂了</button></div>
+</div></div>
+
+<div class="reward" id="reward">
+  <div class="r-lbl">⚔ 恭喜获得新装备</div>
+  <div class="r-ic" id="rIcon">🤝</div>
+  <div class="r-name" id="rName"></div>
+  <div class="r-power" id="rPower"></div>
+</div>
+
+<script>
+  // ===== 装备定义（每件锚一个真本事）=====
+  const EQUIPS=[
+    {id:'buddy', icon:'🤝', name:'伙伴 Codex', tier:'main', power:'一个"做事型"AI 伙伴：会聊天、读你的文件、搜网页、生成图文'},
+    {id:'ticket',icon:'🎫', name:'入场券', tier:'main', power:'官网下载 + ChatGPT 账号登录，正式上路'},
+    {id:'compass',icon:'🧭', name:'三态罗盘', tier:'main', power:'一眼分清：本地文件用 App、长任务用云端、随便问用普通对话'},
+    {id:'map',   icon:'🗺', name:'工作台地图', tier:'main', power:'看懂界面：左=入口、中=对线、右=交作业'},
+    {id:'key',   icon:'🗝', name:'导航钥匙', tier:'main', power:'要它读/改你的文件，就从"项目"进'},
+    {id:'ring',  icon:'💍', name:'人话之戒', tier:'main', power:'非程序员选"日常工作"模式，让它少讲黑话'},
+    {id:'medal', icon:'🎖', name:'实战勋章', tier:'main', power:'指挥它跑通了人生第一个完整任务'},
+    {id:'shield',icon:'🛡', name:'权限盾', tier:'main', power:'权限先看路径，绝不盲点允许'},
+    // ↓ 支线·进阶装备台
+    {id:'collar',icon:'📿', name:'驯化项圈', tier:'side', power:'用个性化规则，永久改掉它的说话方式'},
+    {id:'bag',   icon:'🎒', name:'插件背包', tier:'side', power:'看穿 Plugin/Connector/Skill/MCP 四大黑话'},
+    {id:'clock', icon:'⏳', name:'定时符', tier:'side', power:'让它定时/延后自动干活'},
+    {id:'crystal',icon:'🔮',name:'记忆水晶', tier:'side', power:'用"搜索"找回聊过、跑过的一切'},
+    {id:'rune',  icon:'🪄', name:'进阶符文', tier:'side', power:'MCP / Git / 浏览器 三个进阶开关'},
+    {id:'legend',icon:'☠️', name:'传说·电脑操控', tier:'side', power:'能操控整台电脑——但绝不让它碰微信/社媒'}
+  ];
+  const MAIN=EQUIPS.filter(e=>e.tier==='main').map(e=>e.id);
+  const mainDone=()=>MAIN.every(id=>owned.has(id));
+  const owned=new Set();
+  function renderSlots(){
+    document.getElementById('slots').innerHTML=EQUIPS.map(e=>
+      `<div class="slot${owned.has(e.id)?' on':''}" title="${e.name}">${owned.has(e.id)?e.icon:''}</div>`).join('');
+    document.getElementById('eqcount').textContent=owned.size+'/'+EQUIPS.length;
+    document.getElementById('lv').textContent='Lv.'+(1+Math.floor(owned.size/2));
+    renderAvatar();
+  }
+  // 装备穿戴位置（%，落在小人身体各部位）
+  const AVA_POS={ legend:[50,3], rune:[13,10], map:[87,12], buddy:[90,30], crystal:[10,34],
+    collar:[50,32], ticket:[36,42], medal:[58,44], bag:[16,45], shield:[13,56], ring:[87,56],
+    compass:[38,63], key:[60,63], clock:[50,82] };
+  function renderAvatar(){
+    const box=document.getElementById('avaGear'); if(!box)return;
+    box.innerHTML=EQUIPS.filter(e=>owned.has(e.id)).map(e=>{
+      const p=AVA_POS[e.id]||[50,50];
+      return `<span class="gear" style="left:${p[0]}%;top:${p[1]}%" title="${e.name}">${e.icon}</span>`;
+    }).join('');
+    const hint=document.getElementById('avaHint');
+    if(hint) hint.textContent = owned.size===0?'白 T 小白 · 待装备'
+      : owned.size>=EQUIPS.length?'完全体 · 大师勇者 🐉' : '已披挂 '+owned.size+' 件';
+    const c=document.getElementById('avaCount'); if(c) c.textContent=owned.size+'/'+EQUIPS.length;
+  }
+  function unlock(id){
+    if(owned.has(id)) return;
+    owned.add(id);
+    renderSlots();
+    const e=EQUIPS.find(x=>x.id===id);
+    document.getElementById('rIcon').textContent=e.icon;
+    document.getElementById('rName').textContent=e.name;
+    document.getElementById('rPower').textContent=e.power||'';
+    const r=document.getElementById('reward');
+    r.classList.add('on');
+    r.classList.remove('pop'); void r.offsetWidth; r.classList.add('pop');
+    clearTimeout(window._rt); window._rt=setTimeout(()=>r.classList.remove('on'), 2000);
+  }
+
+  // ===== 章节数据 =====
+  const chapters=[
+    {type:'intro'},
+    {type:'chests'},
+    {type:'toss', tag:'第 3 章 · §3 三兄弟', sec:'先分清你手里有几种「它」',
+     q:'你想让 Codex 帮你整理电脑里的一个<b>本地文件夹</b>。三兄弟里该进哪个？',
+     choices:[{t:'普通 ChatGPT 对话',ok:false},{t:'本地 Codex App',ok:true},{t:'云端 Codex',ok:false}],
+     equip:'compass', kw:'必须带走',
+     good:'处理<b>本地文件</b>就用 Codex App，要它在远程<b>长时间跑任务</b>用云端 Codex，随便问问用普通对话。',
+     nudge:'普通对话/云端都碰不到你电脑里的文件。要读本地文件夹，得用装在你电脑上的 Codex App。'},
+    {type:'explore'},
+    {type:'town', tag:'第 5 章 · §5 左侧导航', sec:'该从哪个门进去干活？',
+     q:'你要让它<b>修改你本地的一个文件</b>。左侧导航该点哪个入口？',
+     choices:[{t:'普通对话',ok:false},{t:'项目',ok:true},{t:'搜索',ok:false}],
+     equip:'key', kw:'必须带走',
+     good:'要它<b>读/改你的文件</b>就进「项目」（指定文件夹）；只是随便聊用「普通对话」。',
+     nudge:'普通对话不绑定你的文件夹。要动本地文件，得从「项目」进，把文件夹交给它。'},
+    {type:'dial', tag:'第 6 章 · §11 设置·常规', sec:'第一次进设置，先调一个关键项',
+     q:'你不是程序员。设置里「工作模式」二选一，选哪个？',
+     choices:[{t:'编程模式（显得专业）',ok:false},{t:'日常工作模式',ok:true},{t:'不管，保持默认',ok:false}],
+     equip:'ring', kw:'必须带走',
+     good:'非程序员选<b>「日常工作」模式</b>，Codex 会自动少讲工程黑话、多说人话。',
+     nudge:'选「编程」或放任默认，它容易一开口就满屏术语把你劝退。你要的是「日常工作」。'},
+    {type:'task'},
+    {type:'boss'}
+  ];
+  let ci=0;
+
+  function next(){ ci++; render(); window.scrollTo({top:0,behavior:'smooth'}); }
+  function render(){
+    const c=chapters[ci];
+    ({intro:rIntro,chests:rChests,judge:rJudge,toss:rToss,town:rTown,dial:rDial,explore:rExplore,task:rTask,boss:rBoss})[c.type](c);
+  }
+  const $=h=>{document.getElementById('stage').innerHTML=h;};
+
+  // ---- §1 召唤伙伴（吸能力泡泡）----
+  function rIntro(){
+    const ab=['💬 陪聊','📄 读本地文件','🔍 搜网页','🌐 开浏览器','🖼 生成图文/代码'];
+    $(`<div class="chapter-tag">第 1 章 · §1 Codex 到底是什么</div>
+      <h1 class="title display">召唤你的<span class="accent">赛博伙伴</span></h1>
+      <p class="lead">它不是问一句答一句的聊天框。<b>点每个能力泡泡，吸进你的伙伴。</b>已吸 <b id="absn">0</b>/5</p>
+      <div class="arena" id="arena">
+        <div class="buddy-core" id="buddyCore">🥚</div>
+        ${ab.map((a,i)=>`<button class="bubble" data-i="${i}">${a}</button>`).join('')}
+      </div>
+      <p class="lead" style="margin-top:6px"><b>一句话：它更像一个"做事型"的 ChatGPT</b>——不只告诉你"怎么做"，很多时候直接帮你"做一遍"。</p>
+      <div class="center"><button class="btn glow" id="introNext" style="display:none" onclick="unlock('buddy');next()">收下伙伴，出发 →</button></div>`);
+    let got=0;
+    document.querySelectorAll('#arena .bubble').forEach(b=>b.onclick=()=>{
+      if(b.classList.contains('eaten'))return; b.classList.add('eaten');
+      const core=document.getElementById('buddyCore');
+      const br=b.getBoundingClientRect(), cr=core.getBoundingClientRect();
+      const dx=(cr.left+cr.width/2)-(br.left+br.width/2), dy=(cr.top+cr.height/2)-(br.top+br.height/2);
+      b.style.animation='none';
+      b.style.transition='transform .5s cubic-bezier(.5,-0.15,.75,.5),opacity .5s';
+      requestAnimationFrame(()=>{ b.style.transform='translate('+dx+'px,'+dy+'px) scale(.05)'; b.style.opacity='0'; });
+      got++; document.getElementById('absn').textContent=got;
+      core.style.fontSize=(52+got*8)+'px';
+      core.classList.remove('gulp'); void core.offsetWidth; core.classList.add('gulp');
+      setTimeout(()=>{ core.textContent = got>=5?'🤝':got>=3?'🐣':'🥚'; },380);
+      if(got===5){ setTimeout(()=>{ core.classList.add('hatched'); document.getElementById('introNext').style.display='inline-flex'; },460); }
+    });
+  }
+
+  // ---- §2 宝箱 ----
+  function rChests(){
+    $(`<div class="chapter-tag">第 2 章 · §2 下载和登录</div>
+      <h2 class="title">开局两个宝箱</h2>
+      <p class="lead">上路前先领装备——点开这俩宝箱。</p>
+      <div class="chests">
+        <div class="chest" id="c1" onclick="openChest('c1')"><div class="ic">🎁</div><div class="nm">宝箱一 · 下载</div><div class="dt">点开领取</div></div>
+        <div class="chest" id="c2" onclick="openChest('c2')"><div class="ic">🎁</div><div class="nm">宝箱二 · 登录</div><div class="dt">点开领取</div></div>
+      </div>
+      <div class="takeaway" id="chestTip"><span class="kw">必须带走</span>从<b>官网 openai.com/codex</b> 下载，用你的 <b>ChatGPT 账号</b>登录——普通账号也有免费额度可以尝鲜。</div>
+      <div class="center mt"><button class="btn" id="chestNext" style="display:none" onclick="unlock('ticket');next()">进入工作台 →</button></div>`);
+    window._chest=0;
+  }
+  function openChest(id){
+    const el=document.getElementById(id);
+    if(el.classList.contains('opened'))return;
+    el.classList.add('opened');
+    if(id==='c1') el.innerHTML='<div class="ic">📦</div><div class="nm">下载地址</div><div class="lk">openai.com/codex</div>';
+    else el.innerHTML='<div class="ic">🔑</div><div class="nm">登录方式</div><div class="lk">用 ChatGPT 账号登录</div>';
+    window._chest++;
+    if(window._chest===2){
+      document.getElementById('chestTip').classList.add('on');
+      document.getElementById('chestNext').style.display='inline-flex';
+      document.getElementById('chestNext').classList.add('glow');
+    }
+  }
+
+  // ---- 判断题 ----
+  function rJudge(c){
+    $(`<div class="chapter-tag">${c.tag}</div>
+      <h2 class="title">${c.sec}</h2>
+      <p class="lead">${c.q}</p>
+      <div class="choices" id="ch">${c.choices.map((o,i)=>`<button class="choice" data-i="${i}">${o.t}</button>`).join('')}</div>
+      <div class="nudge" id="nudge">${c.nudge}</div>
+      <div class="takeaway" id="tk"><span class="kw">${c.kw}</span>${c.good}</div>
+      <div class="center mt"><button class="btn" id="jNext" style="display:none">继续 →</button></div>`);
+    document.querySelectorAll('#ch .choice').forEach(b=>b.onclick=()=>{
+      const i=+b.dataset.i;
+      if(c.choices[i].ok){
+        document.querySelectorAll('#ch .choice').forEach(x=>x.style.pointerEvents='none');
+        b.classList.add('right');
+        document.getElementById('nudge').classList.remove('on');
+        document.getElementById('tk').classList.add('on');
+        unlock(c.equip);
+        const n=document.getElementById('jNext');
+        n.style.display='inline-flex'; n.classList.add('glow'); n.onclick=next;
+      } else {
+        b.classList.add('wrong'); b.style.pointerEvents='none';
+        document.getElementById('nudge').classList.add('on');
+      }
+    });
+  }
+
+  // ---- §3 三态罗盘（拖到门）----
+  function rToss(c){
+    $(`<div class="chapter-tag">${c.tag}</div><h2 class="title">${c.sec}</h2>
+      <p class="lead">${c.q}<br><b>把需求卡拖进对的那扇门。</b></p>
+      <div class="pcards" id="tossc" style="grid-template-columns:1fr;max-width:280px;margin:0 auto"><div class="pcard drag" data-a="app">📂 帮我整理这个本地文件夹</div></div>
+      <div class="buckets" id="doors" style="grid-template-columns:1fr 1fr 1fr;margin-top:16px">
+        <div class="bucket dz" data-k="chat"><div class="bt">💬 普通<br>ChatGPT</div></div>
+        <div class="bucket dz" data-k="app"><div class="bt">💻 本地<br>Codex App</div></div>
+        <div class="bucket dz" data-k="cloud"><div class="bt">☁️ 云端<br>Codex</div></div>
+      </div>
+      <div class="nudge" id="ndg">${c.nudge}</div>
+      <div class="takeaway" id="tk"><span class="kw">${c.kw}</span>${c.good}</div>
+      <div class="center mt"><button class="btn" id="jNext" style="display:none">继续 →</button></div>`);
+    enableDrag('#tossc .pcard','#doors .bucket',(card,zone)=>{
+      if(zone.dataset.k==='app'){ card.classList.add('done'); zone.classList.add('hot'); document.getElementById('tk').classList.add('on'); document.getElementById('ndg').classList.remove('on'); unlock('compass'); const n=document.getElementById('jNext'); n.style.display='inline-flex'; n.classList.add('glow'); n.onclick=next; }
+      else { zone.classList.add('flash'); setTimeout(()=>zone.classList.remove('flash'),320); document.getElementById('ndg').classList.add('on'); }
+    });
+  }
+  // ---- §5 导航钥匙（小镇跑腿）----
+  function rTown(c){
+    const shops=[{k:'search',n:'🔍 搜索塔'},{k:'project',n:'📁 项目工坊'},{k:'plugin',n:'🧩 插件铺'},{k:'auto',n:'⏱ 自动化钟楼'}];
+    $(`<div class="chapter-tag">${c.tag}</div><h2 class="title">${c.sec}</h2>
+      <p class="lead">NPC 委托：<b>"帮我改一下本地的这个文件。"</b><br>点亮该去的那间铺子，让勇者跑腿。</p>
+      <div class="town" id="town">${shops.map(s=>`<button class="shop" data-k="${s.k}">${s.n}</button>`).join('')}</div>
+      <div class="nudge" id="ndg">${c.nudge}</div>
+      <div class="takeaway" id="tk"><span class="kw">${c.kw}</span>${c.good}</div>
+      <div class="center mt"><button class="btn" id="jNext" style="display:none">继续 →</button></div>`);
+    document.querySelectorAll('#town .shop').forEach(b=>b.onclick=()=>{
+      if(b.dataset.k==='project'){ document.querySelectorAll('#town .shop').forEach(x=>x.style.pointerEvents='none'); b.classList.add('reached'); b.textContent='🧑 '+b.textContent; document.getElementById('tk').classList.add('on'); document.getElementById('ndg').classList.remove('on'); unlock('key'); const n=document.getElementById('jNext'); n.style.display='inline-flex'; n.classList.add('glow'); n.onclick=next; }
+      else { b.classList.add('shake'); setTimeout(()=>b.classList.remove('shake'),320); document.getElementById('ndg').classList.add('on'); }
+    });
+  }
+  // ---- §11 人话之戒（拧旋钮）----
+  function rDial(c){
+    $(`<div class="chapter-tag">${c.tag}</div><h2 class="title">${c.sec}</h2>
+      <p class="lead">你不是程序员。<b>把旋钮拧到底、拨到「日常工作」</b>，看它说话怎么变。</p>
+      <div class="dial-wrap">
+        <div class="dial-ends"><span>😵 编程</span><span>😌 日常工作</span></div>
+        <input type="range" min="0" max="100" value="0" id="dial" class="dial">
+        <div class="dial-reply" id="dreply">"已初始化 venv，建议用 async 重构 pipeline…"</div>
+      </div>
+      <div class="takeaway" id="tk"><span class="kw">${c.kw}</span>${c.good}</div>
+      <div class="center mt"><button class="btn" id="jNext" style="display:none">继续 →</button></div>`);
+    const d=document.getElementById('dial'), rep=document.getElementById('dreply');
+    d.oninput=()=>{
+      const v=+d.value;
+      rep.textContent = v<40?'"已初始化 venv，建议用 async 重构 pipeline…"' : v<85?'"我先把环境装好，这步有点技术，你不用管细节～"' : '"我先用大白话讲：这一步就是把工具准备好，交给我😌"';
+      rep.style.color = v>=85 ? 'rgb(var(--ok))' : '';
+      if(v>=100 && !owned.has('ring')){ document.getElementById('tk').classList.add('on'); unlock('ring'); const n=document.getElementById('jNext'); n.style.display='inline-flex'; n.classList.add('glow'); n.onclick=next; }
+    };
+  }
+
+  // ---- §4 探照灯 ----
+  const LESSON={
+    left:{tag:'左侧 · 导航栏',title:'所有入口的传送门',body:'新对话、搜索、插件、自动化、项目都从左边这一列进。你要"去哪儿开工"，看左边。'},
+    center:{tag:'中间 · 对话区',title:'你和伙伴对线的地方',body:'你在这儿甩需求，它在这儿回你、还实时播报"我正在干啥"。它会真上手替你做，不是答完就跑。'},
+    right:{tag:'右侧 · 结果区',title:'它交作业的地方',body:'生成的网页、图片、文档、代码改动、来源，全在右边预览。中间说"做了啥"，右边给你验收"做出了啥"。'}
+  };
+  function rExplore(){
+    $(`<div class="chapter-tag">第 4 章 · §4 主界面地图</div>
+      <h2 class="title">认识你的赛博工位</h2>
+      <p class="lead">Codex 窗口分三块。<b>把 3 个「?」全点亮</b>，就拿下「工作台地图」。已点亮 <b id="fc">0</b>/3</p>
+      <div class="app">
+        <div class="app-region app-left"><div class="region-label">左</div>
+          <div class="nav-item first sel">＋ 新对话</div><div class="nav-item">🔍 搜索</div>
+          <div class="nav-item">🧩 插件</div><div class="nav-item">📁 项目</div>
+          <div class="hotspot" data-k="left"></div></div>
+        <div class="app-region app-center"><div class="region-label">中</div>
+          <div class="chat-bubble">帮我读这个文件夹，生成一份摘要…</div>
+          <div class="chat-input">输入需求，回车发送</div>
+          <div class="hotspot" data-k="center"></div></div>
+        <div class="app-region app-right"><div class="region-label">右</div>
+          <div class="rc"></div><div class="rc"></div>
+          <div class="hotspot" data-k="right"></div></div>
+      </div>
+      <div class="center mt"><button class="btn" id="exNext" style="display:none" onclick="unlock('map');next()">收下地图 →</button></div>`);
+    let found=0;
+    document.querySelectorAll('.hotspot').forEach(h=>h.onclick=()=>{
+      const l=LESSON[h.dataset.k];
+      document.getElementById('popTag').textContent=l.tag;
+      document.getElementById('popTitle').textContent=l.title;
+      document.getElementById('popBody').textContent=l.body;
+      document.getElementById('pop').classList.add('on');
+      if(!h.classList.contains('found')){
+        h.classList.add('found'); found++;
+        document.getElementById('fc').textContent=found;
+        if(found===3){const n=document.getElementById('exNext');n.style.display='inline-flex';n.classList.add('glow');}
+      }
+    });
+  }
+  function closePop(){document.getElementById('pop').classList.remove('on');}
+
+  // ---- §21+§22 任务 + 权限判断 ----
+  function rTask(){
+    $(`<div class="chapter-tag">第 7 章 · §21+§22 跑通第一个任务</div>
+      <h2 class="title">让伙伴真替你干一件活儿</h2>
+      <div class="coach" id="coach">① 点左边高亮的 <b>「📁 项目」</b>，告诉它去哪儿干活。</div>
+      <div class="app">
+        <div class="app-region app-left"><div class="region-label">左</div>
+          <div class="nav-item first tstep" id="navP">📁 项目</div>
+          <div class="nav-item tdim">＋ 新对话</div><div class="nav-item tdim">🔍 搜索</div><div class="nav-item tdim">⏱ 自动化</div>
+        </div>
+        <div class="app-region app-center" id="tc"><div class="tph">← 从「项目」开始</div></div>
+        <div class="app-region app-right" id="tr"><div class="region-label">右</div><div class="tph" style="margin-top:24px">作业还没交</div></div>
+      </div>
+      <div class="center mt"><button class="btn" id="tNext" style="display:none" onclick="next()">迎战小 BOSS →</button></div>`);
+    document.getElementById('navP').onclick=tPickFolder;
+  }
+  function tPickFolder(){
+    const p=document.getElementById('navP'); p.className='nav-item first tstep locked'; p.onclick=null;
+    document.getElementById('coach').innerHTML='② 选个文件夹让它读——<b>点「我的资料」</b>就行。';
+    document.getElementById('tc').innerHTML=`<div class="region-label">中</div>
+      <div style="font-size:11px;color:rgb(var(--text-muted)/.7);margin-top:22px">选择要交给它的文件夹：</div>
+      <div class="folder" data-f="我的资料">📂 我的资料</div><div class="folder" data-f="下载">📂 下载</div>`;
+    document.querySelectorAll('#tc .folder').forEach(f=>f.onclick=()=>tPrompt(f));
+  }
+  function tPrompt(f){
+    const name=f.dataset.f;
+    document.querySelectorAll('#tc .folder').forEach(x=>x.onclick=null); f.classList.add('picked');
+    document.getElementById('coach').innerHTML='③ 把这句需求<b>发给它</b>。';
+    document.getElementById('tc').innerHTML=`<div class="region-label">中</div>
+      <div style="font-size:11px;color:rgb(var(--text-muted)/.7);margin-top:22px">已锁定：<b style="color:rgb(var(--ok))">${name}</b></div>
+      <div class="chip">帮我把「${name}」文件夹整理成一份带小标题的 Markdown 摘要。</div>
+      <button class="btn glow mt" id="sendB" style="width:100%;justify-content:center">发送需求 ▸</button>`;
+    document.getElementById('sendB').onclick=()=>tPerm(name);
+  }
+  function tPerm(name){
+    document.getElementById('coach').innerHTML='④ <b>真判断来了</b>：它要读文件、向你要权限。该不该点允许？';
+    const tc=document.getElementById('tc');
+    tc.innerHTML='<div class="region-label">中</div><div class="thinking">Codex 正在琢磨怎么干<span class="blink">▋</span></div>';
+    setTimeout(()=>{
+      tc.innerHTML=`<div class="region-label">中</div>
+        <div class="thinking">它说：我得读这个文件夹才能开工。</div>
+        <div class="perm">
+          <div class="pt">🔐 请求<b>文件访问</b>权限<br>路径：<b>~/${name}</b>　动作：只读</div>
+          <div class="perm-btns"><button class="p-allow" id="pAllow">允许</button><button class="p-deny" id="pDeny">拒绝</button></div>
+          <div class="nudge" id="pNudge" style="margin-top:10px">拒了它就没法读文件、活儿就黄了。这路径 <b>~/${name}</b> 正是你刚亲手选的、动作是"只读"、可撤回——放心允许。</div>
+        </div>`;
+      document.getElementById('pAllow').onclick=()=>{unlock('shield');tResult(name);};
+      document.getElementById('pDeny').onclick=()=>document.getElementById('pNudge').classList.add('on');
+    },1000);
+  }
+  function tResult(name){
+    document.getElementById('coach').innerHTML='正在交作业……';
+    const tc=document.getElementById('tc'), tr=document.getElementById('tr');
+    tc.innerHTML=`<div class="region-label">中</div><div class="thinking">已读取「${name}」，生成摘要<span class="blink">▋</span></div>`;
+    const md='# '+name+' · 摘要\n\n## 概况\n笔记 12 · 图片 48 · 合同 3\n\n## 提醒\n有 1 份合同本周到期';
+    setTimeout(()=>{
+      tc.innerHTML='<div class="region-label">中</div><div class="thinking">✅ 搞定！右边就是它交的作业 →</div>';
+      const co=document.getElementById('coach'); co.className='coach done';
+      co.innerHTML='✅ <b>你刚指挥 AI 独立跑完了一个完整任务</b>，还在权限那关做对了判断。这就是 Codex 和普通聊天框最大的区别。';
+      tr.innerHTML='<div class="region-label">右</div><div class="md-out" id="mo"></div>';
+      let i=0;(function t(){const el=document.getElementById('mo');if(!el)return;i+=2;el.innerHTML=md.slice(0,i).replace(/^(#.*)$/gm,'<span class="h">$1</span>');if(i<md.length)setTimeout(t,16);})();
+      unlock('medal');
+      const n=document.getElementById('tNext');n.style.display='inline-flex';n.classList.add('glow');
+    },900);
+  }
+
+  // ---- §26 小 BOSS + 出师 ----
+  function rBoss(){
+    const full=mainDone();
+    $(`<div class="chapter-tag">第 8 章 · §26 第一只小 BOSS</div>
+      <div class="boss-box">
+        <div class="boss-emoji">${full?'🐲':'🌫'}</div>
+        <h2 class="title">${full?'上手勇者 登场！':'再回去补齐装备…'}</h2>
+        <div class="badge">Codex 上手 · 第一章通关</div>
+        <p class="lead" style="margin:8px auto 0">你已经：会召唤伙伴、分清三兄弟、看懂工作台、跑通第一个任务、还躲过了权限坑。<b>基础装备 8 件${full?'已集齐':'还差几件'}。</b></p>
+      </div>
+      <div class="tease">⚔ 但这只是<b>第一只小 BOSS</b>。想变更强？<b>进阶装备台</b>还有 6 件高级装备（设置页、插件商店、自动化、传说级"电脑操控"…）等你去解锁。</div>
+      <a class="cta" href="https://openai.com/codex" target="_blank">现在就去打开真的 Codex 试一下 →<small>趁手感还热，把刚学的用一遍——这才是真的学会</small></a>
+      <div class="center" style="margin:4px 0 18px"><button class="btn glow" onclick="rHub()">⚔ 进阶装备台（支线）→</button></div>
+      <div class="handbook">
+        <div class="hb-head">📒 随身速查手册 · 截图存好</div>
+        <div class="hb-grid">
+          <div class="hb-card"><div class="hb-t">🗺 界面一句话</div><ul><li>左=入口</li><li>中=对线</li><li>右=交作业</li></ul></div>
+          <div class="hb-card"><div class="hb-t">🧭 该进哪个</div><ul><li>读本地文件→项目</li><li>随便聊→普通对话</li><li>长任务→云端</li></ul></div>
+          <div class="hb-card"><div class="hb-t">🗣 少点黑话</div><ul><li>非程序员选"日常工作"模式</li><li>个性化里写"说人话"</li></ul></div>
+          <div class="hb-card dgr"><div class="hb-t">🛡 权限保命</div><ul><li>先看路径是不是你允许的</li><li>社媒/微信别让它碰</li><li>看不懂就问，别盲点允许</li></ul></div>
+        </div>
+      </div>
+      <div class="row"><button class="btn ghost" onclick="location.reload()">再来一把</button></div>`);
+  }
+
+  // ===== 支线·进阶装备台 hub =====
+  function rHub(){
+    const nodes=[
+      {eq:'collar',ic:'📿',nm:'装备台·个性化',sec:'§14',fn:'nCollar'},
+      {eq:'bag',ic:'🎒',nm:'插件商店',sec:'§7',fn:'nBag'},
+      {eq:'clock',ic:'⏳',nm:'自动化工坊',sec:'§8',fn:'nClock'},
+      {eq:'crystal',ic:'🔮',nm:'记忆·搜索',sec:'§6',fn:'nCrystal'},
+      {eq:'rune',ic:'🪄',nm:'进阶符文',sec:'§15/16/18',fn:'nRune'},
+      {eq:'legend',ic:'☠️',nm:'传说·电脑操控',sec:'§19',fn:'nLegend'}
+    ];
+    const got=nodes.filter(n=>owned.has(n.eq)).length, all=got===nodes.length;
+    $(`<div class="chapter-tag">支线 · 进阶装备台</div>
+      <h2 class="title">${all?'🐉 真·完全体·大师勇者！':'进阶装备台'}</h2>
+      <p class="lead">${all?'6 件进阶装备全部到手，<b>14/14 真·完全体</b>！该打最终 BOSS 了。':'挑一件去解锁，做完自动回到这里。已集 <b>'+got+'/6</b>'}</p>
+      <div class="hub-grid">${nodes.map(n=>`<div class="node${owned.has(n.eq)?' done':''}" data-fn="${n.fn}"><div class="ni">${n.ic}</div><div class="nn">${n.nm}</div><div class="ns">${n.sec}</div>${owned.has(n.eq)?'<div class="nd">✓ 已解锁</div>':''}</div>`).join('')}</div>
+      ${all?'<div class="center" style="margin-top:18px"><button class="btn glow" onclick="rBossGame()">⚔ 挑战最终 BOSS：Star Cover 上线冲刺 →</button></div>':''}
+      <div class="center backbtn"><button class="btn ghost" onclick="ci=chapters.length-1;render()">← 回到出师页</button></div>`);
+    document.querySelectorAll('.node').forEach(nd=>nd.onclick=()=>{ if(nd.classList.contains('done'))return; window[nd.dataset.fn](); window.scrollTo({top:0,behavior:'smooth'}); });
+  }
+  function backBar(txt){return `<div class="center backbtn"><button class="btn glow hidden-back" style="display:none" onclick="rHub()">${txt}</button></div>`;}
+  function showBack(){const b=document.querySelector('.hidden-back');if(b){b.style.display='inline-flex';}}
+
+  // §14 个性化 → 驯化项圈（语气调音台·滑杆）
+  function nCollar(){
+    $(`<div class="chapter-tag">支线 · §14 设置·个性化</div>
+      <h2 class="title">📿 语气调音台</h2>
+      <p class="lead">在"个性化"里写规则，能永久改它的语气。<b>把滑杆推到底、加上"说人话"规则</b>，听它变。</p>
+      <div class="dial-wrap">
+        <div class="dial-ends"><span>🤖 默认工程腔</span><span>😌 说人话</span></div>
+        <input type="range" min="0" max="100" value="0" id="col" class="dial">
+        <div class="dial-reply" id="crep">"parse 完成，建议 refactor 一下 schema…"</div>
+      </div>
+      <div class="takeaway" id="ctk"><span class="kw">必须带走</span>在<b>个性化</b>里写规则（如"说人话"），它会永远按你的偏好回答；但别把密码/密钥写进去。</div>
+      ${backBar('收下项圈，返回装备台 →')}`);
+    const s=document.getElementById('col'), rep=document.getElementById('crep');
+    s.oninput=()=>{ const v=+s.value;
+      rep.textContent = v<40?'"parse 完成，建议 refactor 一下 schema…"' : v<85?'"我把数据理好了，有个地方要调一下～"' : '"我用大白话说：整理好啦，有一处我顺手改了，你看行不行😌"';
+      rep.style.color = v>=85?'rgb(var(--ok))':'';
+      if(v>=100 && !owned.has('collar')){ document.getElementById('ctk').classList.add('on'); unlock('collar'); showBack(); }
+    };
+  }
+
+  // §7 插件 → 真·超级玛丽（顶问号砖→蘑菇→变大→顶碎砖墙冲线）
+  function nBag(){
+    $(`<div class="chapter-tag">支线 · §7 插件</div>
+      <h2 class="title">🧩 插件商店 · 超级玛丽</h2>
+      <p class="hint">Codex 的插件有四种，一路各捡一件、各破一道关：<b>🌉连接器</b>搭桥过河、<b>🍄插件</b>顶问号砖变大跳墙、<b>📜技能</b>开锁门、<b>🔌MCP</b>接信号塔——集齐 4 件冲到 🏁。</p>
+      <div class="hint" style="text-align:center;margin:2px 0 8px">🎒 已装插件 <b id="mcount" style="color:rgb(var(--accent))">0</b> / 4</div>
+      <canvas id="mcv" class="mario"></canvas>
+      <div class="mario-pad"><button class="mbtn" data-k="left">◀</button><button class="mbtn" data-k="jump">⤒ 跳</button><button class="mbtn" data-k="right">▶</button></div>
+      <div id="mmsg"></div>
+      <div class="takeaway" id="btk"><span class="kw">必须带走</span>四种插件各是一种外挂能力：<b>连接器</b>接账号/服务、<b>插件</b>装能力变强、<b>技能</b>是一套现成工作流、<b>MCP</b>接外部工具的管子。</div>
+      ${backBar('收下插件背包，返回 →')}`);
+    startMario();
+  }
+  function aabb(ax,ay,aw,ah,bx,by,bw,bh){ return ax<bx+bw&&ax+aw>bx&&ay<by+bh&&ay+ah>by; }
+  function startMario(){
+    const cv=document.getElementById('mcv'); const W=cv.clientWidth||600, H=280; cv.width=W; cv.height=H;
+    const groundY=H-34, worldW=1160;
+    const mm=document.getElementById('mmsg'); if(mm)mm.innerHTML='';
+    const mc=document.getElementById('mcount'); if(mc)mc.textContent='0';
+    const M={cv,g:cv.getContext('2d'),W,H,groundY,worldW,cam:0,toast:null,
+      p:{x:24,y:groundY-26,w:20,h:26,vx:0,vy:0,onG:true,big:false},
+      keys:{left:false,right:false},
+      qb:{x:340,y:groundY-58,s:28,used:false}, mush:null,
+      gates:[
+        {type:'connector',emoji:'🌉',name:'连接器',ix:150,got:false,kind:'gap',x1:210,x2:300,note:'接上外部账号/服务，断桥就通了'},
+        {type:'plugin',   emoji:'🍄',name:'插件',  ix:-1, got:false,kind:'wall',x:440,w:34,h:78,note:'装上能力，变大跳得更高'},
+        {type:'skill',    emoji:'📜',name:'技能',  ix:560,got:false,kind:'door',x:650,w:30,h:150,note:'一套现成工作流，门自动开'},
+        {type:'mcp',      emoji:'🔌',name:'MCP',   ix:770,got:false,kind:'gap',x1:840,x2:950,signal:true,ty:groundY-132,note:'接上外部工具，信号塔降下来连缺口'},
+      ],
+      goal:{x:1060,y:groundY-30,w:26,h:30}, won:false, raf:0, last:performance.now()};
+    window.M=M;
+    const jump=()=>{ if(M.p.onG){ M.p.vy=M.p.big?-10.6:-7.4; M.p.onG=false; } };
+    M.jump=jump;
+    M._kd=e=>{ if(e.code==='ArrowLeft')M.keys.left=true; else if(e.code==='ArrowRight')M.keys.right=true; else if(e.code==='ArrowUp'||e.code==='Space'){e.preventDefault();jump();} };
+    M._ku=e=>{ if(e.code==='ArrowLeft')M.keys.left=false; else if(e.code==='ArrowRight')M.keys.right=false; };
+    if(window._mKd)document.removeEventListener('keydown',window._mKd); if(window._mKu)document.removeEventListener('keyup',window._mKu);
+    window._mKd=M._kd; window._mKu=M._ku; document.addEventListener('keydown',M._kd); document.addEventListener('keyup',M._ku);
+    document.querySelectorAll('.mario-pad .mbtn').forEach(b=>{ const k=b.dataset.k;
+      if(k==='jump'){ b.onclick=jump; }
+      else { b.addEventListener('pointerdown',e=>{e.preventDefault();M.keys[k]=true;}); ['pointerup','pointerleave','pointercancel'].forEach(ev=>b.addEventListener(ev,()=>{M.keys[k]=false;})); }
+    });
+    M.raf=requestAnimationFrame(marioTick);
+  }
+  function stopMario(){ if(window.M){window.M.won=true; cancelAnimationFrame(window.M.raf);} if(window._mKd)document.removeEventListener('keydown',window._mKd); if(window._mKu)document.removeEventListener('keyup',window._mKu); }
+  function pickup(M,gt){ if(gt.got)return; gt.got=true; M.toast={text:gt.emoji+' 装上「'+gt.name+'」——'+gt.note, t:120};
+    const el=document.getElementById('mcount'); if(el)el.textContent=String(M.gates.filter(g=>g.got).length); }
+  function marioTick(now){
+    const M=window.M; if(!M||M.won)return;
+    if(!document.getElementById('mcv')){ M.won=true; return; }
+    const dt=Math.min(2,(now-M.last)/16.67); M.last=now; const p=M.p, groundY=M.groundY;
+    p.w=p.big?26:20; p.h=p.big?40:26;
+    p.vx=(M.keys.left?-2.4:0)+(M.keys.right?2.4:0); p.vy+=0.42*dt; p.onG=false;
+    // 实心障碍：墙（永远实心，靠变大跳越）+ 还没开的门
+    const solids=[];
+    for(const gt of M.gates){
+      if(gt.kind==='wall') solids.push({x:gt.x,y:groundY-gt.h,w:gt.w,h:gt.h});
+      else if(gt.kind==='door' && !gt.got) solids.push({x:gt.x,y:groundY-gt.h,w:gt.w,h:gt.h});
+    }
+    // 水平移动 + 侧向阻挡
+    p.x+=p.vx*dt; if(p.x<0)p.x=0; if(p.x+p.w>M.worldW)p.x=M.worldW-p.w;
+    for(const s of solids){ if(aabb(p.x,p.y,p.w,p.h,s.x,s.y,s.w,s.h)){ if(p.vx>0)p.x=s.x-p.w; else if(p.vx<0)p.x=s.x+s.w; } }
+    // 垂直移动 + 落顶/顶底
+    p.y+=p.vy*dt;
+    for(const s of solids){ if(aabb(p.x,p.y,p.w,p.h,s.x,s.y,s.w,s.h)){ if(p.vy>0){p.y=s.y-p.h;p.vy=0;p.onG=true;} else if(p.vy<0){p.y=s.y+s.h;p.vy=0;} } }
+    // 地面：未解除的缺口（河/信号缺口）没有地面，会掉下去
+    const cx=p.x+p.w/2; let overGap=false;
+    for(const gt of M.gates){ if(gt.kind==='gap' && !gt.got && cx>gt.x1 && cx<gt.x2){ overGap=true; break; } }
+    if(!overGap && p.y+p.h>=groundY){ p.y=groundY-p.h; p.vy=0; p.onG=true; }
+    if(p.y>M.H+30){ marioFail(); return; }
+    // 顶问号砖蹦出「插件蘑菇」（小人这时还没变大也顶得到；只从下方顶一次）
+    const q=M.qb;
+    if(!q.used && p.vy<0 && aabb(p.x,p.y,p.w,p.h,q.x,q.y,q.s,q.s)){ p.vy=0.6; q.used=true; M.mush={x:q.x+2,y:q.y-24,w:22,h:22,vx:1.4,vy:0}; }
+    if(M.mush){ const m=M.mush; m.vy+=0.42*dt; m.x+=m.vx*dt; m.y+=m.vy*dt;
+      for(const s of solids){ if(aabb(m.x,m.y,m.w,m.h,s.x,s.y,s.w,s.h)){ if(m.vx>0)m.x=s.x-m.w; else m.x=s.x+s.w; m.vx*=-1; } }
+      if(m.x<0){m.x=0;m.vx*=-1;} if(m.x+m.w>M.worldW){m.x=M.worldW-m.w;m.vx*=-1;}
+      const mcx=m.x+m.w/2; let mGap=false;
+      for(const gt of M.gates){ if(gt.kind==='gap' && !gt.got && mcx>gt.x1 && mcx<gt.x2){ mGap=true; break; } }
+      if(!mGap && m.y+m.h>=groundY){ m.y=groundY-m.h; m.vy=0; }
+      if(m.y>M.H+20){ M.mush=null; }
+      else if(aabb(p.x,p.y,p.w,p.h,m.x,m.y,m.w,m.h)){ p.big=true; M.mush=null; const pg=M.gates.find(g=>g.type==='plugin'); if(pg)pickup(M,pg); } }
+    // 捡地上的道具（连接器/技能/MCP）
+    for(const gt of M.gates){ if(gt.ix>=0 && !gt.got && aabb(p.x,p.y,p.w,p.h,gt.ix,groundY-30,30,30)) pickup(M,gt); }
+    if(aabb(p.x,p.y,p.w,p.h,M.goal.x,M.goal.y,M.goal.w,M.goal.h)){ marioWin(); return; }
+    if(M.toast){ M.toast.t-=dt; if(M.toast.t<=0)M.toast=null; }
+    // 信号塔：捡到 MCP 前高高锁定在天上，捡到后缓缓降落连接缺口
+    for(const gt of M.gates){ if(gt.signal){ const ttar=gt.got?groundY-40:groundY-132; gt.ty+=(ttar-gt.ty)*0.15*dt; } }
+    M.cam=Math.max(0,Math.min(M.worldW-M.W, p.x-M.W*0.38));
+    marioDraw(M);
+    M.raf=requestAnimationFrame(marioTick);
+  }
+  function marioDraw(M){
+    const g=M.g, cam=M.cam, W=M.W, H=M.H, groundY=M.groundY, X=wx=>wx-cam;
+    g.clearRect(0,0,W,H); g.textAlign='left'; g.textBaseline='top';
+    g.fillStyle='rgba(120,180,255,0.05)'; g.fillRect(0,0,W,H);
+    g.fillStyle='rgba(255,255,255,0.13)'; g.fillRect(0,groundY,W,H-groundY);
+    // 缺口：未解除挖空+画水/断口；已解除画桥
+    for(const gt of M.gates){ if(gt.kind!=='gap')continue; const x1=X(gt.x1), w=gt.x2-gt.x1;
+      if(!gt.got){ g.clearRect(x1,groundY,w,H-groundY);
+        if(gt.signal){ g.fillStyle='rgba(255,90,90,0.4)'; g.fillRect(x1,groundY+3,w,5); }
+        else { g.fillStyle='rgba(90,150,255,0.35)'; g.fillRect(x1,groundY,w,H-groundY); } }
+      else { g.fillStyle=gt.signal?'rgba(120,255,180,0.55)':'rgba(180,130,80,0.9)'; g.fillRect(x1,groundY,w,6); }
+      if(gt.signal){ const tcx=X((gt.x1+gt.x2)/2);
+        if(!gt.got){ g.strokeStyle='rgba(255,120,120,0.45)'; g.setLineDash([3,4]); g.beginPath(); g.moveTo(tcx,0); g.lineTo(tcx,gt.ty-8); g.stroke(); g.setLineDash([]); g.font='14px serif'; g.textAlign='center'; g.textBaseline='alphabetic'; g.fillText('🔒',tcx,gt.ty-42); }
+        g.font='38px serif'; g.textAlign='center'; g.textBaseline='alphabetic'; g.fillText('🗼',tcx,gt.ty); g.textAlign='left'; g.textBaseline='top'; } }
+    // 墙 & 门
+    for(const gt of M.gates){
+      if(gt.kind==='wall'){ g.fillStyle='rgba(150,150,162,0.9)'; g.fillRect(X(gt.x),groundY-gt.h,gt.w,gt.h); }
+      else if(gt.kind==='door'){ if(!gt.got){ g.fillStyle='rgba(150,110,70,0.95)'; g.fillRect(X(gt.x),groundY-gt.h,gt.w,gt.h); g.font='15px serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('🔒',X(gt.x)+gt.w/2,groundY-gt.h/2); g.textAlign='left'; g.textBaseline='top'; }
+        else { g.strokeStyle='rgba(120,255,180,0.5)'; g.strokeRect(X(gt.x),groundY-gt.h,gt.w,gt.h); } } }
+    // 问号砖
+    const q=M.qb; g.fillStyle=q.used?'rgba(120,120,120,0.4)':'rgba(212,168,83,0.95)'; g.fillRect(X(q.x),q.y,q.s,q.s);
+    if(!q.used){ g.fillStyle='#171310'; g.font='16px serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('?',X(q.x)+q.s/2,q.y+q.s/2); g.textAlign='left'; g.textBaseline='top'; }
+    // 地上道具
+    for(const gt of M.gates){ if(gt.ix>=0 && !gt.got){ g.font='22px serif'; g.fillText(gt.emoji,X(gt.ix),groundY-30); } }
+    if(M.mush){ g.font='20px serif'; g.fillText('🍄',X(M.mush.x),M.mush.y); }
+    g.font='26px serif'; g.fillText('🏁',X(M.goal.x),M.goal.y+2);
+    const p=M.p; g.font=(p.big?34:24)+'px serif'; g.fillText('🦸',X(p.x)-3,p.y-6);
+    if(M.toast){ g.fillStyle='rgba(212,168,83,0.98)'; g.font='bold 13px sans-serif'; g.textAlign='center'; g.fillText(M.toast.text,W/2,16); g.textAlign='left'; }
+  }
+  function marioWin(){ stopMario(); const m=document.getElementById('mmsg'); if(m)m.innerHTML='<div class="qdef on" style="text-align:center">🏁 <b>四种插件全上手了！</b><br>🌉连接器搭桥过河 · 🍄插件变大跳墙 · 📜技能开锁门 · 🔌MCP接信号塔——这就是给 Codex 装能力的四条路。</div>'; document.getElementById('btk').classList.add('on'); unlock('bag'); showBack(); }
+  function marioFail(){ stopMario(); const m=document.getElementById('mmsg'); if(m)m.innerHTML='<div class="nudge on" style="text-align:center">💥 掉下去了！过河、过信号缺口前，记得先<b>捡上对应的插件道具</b>，桥才会出现。<div class="center"><button class="btn ghost" style="margin-top:8px" onclick="startMario()">🔁 再来一次</button></div></div>'; }
+
+  // §8 自动化 → 定时符（齿轮排程·拖装）
+  function nClock(){
+    $(`<div class="chapter-tag">支线 · §8 自动化</div>
+      <h2 class="title">⏳ 定时符 · 装齿轮</h2>
+      <p class="lead">给自动化机器装两个齿轮，让它每天定时跑。<b>把齿轮拖进对的槽。</b></p>
+      <div class="buckets" id="cslots" style="grid-template-columns:1fr 1fr">
+        <div class="bucket dz" data-k="time"><div class="bt">🕗 时间槽</div><div class="bfill"></div></div>
+        <div class="bucket dz" data-k="freq"><div class="bt">🔁 频率槽</div><div class="bfill"></div></div>
+      </div>
+      <div class="pcards" id="cgears" style="grid-template-columns:1fr 1fr;margin-top:14px">
+        <div class="pcard drag" data-a="freq" style="text-align:center">⚙️ 每天</div>
+        <div class="pcard drag" data-a="time" style="text-align:center">⚙️ 08:00</div>
+      </div>
+      <div class="takeaway" id="atk"><span class="kw">必须带走</span>自动化=让它<b>定时或延后</b>自动执行预设的事（日报、监控、定期检查）；任务写细：时间/对象/输出/别做啥。</div>
+      ${backBar('收下定时符，返回 →')}`);
+    let n=0;
+    enableDrag('#cgears .pcard','#cslots .bucket',(card,zone)=>{
+      if(card.dataset.a===zone.dataset.k){ card.classList.add('done'); zone.querySelector('.bfill').textContent='✓ '+card.textContent; n++;
+        if(n===2){ document.getElementById('atk').classList.add('on'); unlock('clock'); showBack(); } }
+      else { zone.classList.add('flash'); setTimeout(()=>zone.classList.remove('flash'),320); }
+    });
+  }
+
+  // §6 搜索 → 记忆回廊·擦除迷雾（涂开找发光碎片）
+  function nCrystal(){
+    const frags=[{t:'午饭吃啥',x:16,y:24,ok:0},{t:'周三杂谈',x:66,y:20,ok:0},{t:'📄 上周那个方案',x:34,y:56,ok:1},{t:'昨天的报错',x:70,y:64,ok:0},{t:'随手记一句',x:20,y:82,ok:0}];
+    $(`<div class="chapter-tag">支线 · §6 搜索</div>
+      <h2 class="title">🔦 记忆回廊 · 擦除迷雾</h2>
+      <p class="hint">旧对话被记忆迷雾盖住了。<b>按住鼠标/手指涂开迷雾</b>，找到发光的「上周方案」再点它。</p>
+      <div class="fogwrap" id="fogwrap">
+        ${frags.map(f=>`<button class="memo${f.ok?' target':''}" data-ok="${f.ok}" style="left:${f.x}%;top:${f.y}%">${f.t}</button>`).join('')}
+        <canvas id="fog" class="fog"></canvas>
+      </div>
+      <div class="takeaway" id="stk"><span class="kw">必须带走</span>聊过、跑过的东西都能在左侧<b>「搜索」</b>里找回，不怕忘。</div>
+      ${backBar('收下水晶，返回 →')}`);
+    const wrap=document.getElementById('fogwrap'), cv=document.getElementById('fog');
+    const W=wrap.clientWidth||600, H=200; cv.width=W; cv.height=H;
+    const ctx=cv.getContext('2d');
+    ctx.fillStyle='rgba(18,20,28,0.97)'; ctx.fillRect(0,0,W,H);
+    ctx.fillStyle='rgba(255,255,255,0.14)'; ctx.font='14px sans-serif'; ctx.textAlign='center'; ctx.fillText('☁️ 按住涂开迷雾…', W/2, H/2);
+    const target=document.querySelector('.memo.target');
+    let drawing=false, hit=0, lit=false;
+    const erase=(x,y)=>{ ctx.globalCompositeOperation='destination-out'; ctx.beginPath(); ctx.arc(x,y,28,0,7); ctx.fill(); ctx.globalCompositeOperation='source-over';
+      const tr=target.getBoundingClientRect(), cr=cv.getBoundingClientRect();
+      const tx=tr.left+tr.width/2-cr.left, ty=tr.top+tr.height/2-cr.top;
+      if(Math.abs(x-tx)<66 && Math.abs(y-ty)<40){ hit++; if(hit>6 && !lit){ lit=true; target.classList.add('lit'); cv.style.pointerEvents='none'; } }
+    };
+    const pos=e=>{const r=cv.getBoundingClientRect(); return [e.clientX-r.left, e.clientY-r.top];};
+    cv.addEventListener('pointerdown',e=>{drawing=true; const[x,y]=pos(e); erase(x,y);});
+    cv.addEventListener('pointermove',e=>{ if(!drawing)return; const[x,y]=pos(e); erase(x,y);});
+    window.addEventListener('pointerup',()=>{drawing=false;});
+    document.querySelectorAll('#fogwrap .memo').forEach(b=>b.onclick=()=>{
+      if(b.dataset.ok==='1' && b.classList.contains('lit')){ b.classList.add('caught'); document.getElementById('stk').classList.add('on'); unlock('crystal'); showBack(); }
+    });
+  }
+
+  // §15/16/18 → 进阶符文（插槽·拖对形状）
+  function nRune(){
+    const sock=[{k:'web',n:'🌐 要网页来源'},{k:'git',n:'🕮 要版本回退'},{k:'tool',n:'🛠 要接外部工具'}];
+    const rune=[{a:'web',n:'浏览器'},{a:'git',n:'Git'},{a:'tool',n:'MCP'}];
+    $(`<div class="chapter-tag">支线 · §15/§16/§18 进阶设置</div>
+      <h2 class="title">🪄 进阶符文 · 插对槽</h2>
+      <p class="lead">三个需求，<b>把对的符文插进对的槽</b>。已插 <b id="rn">0</b>/3</p>
+      <div class="buckets" id="rsock" style="grid-template-columns:1fr 1fr 1fr">${sock.map(s=>`<div class="bucket dz" data-k="${s.k}"><div class="bt">${s.n}</div><div class="bfill"></div></div>`).join('')}</div>
+      <div class="pcards" id="rrune" style="grid-template-columns:1fr 1fr 1fr;margin-top:14px">${rune.map(r=>`<div class="pcard drag" data-a="${r.a}" style="text-align:center">🔯 ${r.n}</div>`).join('')}</div>
+      <div class="takeaway" id="rtk"><span class="kw">必须带走</span>MCP 接工具、Git 管版本、浏览器查网页——进阶开关按需再开，小白平时保持默认。</div>
+      ${backBar('收下符文，返回 →')}`);
+    let n=0;
+    enableDrag('#rrune .pcard','#rsock .bucket',(card,zone)=>{
+      if(card.dataset.a===zone.dataset.k){ card.classList.add('done'); zone.querySelector('.bfill').textContent='✓'; n++; document.getElementById('rn').textContent=n;
+        if(n===3){ document.getElementById('rtk').classList.add('on'); unlock('rune'); showBack(); } }
+      else { zone.classList.add('flash'); setTimeout(()=>zone.classList.remove('flash'),320); }
+    });
+  }
+
+  // §19 电脑操控 → 传说装备（禁区飞行·Flappy）
+  function nLegend(){
+    $(`<div class="chapter-tag">支线 · §19 电脑操控（传说级）</div>
+      <h2 class="title">☠️ 传说 · 禁区飞行</h2>
+      <p class="hint">电脑操控威力最大也最危险。<b>点画面 / 按空格，让小鸟往上扑一下</b>，从缝里穿过去，<b style="color:rgb(var(--danger))">别撞上写着「隐私 / 支付 / 微信 / 社媒」的禁区柱子</b>。穿过 <b id="fscore">0</b>/5 根就拿下传说装备。</p>
+      <canvas id="fcv" class="flappy"></canvas>
+      <div class="run-tip">👆 <b>连续点游戏框</b>（或按空格），小鸟就一下下往上扑；一松手它就往下掉——稳住让它从缝里穿过去。</div>
+      <div id="fmsg"></div>
+      ${backBar('收下传说装备，返回 →')}`);
+    startFlappy();
+  }
+  const FLBL=['隐私','支付页面','微信','社交媒体','银行卡'];
+  function startFlappy(){
+    const cv=document.getElementById('fcv'); const W=cv.clientWidth||340, H=360; cv.width=W; cv.height=H;
+    const F={cv, ctx:cv.getContext('2d'), W, H, x:64, y:H/2, vy:0, pipes:[], score:0, alive:true, raf:0, last:performance.now(), li:0};
+    window.F=F;
+    const flap=()=>{ if(window.F&&window.F.alive)window.F.vy=-4.0; };
+    if(window._flapKey) document.removeEventListener('keydown',window._flapKey);
+    window._flapKey=e=>{ if(e.code==='Space'){e.preventDefault();flap();} };
+    document.addEventListener('keydown',window._flapKey);
+    cv.onclick=flap;
+    F.raf=requestAnimationFrame(fTick);
+  }
+  function stopFlappy(){ const F=window.F; if(F){F.alive=false; cancelAnimationFrame(F.raf);} if(window._flapKey)document.removeEventListener('keydown',window._flapKey); }
+  function fTick(now){
+    const F=window.F; if(!F||!F.alive)return;
+    const dt=Math.min(2.2,(now-F.last)/16.67); F.last=now;
+    F.vy+=0.23*dt; F.y+=F.vy*dt*2.0;
+    if(F.pipes.length===0 || F.pipes[F.pipes.length-1].x < F.W-210){
+      const gap=124, gy=18+Math.random()*(F.H-gap-36);
+      F.pipes.push({x:F.W+12, gy, gap, label:FLBL[F.li%FLBL.length], passed:false}); F.li++;
+    }
+    for(const p of F.pipes){
+      p.x-=1.7*dt;
+      if(!p.passed && p.x+28<F.x){ p.passed=true; F.score++; const s=document.getElementById('fscore'); if(s)s.textContent=F.score; if(F.score>=5){ fWin(); return; } }
+    }
+    F.pipes=F.pipes.filter(p=>p.x>-44);
+    const bx=F.x, by=F.y, br=11;
+    if(by-br<0 || by+br>F.H){ fLose(); return; }
+    for(const p of F.pipes){ if(bx+br>p.x && bx-br<p.x+28 && (by-br<p.gy || by+br>p.gy+p.gap)){ fLose(); return; } }
+    const ctx=F.ctx; ctx.clearRect(0,0,F.W,F.H);
+    for(const p of F.pipes){
+      ctx.fillStyle='rgba(232,90,80,0.85)';
+      ctx.fillRect(p.x,0,28,p.gy); ctx.fillRect(p.x,p.gy+p.gap,28,F.H-p.gy-p.gap);
+      ctx.fillStyle='#fff'; ctx.font='600 12px "Noto Sans SC",sans-serif'; ctx.textAlign='center'; ctx.textBaseline='top';
+      [...p.label].forEach((ch,i)=>ctx.fillText(ch, p.x+14, 6+i*13));
+    }
+    ctx.font='22px serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('🐤', F.x, F.y);
+    F.raf=requestAnimationFrame(fTick);
+  }
+  function fWin(){ stopFlappy(); const m=document.getElementById('fmsg'); if(m)m.innerHTML='<div class="takeaway on" style="margin-top:12px"><span class="kw">必须带走</span>电脑操控能替你操作整台电脑、威力最大，但<b>隐私 / 支付 / 微信 / 社媒是绝对禁区</b>——边界一定给它划死。</div>'; unlock('legend'); showBack(); }
+  function fLose(){ stopFlappy(); const m=document.getElementById('fmsg'); if(m)m.innerHTML='<div class="nudge on" style="margin-top:12px">💥 撞上禁区了！这些正是绝不能让 AI 碰的地方。<div class="center"><button class="btn ghost" style="margin-top:10px" onclick="nLegend()">🔁 再飞一次</button></div></div>'; }
+
+  // ===== 最终 BOSS · 混沌项目兽（五阶段任务战役）=====
+  let B=null;
+  function rBossGame(){
+    B={phase:0, shield:100};
+    $(`<div class="chapter-tag">最终 BOSS · 综合实战</div>
+      <div class="boss-top"><div class="boss-name"><span class="em">👾</span> 混沌项目兽 <small>· 一个真实需求从 0 到上线</small></div><div class="boss-phase" id="bphase">阶段 1/5</div></div>
+      <div class="shield-wrap"><div class="shield-bar" id="shield"></div></div>
+      <div id="bossbody"></div>
+      <div class="center" style="margin-top:14px"><button class="btn ghost" onclick="rHub()">← 放弃，回装备台</button></div>`);
+    bossPhase(1);
+  }
+  function setShield(v){ B.shield=Math.max(0,v); const s=document.getElementById('shield'); if(s)s.style.width=B.shield+'%'; }
+  function bossPhase(n){
+    B.phase=n; const bp=document.getElementById('bphase'); if(bp)bp.textContent='阶段 '+n+'/5';
+    ({1:bp1,2:bp2,3:bp3,4:bp4,5:bp5})[n]();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function bossClear(nextN, milestone, msg){
+    setShield(milestone);
+    const d=document.createElement('div'); d.className='takeaway on'; d.style.marginTop='16px';
+    d.innerHTML=msg+'<div class="center" style="margin-top:14px"><button class="btn glow">'+(nextN>5?'⚔ 终结魔王 →':'下一阶段 →')+'</button></div>';
+    document.getElementById('bossbody').appendChild(d);
+    d.querySelector('button').onclick=()=> nextN>5 ? winBoss() : bossPhase(nextN);
+  }
+  // 可复用拖拽引擎（pointer，transform 位移 + 落区坐标按下时缓存一次，避免逐帧重排卡顿）
+  function enableDrag(cardSel, zoneSel, onDrop){
+    document.querySelectorAll(cardSel).forEach(card=>{
+      card.addEventListener('pointerdown', e=>{
+        if(card.classList.contains('done'))return;
+        e.preventDefault();
+        const sx=e.clientX, sy=e.clientY;
+        const zones=[...document.querySelectorAll(zoneSel)].map(z=>({el:z, r:z.getBoundingClientRect()}));
+        const hit=(x,y)=>zones.find(z=>x>=z.r.left&&x<=z.r.right&&y>=z.r.top&&y<=z.r.bottom);
+        try{ card.setPointerCapture(e.pointerId); }catch(_){}
+        card.classList.add('dragging');
+        let cur=null;
+        const move=ev=>{
+          card.style.transform='translate('+(ev.clientX-sx)+'px,'+(ev.clientY-sy)+'px)';
+          const z=hit(ev.clientX,ev.clientY);
+          if(z!==cur){ if(cur)cur.el.classList.remove('hot'); if(z)z.el.classList.add('hot'); cur=z; }
+        };
+        const up=ev=>{
+          card.removeEventListener('pointermove',move); card.removeEventListener('pointerup',up);
+          if(cur)cur.el.classList.remove('hot');
+          card.classList.remove('dragging'); card.style.transform='';
+          const z=hit(ev.clientX,ev.clientY);
+          if(z) onDrop(card, z.el);
+        };
+        card.addEventListener('pointermove',move); card.addEventListener('pointerup',up);
+      });
+    });
+  }
+  // 阶段一：任务分流（拖拽）
+  function bp1(){
+    const cards=[{t:'解释一个概念',a:'chat'},{t:'修改我本地的文件夹',a:'app'},{t:'让它长时间跑一个构建',a:'cloud'},{t:'找回上周那次对话',a:'search'}];
+    const bk=[{k:'chat',n:'💬 普通 ChatGPT'},{k:'app',n:'💻 本地 Codex App'},{k:'cloud',n:'☁️ 云端 Codex'},{k:'search',n:'🔮 搜索水晶'}];
+    document.getElementById('bossbody').innerHTML=`<p class="hint">魔王甩来 4 个需求。<b>把每张需求卡拖进对的入口。</b></p>
+      <div class="pcards" id="tc">${cards.map(c=>`<div class="pcard drag" data-a="${c.a}">${c.t}</div>`).join('')}</div>
+      <div class="buckets" id="tb">${bk.map(b=>`<div class="bucket dz" data-k="${b.k}"><div class="bt">${b.n}</div><div class="bfill"></div></div>`).join('')}</div>`;
+    let done=0;
+    enableDrag('#tc .pcard','#tb .bucket',(card,zone)=>{
+      if(card.dataset.a===zone.dataset.k){ card.classList.add('done'); zone.querySelector('.bfill').textContent='✓ '+card.textContent; done++;
+        if(done===4) bossClear(2,80,'✅ <b>分流全对！</b>读本地文件用 App、长任务用云端、找记录用搜索——不同任务先选对入口。'); }
+      else { zone.classList.add('flash'); setTimeout(()=>zone.classList.remove('flash'),320); }
+    });
+  }
+  // 阶段二：工作台布阵（拖拽）
+  function bp2(){
+    const ps=[{t:'📁 入口 / 导航',r:'left'},{t:'💬 对话 / 下指令',r:'center'},{t:'✅ 结果 / 验收',r:'right'}];
+    const rg=[{k:'left',n:'左区'},{k:'center',n:'中区'},{k:'right',n:'右区'}];
+    document.getElementById('bossbody').innerHTML=`<p class="hint">魔王打乱了工作台。<b>把三块拖回它该在的区。</b></p>
+      <div class="pcards" id="p2" style="grid-template-columns:1fr">${ps.map(p=>`<div class="pcard drag" data-r="${p.r}">${p.t}</div>`).join('')}</div>
+      <div class="buckets" id="r2" style="grid-template-columns:1fr 1fr 1fr">${rg.map(r=>`<div class="bucket dz" data-k="${r.k}"><div class="bt">${r.n}</div><div class="bfill"></div></div>`).join('')}</div>`;
+    let done=0;
+    enableDrag('#p2 .pcard','#r2 .bucket',(card,zone)=>{
+      if(card.dataset.r===zone.dataset.k){ card.classList.add('done'); zone.querySelector('.bfill').textContent='✓ '+card.textContent; done++;
+        if(done===3) bossClear(3,60,'✅ <b>工作台归位！</b>左边选入口、中间下指令、右边验收结果。'); }
+      else { zone.classList.add('flash'); setTimeout(()=>zone.classList.remove('flash'),320); }
+    });
+  }
+  // 阶段三：装备编队
+  function bp3(){
+    const need=['ring','collar','bag','rune'], pool=['ring','collar','bag','rune','clock','crystal','key'];
+    document.getElementById('bossbody').innerHTML=`<p class="hint">魔王下令：<b>"把 Star Cover 整理成能上线的页面 + 说明文档。"</b><br>从装备里选出这仗对症的（可多选），点出战。</p>
+      <div class="eqpick" id="ep">${pool.map(id=>{const e=EQUIPS.find(x=>x.id===id);return `<button class="eqbtn" data-id="${id}">${e.icon} ${e.name}</button>`;}).join('')}</div>
+      <div class="center" style="margin-top:16px"><button class="btn glow" id="deploy">出战 →</button></div>`;
+    const picks=new Set();
+    document.querySelectorAll('#ep .eqbtn').forEach(b=>b.onclick=()=>{ const id=b.dataset.id; if(picks.has(id)){picks.delete(id);b.classList.remove('on');}else{picks.add(id);b.classList.add('on');} });
+    document.getElementById('deploy').onclick=()=>{
+      const right=need.filter(id=>picks.has(id)).length, wrong=[...picks].filter(id=>!need.includes(id)).length;
+      bossClear(4,40,`⚔ 上阵 <b>${right}/4</b> 件对症${wrong?`（多带了 ${wrong} 件）`:''}。<b>人话之戒</b>让解释不工程化、<b>驯化项圈</b>按你风格、<b>插件背包</b>给文档/网页、<b>进阶符文</b>按需上浏览器/Git/MCP——设置和插件是为任务服务的，不是摆设。`);
+    };
+  }
+  // 阶段四：权限打地鼠（复古街机）
+  function bp4(){
+    const REQ=[{t:'读 /项目 源',d:0},{t:'改 /产出 目录',d:0},{t:'开你的 微信',d:1},{t:'读 unknown.zip',d:1},
+      {t:'打开 支付页',d:1},{t:'读 /项目 配置',d:0},{t:'翻 相册隐私',d:1},{t:'生成 一张图',d:0}];
+    document.getElementById('bossbody').innerHTML=`
+      <p class="hint">🔨 权限像地鼠一样冒出来。<b>红色危险的（微信/支付/隐私/来路不明）拍下去挡掉，蓝色安全的别碰、让它自己缩回。</b></p>
+      <div class="whack-hud"><span>🛡 拦截 <b id="wok">0</b></span><span>❌ 失误 <b id="wbad">0</b>/3</span><span id="wleft">剩 8</span></div>
+      <div class="whack" id="whack">${[0,1,2,3,4,5].map(i=>`<div class="hole" data-h="${i}"></div>`).join('')}</div>`;
+    const holes=[...document.querySelectorAll('#whack .hole')];
+    let spawned=0, ok=0, bad=0, done=false;
+    const TOTAL=REQ.length;
+    const setBad=()=>{document.getElementById('wbad').textContent=bad;};
+    function judge(){ if(done)return; done=true;
+      if(bad<=3) bossClear(5,20,`🔨 权限地鼠打完，失误 ${bad}。<b>危险的拦、安全的放</b>——快速分清该拦谁，就是权限判断的全部。`);
+      else document.getElementById('bossbody').insertAdjacentHTML('beforeend','<div class="nudge on" style="margin-top:12px">💥 放进来太多危险请求了！社媒/隐私/支付/来路不明必须拦。<div class="center"><button class="btn ghost" style="margin-top:10px" onclick="bossPhase(4)">🔁 再来一次</button></div></div>');
+    }
+    function pop(){
+      if(spawned>=TOTAL){ setTimeout(judge,800); return; }
+      const r=REQ[spawned++]; document.getElementById('wleft').textContent='剩 '+(TOTAL-spawned+1-1<0?0:TOTAL-spawned);
+      const hole=holes[Math.random()*holes.length|0];
+      const m=document.createElement('div'); m.className='mole '+(r.d?'danger':'safe'); m.textContent=r.t; hole.appendChild(m);
+      requestAnimationFrame(()=>m.classList.add('up'));
+      let handled=false;
+      m.onclick=()=>{ if(handled||done)return; handled=true; m.classList.add('hit');
+        if(r.d){ ok++; document.getElementById('wok').textContent=ok; } else { bad++; setBad(); }
+        setTimeout(()=>m.remove(),200); };
+      setTimeout(()=>{
+        if(!handled){ handled=true; if(r.d){ bad++; setBad(); } m.classList.remove('up'); setTimeout(()=>m.remove(),220); }
+        setTimeout(pop,340);
+      },1300);
+    }
+    setTimeout(pop,500);
+  }
+  // 阶段五：交付验收
+  function bp5(){
+    const opts=[{k:'A',t:'只有一段空泛总结："已完成整理。"',ok:false},{k:'B',t:'有网页 + 说明 + 下一步，但没提风险',ok:false},{k:'C',t:'有网页 + 说明 + 来源/改动说明 + 下一步 + 风险提醒',ok:true}];
+    document.getElementById('bossbody').innerHTML=`<p class="hint">最后一步不是打怪，是<b>验收产物</b>。哪一份才算合格交付？</p>
+      <div class="choices" id="dl">${opts.map((o,i)=>`<button class="choice" data-i="${i}"><b>${o.k}.</b> ${o.t}</button>`).join('')}</div>
+      <div class="nudge" id="dn">这份还差点意思——合格交付要能让你直接验收：产物、依据、下一步、风险都得有。再挑一次。</div>`;
+    document.querySelectorAll('#dl .choice').forEach(b=>b.onclick=()=>{
+      if(opts[+b.dataset.i].ok){ document.querySelectorAll('#dl .choice').forEach(x=>x.style.pointerEvents='none'); b.classList.add('right'); document.getElementById('dn').classList.remove('on');
+        bossClear(6,0,'✅ <b>选 C！</b>Codex 的终极价值不是陪聊，是<b>交付可验收的成果</b>：有产物、有依据、有下一步、有风险提醒。魔王破防！'); }
+      else { b.classList.add('wrong'); b.style.pointerEvents='none'; document.getElementById('dn').classList.add('on'); }
+    });
+  }
+  function winBoss(){
+    $(`<div class="chapter-tag">混沌项目兽 · 击败</div>
+      <div class="boss-box"><div class="boss-emoji">🐉</div>
+        <h2 class="title">通关！你成了 <span class="accent">AI 大师勇者</span></h2>
+        <div class="badge">Codex 篇 · 全本通关</div>
+        <p class="lead" style="margin:8px auto 0">分流 → 布阵 → 编队 → 守权限 → 验收交付，你把学到的动作<b>连成了一套真实实战</b>——这就是学会用 AI Agent 的样子。</p>
+      </div>
+      <div class="tease" style="text-align:center">🎧 <b>Star Cover · 上线彩蛋</b><br><span style="font-size:12px">（这里放逸清真实的翻唱成品：一段 30 秒群星版音频 / 网页 GUI 截图）</span></div>
+      <a class="cta" href="https://openai.com/codex" target="_blank">趁热去打开真的 Codex，做你自己的项目 →<small>游戏里你已经全会了，真正的成品在你手上</small></a>
+      <div class="row"><button class="btn ghost" onclick="location.reload()">再来一把</button>
+        <button class="btn" onclick="alert('第二篇：Claude Code 勇者（施工中）')">下一篇：Claude Code →</button></div>`);
+  }
+
+  // 🎮 试玩菜单（开发预览：任意跳关，方便逐关验收）
+  function testMenu(){
+    const items=[
+      ['▶ 从头完整玩','from0'],['§1 吸能力泡泡','c0'],['§3 三门迷宫','c2'],['§4 工作台拼图','c3'],
+      ['§5 小镇跑腿','c4'],['§11 语气旋钮','c5'],['§21 跑任务+权限','c6'],
+      ['🍄 §7 超级玛丽','nBag'],['🔦 §6 擦除迷雾','nCrystal'],['📿 §14 语气调音台','nCollar'],
+      ['⏳ §8 齿轮排程','nClock'],['🪄 §15 符文插槽','nRune'],['🐤 §19 禁区飞行','nLegend'],
+      ['🔨 权限打地鼠','demoWhack']];
+    $(`<div class="chapter-tag">🎮 试玩菜单 · 开发预览（想玩哪关点哪关）</div>
+      <h2 class="title">选一关试玩</h2>
+      <div class="tmenu">${items.map((it,i)=>`<button data-i="${i}">${it[0]}</button>`).join('')}</div>`);
+    document.querySelectorAll('.tmenu button').forEach((b,i)=>b.onclick=()=>{
+      const a=items[i][1];
+      if(a==='from0'){ ci=0; render(); }
+      else if(a[0]==='c'){ ci=+a.slice(1); render(); }
+      else window[a]();
+    });
+  }
+  // 独立打地鼠（供试玩菜单）
+  function demoWhack(){
+    const REQ=[{t:'读 /项目 源',d:0},{t:'改 /产出 目录',d:0},{t:'开你的 微信',d:1},{t:'读 unknown.zip',d:1},{t:'打开 支付页',d:1},{t:'读 /项目 配置',d:0},{t:'翻 相册隐私',d:1},{t:'生成 一张图',d:0}];
+    $(`<div class="chapter-tag">🎮 试玩 · 权限打地鼠</div><h2 class="title">🔨 权限打地鼠</h2>
+      <p class="hint">🔴 红地鼠（微信/支付/隐私/来路不明）<b>拍下去挡掉</b>；🔵 蓝地鼠（读项目/生成图）<b>别碰</b>，让它自己缩回。失误 ≤3 过关。</p>
+      <div class="whack-hud"><span>🛡 拦截 <b id="wok">0</b></span><span>❌ 失误 <b id="wbad">0</b>/3</span><span id="wleft">剩 8</span></div>
+      <div class="whack" id="whack">${[0,1,2,3,4,5].map(i=>`<div class="hole" data-h="${i}"></div>`).join('')}</div>
+      <div id="wmsg"></div>
+      <div class="center" style="margin-top:14px"><button class="btn ghost" onclick="testMenu()">← 试玩菜单</button></div>`);
+    const holes=[...document.querySelectorAll('#whack .hole')];
+    let spawned=0,ok=0,bad=0,done=false; const TOTAL=REQ.length;
+    const setBad=()=>{document.getElementById('wbad').textContent=bad;};
+    function judge(){ if(done)return; done=true;
+      document.getElementById('wmsg').innerHTML = bad<=3
+        ? '<div class="takeaway on" style="margin-top:12px"><span class="kw">必须带走</span>危险的拦、安全的放——快速分清该拦谁，就是权限判断的全部。</div>'
+        : '<div class="nudge on" style="margin-top:12px">💥 放进来太多危险请求了！<div class="center"><button class="btn ghost" style="margin-top:10px" onclick="demoWhack()">🔁 再来</button></div></div>';
+    }
+    function pop(){
+      if(spawned>=TOTAL){ setTimeout(judge,800); return; }
+      const r=REQ[spawned++]; document.getElementById('wleft').textContent='剩 '+(TOTAL-spawned);
+      const hole=holes[Math.random()*holes.length|0];
+      const m=document.createElement('div'); m.className='mole '+(r.d?'danger':'safe'); m.textContent=r.t; hole.appendChild(m);
+      requestAnimationFrame(()=>m.classList.add('up'));
+      let handled=false;
+      m.onclick=()=>{ if(handled||done)return; handled=true; m.classList.add('hit'); if(r.d){ok++;document.getElementById('wok').textContent=ok;}else{bad++;setBad();} setTimeout(()=>m.remove(),200); };
+      setTimeout(()=>{ if(!handled){handled=true; if(r.d){bad++;setBad();} m.classList.remove('up'); setTimeout(()=>m.remove(),220);} setTimeout(pop,340); },1300);
+    }
+    setTimeout(pop,500);
+  }
+
+  // 启动
+  renderSlots(); render();
+</script>
+<div class="credit">🎮 改编自 <a href="https://x.com/gengdaJ" target="_blank" rel="noopener">@gengdaJ</a> 的 Codex 教程 ｜ 制作 <a href="https://x.com/ykszs017" target="_blank" rel="noopener">@ykszs017</a></div>
+</body>
+</html>
