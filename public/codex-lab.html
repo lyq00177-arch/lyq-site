@@ -503,21 +503,18 @@
      equip:'key', kw:'必须带走',
      good:'要它<b>读/改你的文件</b>就进「项目」（指定文件夹）；只是随便聊用「普通对话」。',
      nudge:'普通对话不绑定你的文件夹。要动本地文件，得从「项目」进，把文件夹交给它。'},
-    {type:'dial', tag:'第 6 章 · §11 设置·常规', sec:'第一次进设置，先调一个关键项',
-     q:'你不是程序员。设置里「工作模式」二选一，选哪个？',
-     choices:[{t:'编程模式（显得专业）',ok:false},{t:'日常工作模式',ok:true},{t:'不管，保持默认',ok:false}],
-     equip:'ring', kw:'必须带走',
-     good:'非程序员选<b>「日常工作」模式</b>，Codex 会自动少讲工程黑话、多说人话。',
-     nudge:'选「编程」或放任默认，它容易一开口就满屏术语把你劝退。你要的是「日常工作」。'},
-    {type:'task'},
-    {type:'boss'}
+    {type:'search'},
+    {type:'mario'},
+    {type:'auto'},
+    {type:'smallboss'}
   ];
+  // 注：§11 旋钮(dial)/§21 任务(task) 移入下篇，函数保留供下篇复用
   let ci=0;
 
   function next(){ ci++; render(); window.scrollTo({top:0,behavior:'smooth'}); }
   function render(){
     const c=chapters[ci];
-    ({intro:rIntro,chests:rChests,judge:rJudge,toss:rToss,town:rTown,dial:rDial,explore:rExplore,task:rTask,boss:rBoss})[c.type](c);
+    ({intro:rIntro,chests:rChests,judge:rJudge,toss:rToss,town:rTown,dial:rDial,explore:rExplore,task:rTask,boss:rBoss,search:nCrystal,mario:nBag,auto:nClock,smallboss:rBoss})[c.type](c);
   }
   const $=h=>{document.getElementById('stage').innerHTML=h;};
 
@@ -773,7 +770,7 @@
       </div>
       <div class="tease">⚔ 但这只是<b>第一只小 BOSS</b>。想变更强？<b>进阶装备台</b>还有 6 件高级装备（设置页、插件商店、自动化、传说级"电脑操控"…）等你去解锁。</div>
       <button class="cta" style="width:100%;border:none;cursor:pointer;font:inherit;text-align:left" onclick="alert('第一只小 Boss「做一个 PPT」正在制作中，很快上线！')">⚔ 挑战第一只小 Boss：做一个 PPT →<small>把想法丢给 Codex，它帮你出一份 PPT——制作中，敬请期待</small></button>
-      <div class="center" style="margin:4px 0 18px"><button class="btn glow" onclick="rHub()">⚔ 进阶装备台（支线）→</button></div>
+      <!-- 支线装备台入口已移除（上篇线性化）；下一步这里接小 Boss·做 PPT 关 -->
       <div class="handbook">
         <div class="hb-head">📒 随身速查手册 · 截图存好</div>
         <div class="hb-grid">
@@ -805,7 +802,7 @@
       <div class="center backbtn"><button class="btn ghost" onclick="ci=chapters.length-1;render()">← 回到出师页</button></div>`);
     document.querySelectorAll('.node').forEach(nd=>nd.onclick=()=>{ if(nd.classList.contains('done'))return; window[nd.dataset.fn](); window.scrollTo({top:0,behavior:'smooth'}); });
   }
-  function backBar(txt){return `<div class="center backbtn"><button class="btn glow hidden-back" style="display:none" onclick="rHub()">${txt}</button></div>`;}
+  function backBar(txt){return `<div class="center backbtn"><button class="btn glow hidden-back" style="display:none" onclick="next()">${txt}</button></div>`;}
   function showBack(){const b=document.querySelector('.hidden-back');if(b){b.style.display='inline-flex';}}
 
   // §14 个性化 → 驯化项圈（语气调音台·滑杆）
@@ -830,7 +827,7 @@
 
   // §7 插件 → 真·超级玛丽（顶问号砖→蘑菇→变大→顶碎砖墙冲线）
   function nBag(){
-    $(`<div class="chapter-tag">支线 · §7 插件</div>
+    $(`<div class="chapter-tag">第 7 章 · §7 插件</div>
       <h2 class="title">🧩 插件商店 · 超级玛丽</h2>
       <p class="hint">Codex 的插件有四种，一路各捡一件、各破一道关：<b>🌉连接器</b>搭桥过河、<b>🍄插件</b>顶问号砖变大跳墙、<b>📜技能</b>开锁门、<b>🔌MCP</b>接信号塔——集齐 4 件冲到 🏁。</p>
       <div class="hint" style="text-align:center;margin:2px 0 8px">🎒 已装插件 <b id="mcount" style="color:rgb(var(--accent))">0</b> / 4</div>
@@ -952,7 +949,7 @@
 
   // §8 自动化 → 定时符（齿轮排程·拖装）
   function nClock(){
-    $(`<div class="chapter-tag">支线 · §8 自动化</div>
+    $(`<div class="chapter-tag">第 8 章 · §8 自动化</div>
       <h2 class="title">⏳ 定时符 · 装齿轮</h2>
       <p class="lead">给自动化机器装两个齿轮，让它每天定时跑。<b>把齿轮拖进对的槽。</b></p>
       <div class="buckets" id="cslots" style="grid-template-columns:1fr 1fr">
@@ -976,7 +973,7 @@
   // §6 搜索 → 记忆回廊·擦除迷雾（涂开找发光碎片）
   function nCrystal(){
     const frags=[{t:'午饭吃啥',x:16,y:24,ok:0},{t:'周三杂谈',x:66,y:20,ok:0},{t:'📄 上周那个方案',x:34,y:56,ok:1},{t:'昨天的报错',x:70,y:64,ok:0},{t:'随手记一句',x:20,y:82,ok:0}];
-    $(`<div class="chapter-tag">支线 · §6 搜索</div>
+    $(`<div class="chapter-tag">第 6 章 · §6 搜索</div>
       <h2 class="title">🔦 记忆回廊 · 擦除迷雾</h2>
       <p class="hint">旧对话被记忆迷雾盖住了。<b>按住鼠标/手指涂开迷雾</b>，找到发光的「上周方案」再点它。</p>
       <div class="fogwrap" id="fogwrap">
