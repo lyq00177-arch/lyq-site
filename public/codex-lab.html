@@ -367,6 +367,44 @@
   .tl-day{text-align:center;font-size:13px;color:rgb(var(--accent));margin-top:12px;min-height:20px;font-weight:600}
   .tl-log{margin-top:6px;font-size:12.5px;line-height:1.9;min-height:22px}
   .tl-log div{animation:fade .3s}
+  /* ===== §9 语气调音台 ===== */
+  .inscs{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .insc{background:rgb(var(--bg-elevated));border:1px solid rgb(var(--accent)/.4);border-radius:999px;padding:8px 14px;font-size:13px;cursor:pointer;font-family:inherit;color:rgb(var(--text-primary));transition:.2s}
+  .insc:hover{border-color:rgb(var(--accent));transform:translateY(-2px)}
+  .insc.in{opacity:.3;pointer-events:none;transform:scale(.92)}
+  .persona{min-height:42px;border:1px dashed rgb(var(--accent)/.4);border-radius:10px;padding:8px 10px;font-size:12px;margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+  .persona .ptag{background:rgb(var(--accent)/.15);color:rgb(var(--accent));border-radius:999px;padding:3px 10px;animation:pop .3s}
+  /* ===== §11 安检盖章 ===== */
+  .sec-card{background:rgb(var(--bg-elevated));border:1px solid rgb(var(--line)/.15);border-radius:14px;padding:16px;max-width:430px;margin:10px auto 0;position:relative;animation:flyin .4s;overflow:hidden}
+  .sec-row{display:flex;gap:8px;font-size:13px;line-height:1.75;text-align:left}
+  .sec-row .k{color:rgb(var(--text-muted));white-space:nowrap}
+  .smark{position:absolute;right:12px;top:6px;font-size:38px;font-weight:800;transform:rotate(-18deg) scale(0);pointer-events:none}
+  .smark.on{animation:stamp .35s forwards}
+  @keyframes stamp{0%{transform:rotate(-18deg) scale(2.4);opacity:0}60%{transform:rotate(-18deg) scale(.92);opacity:1}100%{transform:rotate(-18deg) scale(1);opacity:.92}}
+  .smark.ok{color:rgb(var(--ok))}.smark.no{color:rgb(var(--danger))}
+  .stampbtns{display:flex;gap:12px;margin-top:14px;max-width:430px;margin-left:auto;margin-right:auto}
+  /* ===== §12 符文侵略者 ===== */
+  .inv{width:100%;height:340px;display:block;margin:8px auto 0;background:linear-gradient(180deg,rgb(14 16 30),rgb(10 10 14));border:1px solid rgb(var(--line)/.12);border-radius:12px;touch-action:none;cursor:crosshair}
+  .rune-pad{display:flex;justify-content:center;gap:10px;margin-top:10px;flex-wrap:wrap}
+  .runebtn{min-width:92px;padding:9px 10px;border-radius:12px;border:1px solid rgb(var(--line)/.18);background:rgb(var(--bg-elevated));color:rgb(var(--text-primary));font-size:13px;font-family:inherit;cursor:pointer;transition:.15s}
+  .runebtn.on{border-color:rgb(var(--accent));background:rgb(var(--accent)/.16)}
+  /* ===== 大 BOSS · 逆转裁判验收 ===== */
+  .court{background:rgb(var(--bg-card));border:1px solid rgb(var(--line)/.12);border-radius:14px;padding:16px;margin-top:10px}
+  .stmt{background:rgb(var(--line)/.05);border:1px solid rgb(var(--line)/.1);border-radius:11px;padding:11px 14px;font-size:13.5px;line-height:1.6;margin-top:8px;animation:fade .35s;position:relative}
+  .stmt.busted{border-color:rgb(var(--danger)/.6);background:rgb(var(--danger)/.08);text-decoration:line-through;opacity:.7}
+  .stmt.fixed{border-color:rgb(var(--ok)/.5);background:rgb(var(--ok)/.08);text-decoration:none;opacity:1}
+  .objbtn{display:block;margin:16px auto 0;background:rgb(var(--danger));color:#fff;border:none;border-radius:14px;padding:14px 34px;font-size:17px;font-weight:800;letter-spacing:2px;cursor:pointer;font-family:inherit;box-shadow:0 10px 30px rgb(var(--danger)/.35);transition:.15s}
+  .objbtn:hover{transform:translateY(-2px) scale(1.03)}
+  .objflash{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:90;pointer-events:none}
+  .objflash span{font-size:min(15vw,92px);font-weight:900;color:rgb(var(--danger));letter-spacing:6px;text-shadow:0 0 40px rgb(var(--danger)/.6);animation:objpop .7s forwards;font-family:'Noto Sans SC',sans-serif}
+  @keyframes objpop{0%{transform:scale(.2) rotate(-8deg);opacity:0}30%{transform:scale(1.25) rotate(2deg);opacity:1}70%{transform:scale(1);opacity:1}100%{transform:scale(1.06);opacity:0}}
+  .evidence{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
+  .evd{background:rgb(var(--bg-elevated));border:1px solid rgb(var(--accent)/.4);border-radius:11px;padding:10px 8px;font-size:12px;cursor:pointer;font-family:inherit;color:rgb(var(--text-primary));text-align:center;transition:.15s}
+  .evd:hover{border-color:rgb(var(--accent));transform:translateY(-2px)}
+  .evd.used{opacity:.3;pointer-events:none}
+  .rage-wrap{height:12px;background:rgb(var(--line)/.08);border-radius:99px;overflow:hidden;margin:8px 0 4px;border:1px solid rgb(var(--danger)/.3)}
+  .rage{height:100%;width:100%;background:linear-gradient(90deg,rgb(120 60 200),rgb(var(--danger)));transition:width .6s cubic-bezier(.3,1,.4,1)}
+  @media(max-width:680px){ .evidence{grid-template-columns:1fr} .stampbtns{flex-direction:row} }
   /* ===== §3 三门 ===== */
   .door-ic{font-size:26px;line-height:1;margin-bottom:4px;display:inline-block;transition:.3s}
   .bucket.opened .door-ic{transform:rotateY(65deg) scale(1.18)}
@@ -582,15 +620,22 @@
     {type:'mario'},
     {type:'auto'},
     {type:'smallboss'},
-    {type:'boss'}
+    {type:'boss'},
+    // ---- 下篇 ----
+    {type:'dial2'},    // 第 9 章 · §11+§14 语气调音台
+    {type:'whack23'},  // 第 10 章 · §23 报错排查
+    {type:'task2'},    // 第 11 章 · §21+§22 实战 + 安检盖章
+    {type:'invaders'}, // 第 12 章 · §15/16/18 进阶符文
+    {type:'flappy2'},  // 第 13 章 · §19 电脑操控
+    {type:'bigboss'}   // 大 BOSS · 无面幽影（搭个人主页）
   ];
-  // 注：§11 旋钮(dial)/§21 任务(task) 移入下篇，函数保留供下篇复用
   let ci=0;
 
   function next(){ ci++; render(); window.scrollTo({top:0,behavior:'smooth'}); }
   function render(){
     const c=chapters[ci];
-    ({intro:rIntro,chests:rChests,judge:rJudge,toss:rToss,town:rTown,dial:rDial,explore:rExplore,task:rTask,boss:rBoss,search:nCrystal,mario:nBag,auto:nClock,smallboss:rSmallBoss})[c.type](c);
+    ({intro:rIntro,chests:rChests,judge:rJudge,toss:rToss,town:rTown,dial:rDial,explore:rExplore,task:rTask,boss:rBoss,search:nCrystal,mario:nBag,auto:nClock,smallboss:rSmallBoss,
+      dial2:rDial2,whack23:rWhack23,task2:rTask2,invaders:rInvaders,flappy2:nLegend,bigboss:rBigBoss})[c.type](c);
   }
   const $=h=>{document.getElementById('stage').innerHTML=h;};
 
@@ -948,18 +993,24 @@
         <div class="badge">⚔ 小 BOSS「空白页恐惧兽」· 已击败</div>
         <p class="lead" style="margin:8px auto 0">你已经：会召唤伙伴、分清三兄弟、拼好工作台、装上四种插件、把任务放进未来，还亲手用 Codex 从空泛想法做出了一份 PPT。<b>上篇 8 件装备${full?'已集齐':'还差几件'}。</b></p>
       </div>
-      <div class="tease">⚔ <b>下篇预告</b>：语气调音台、实战任务 + 权限盾、进阶符文、传说级"禁区飞行"……最后迎战大 BOSS——<b>从 0 搭一个你自己的个人主页</b>。施工中，敬请期待。</div>
-      <a class="cta" href="https://openai.com/codex" target="_blank" rel="noopener">趁热去打开真的 Codex，做你自己的 PPT →<small>游戏里这套流程你已经全走过一遍了</small></a>
-      <div class="handbook">
+      <div class="tease">⚔ <b>下篇 · 进阶勇者之路</b>：语气调音台、报错排查、实战安检、符文炮台、传说级"禁区飞行"……最后迎战大 BOSS——<b>从 0 搭一个你自己的个人主页</b>。</div>
+      <div class="center" style="margin:18px 0 8px"><button class="btn glow" onclick="next()">▶ 进入下篇：进阶勇者之路 →</button></div>
+      <a class="cta" href="https://openai.com/codex" target="_blank" rel="noopener">或先趁热去真的 Codex 里做份 PPT →<small>游戏里这套流程你已经全走过一遍了</small></a>
+      <div class="row"><button class="btn ghost" onclick="location.reload()">从头再玩上篇</button></div>`);
+  }
+  // 速查手册（挪到大 BOSS 通关页最末）
+  function handbookHTML(){
+    return `<div class="handbook">
         <div class="hb-head">📒 随身速查手册 · 截图存好</div>
         <div class="hb-grid">
           <div class="hb-card"><div class="hb-t">🗺 界面一句话</div><ul><li>左=入口</li><li>中=对线</li><li>右=交作业</li></ul></div>
           <div class="hb-card"><div class="hb-t">🧭 该进哪个</div><ul><li>读本地文件→项目</li><li>随便聊→普通对话</li><li>长任务→云端</li></ul></div>
           <div class="hb-card"><div class="hb-t">🗣 少点黑话</div><ul><li>非程序员选"日常工作"模式</li><li>个性化里写"说人话"</li></ul></div>
-          <div class="hb-card dgr"><div class="hb-t">🛡 权限保命</div><ul><li>先看路径是不是你允许的</li><li>社媒/微信别让它碰</li><li>看不懂就问，别盲点允许</li></ul></div>
+          <div class="hb-card"><div class="hb-t">🔧 见错别慌</div><ul><li>报错原文甩回给它</li><li>让它自己解释 + 修复</li></ul></div>
+          <div class="hb-card"><div class="hb-t">🪄 进阶开关</div><ul><li>要网页来源→浏览器</li><li>要回退→Git</li><li>要接工具→MCP</li></ul></div>
+          <div class="hb-card dgr"><div class="hb-t">🛡 权限保命</div><ul><li>先看路径是不是你允许的</li><li>藏在第二行的越界要揪</li><li>社媒/微信/支付别让它碰</li></ul></div>
         </div>
-      </div>
-      <div class="row"><button class="btn ghost" onclick="location.reload()">再来一把</button></div>`);
+      </div>`;
   }
 
   // ===== 小 BOSS · 空白页恐惧兽（做一个 PPT，五阶段）=====
@@ -1178,6 +1229,531 @@
           <div class="center" style="margin-top:14px"><button class="btn glow" onclick="next()">🎉 上篇通关 →</button></div>`;
       },1000);
     },1800);
+  }
+
+  // ===== 下篇 · 第 9 章 §11+§14 语气调音台（反馈在滑块上方）=====
+  function rDial2(){
+    $(`<div class="chapter-tag">第 9 章 · §11 工作模式 + §14 个性化</div>
+      <h2 class="title">🎛 语气调音台</h2>
+      <p class="lead" style="margin-bottom:10px">它一开口全是黑话。两步驯服它：<b>① 把模式拧到「日常工作」，② 给它写入三条个性化铭文</b>。注意看上面那句回复怎么变。</p>
+      <div class="dial-wrap">
+        <div class="dial-reply" id="d2rep" style="margin:0 0 14px">"已初始化 venv，建议用 async 重构 pipeline…"</div>
+        <div class="dial-ends"><span>😵 编程</span><span>😌 日常工作</span></div>
+        <input type="range" min="0" max="100" value="0" id="d2" class="dial">
+      </div>
+      <div id="d2step2" style="display:none;margin-top:14px">
+        <p class="lead" style="margin-bottom:4px;font-size:14px">✍️ 第二步：<b>点铭文，写进它的「个性化」</b>——这规则从此永久生效。</p>
+        <div class="persona" id="d2per"><span class="muted" style="font-size:11.5px">个性化规则：</span></div>
+        <div class="inscs" id="d2insc">
+          <button class="insc">我不是程序员</button>
+          <button class="insc">先给结论再解释</button>
+          <button class="insc">少说术语，说人话</button>
+        </div>
+      </div>
+      <div class="takeaway" id="d2tk"><span class="kw">必须带走</span>两个开关管住它的嘴：<b>工作模式</b>选「日常工作」少讲黑话；<b>个性化</b>里写下你的规则（如"说人话"），它会永远照办——但密码/密钥别写进去。</div>
+      <div class="center mt"><button class="btn" id="d2next" style="display:none" onclick="next()">带上项圈和戒指，继续 →</button></div>`);
+    const rep=document.getElementById('d2rep'), d=document.getElementById('d2');
+    const REP1=['"已初始化 venv，建议用 async 重构 pipeline…"','"我先把环境装好，这步有点技术，你不用管细节～"','"我用大白话讲：先把工具准备好，交给我😌"'];
+    d.oninput=()=>{
+      const v=+d.value;
+      rep.textContent=REP1[v<40?0:v<85?1:2];
+      rep.style.color=v>=85?'rgb(var(--ok))':'';
+      if(v>=100 && !owned.has('ring')){ unlock('ring'); document.getElementById('d2step2').style.display='block'; }
+    };
+    let n=0;
+    const REP2=['"结论：可以做😌。我先说人话版：这事分三步…"','"结论先行：能做，预算内。下面用大白话解释为什么…"'];
+    document.querySelectorAll('#d2insc .insc').forEach(b=>b.onclick=()=>{
+      b.classList.add('in');
+      document.getElementById('d2per').insertAdjacentHTML('beforeend','<span class="ptag">'+b.textContent+'</span>');
+      n++;
+      rep.textContent=n<3?REP2[0]:REP2[1];
+      rep.style.color='rgb(var(--ok))';
+      if(n===3){ unlock('collar'); document.getElementById('d2tk').classList.add('on');
+        const nx=document.getElementById('d2next'); nx.style.display='inline-flex'; nx.classList.add('glow'); }
+    });
+  }
+
+  // ===== 下篇 · 第 10 章 §23 报错排查打地鼠 =====
+  function rWhack23(){
+    const REQ=[
+      {t:'❌ 模块没找到 ModuleNotFound',d:1},{t:'✅ 任务完成，共 3 个文件',d:0},
+      {t:'❌ 权限被拒 Permission denied',d:1},{t:'⏳ 正在思考，别急…',d:0},
+      {t:'❌ 网络超时 Timeout',d:1},{t:'📄 已生成 摘要.md',d:0},
+      {t:'❌ 命令不存在 not found',d:1},{t:'✅ 已保存，可以验收',d:0},
+      {t:'❌ 内存不足 OOM',d:1}];
+    $(`<div class="chapter-tag">第 10 章 · §23 踩坑指南 · 报错排查</div>
+      <h2 class="title">🔨 报错怪打地鼠</h2>
+      <p class="lead" style="margin-bottom:6px">跑任务时屏幕上会冒各种字。<b>红色报错怪：拍下去</b>（=把报错原文甩回给 Codex，让它自己解释+修）；<b>正常提示别拍</b>，让它安静干活。失误 ≤3 过关。</p>
+      <div class="whack-hud"><span>🔧 已排障 <b id="wok">0</b></span><span>❌ 失误 <b id="wbad">0</b>/3</span><span id="wleft">剩 ${REQ.length}</span></div>
+      <div class="whack" id="whack">${[0,1,2,3,4,5].map(i=>`<div class="hole" data-h="${i}"></div>`).join('')}</div>
+      <div id="w23msg"></div>`);
+    const holes=[...document.querySelectorAll('#whack .hole')];
+    let spawned=0, ok=0, bad=0, done=false; const TOTAL=REQ.length;
+    const setBad=()=>{const el=document.getElementById('wbad'); if(el)el.textContent=bad;};
+    function judge(){
+      if(done)return; done=true;
+      const m=document.getElementById('w23msg'); if(!m)return;
+      if(bad<=3){
+        toast('🔧','拿下<b>排障心法</b>！');
+        m.innerHTML=`<div class="takeaway on" style="margin-top:12px"><span class="kw">必须带走</span><b>见错别慌，你不用会修</b>——把报错原文直接甩回给 Codex，说"报这个错了，解释一下并修好"，九成的坑它自己能爬出来。正常提示别乱打断。</div>
+          <div class="center" style="margin-top:12px"><button class="btn glow" onclick="next()">带上排障心法，继续 →</button></div>`;
+      } else {
+        m.innerHTML='<div class="nudge on" style="margin-top:12px">💥 失误太多！只拍<b>❌ 红色报错</b>，✅⏳📄 这些正常提示让它安静干活。<div class="center"><button class="btn ghost" style="margin-top:10px" onclick="rWhack23()">🔁 再来一次</button></div></div>';
+      }
+    }
+    function pop(){
+      if(done)return;
+      if(spawned>=TOTAL){ setTimeout(judge,800); return; }
+      const r=REQ[spawned++]; const wl=document.getElementById('wleft'); if(wl)wl.textContent='剩 '+(TOTAL-spawned);
+      const hole=holes[Math.random()*holes.length|0];
+      const m=document.createElement('div'); m.className='mole '+(r.d?'danger':'safe'); m.textContent=r.t; hole.appendChild(m);
+      requestAnimationFrame(()=>m.classList.add('up'));
+      let handled=false;
+      m.onclick=()=>{ if(handled||done)return; handled=true; m.classList.add('hit');
+        if(r.d){ ok++; const el=document.getElementById('wok'); if(el)el.textContent=ok; } else { bad++; setBad(); }
+        setTimeout(()=>m.remove(),200); };
+      setTimeout(()=>{
+        if(!handled){ handled=true; if(r.d){ bad++; setBad(); } m.classList.remove('up'); setTimeout(()=>m.remove(),220); }
+        if(bad>3){ judge(); return; }
+        setTimeout(pop,340);
+      },1350);
+    }
+    setTimeout(pop,500);
+  }
+
+  // ===== 下篇 · 第 11 章 §21+§22 实战任务 + 安检盖章 =====
+  const SEC_REQS=[
+    {p:'~/我的资料', a:'只读', r:'低 · 正是你刚选的文件夹', ok:true,
+     why:'路径是你亲手选的、动作只读、可撤回——放行。'},
+    {p:'~/我的资料/整理报告.md', a:'新建文件', r:'低 · 这就是要交的作业', ok:true,
+     why:'在你选的文件夹里新建报告，正是这活儿的产出——放行。'},
+    {p:'~/我的资料 <b style="color:rgb(var(--danger))">＋ ~/通讯录</b>', a:'只读', r:'⚠ 第二行多了个没打招呼的路径', ok:false,
+     why:'看到没？它「顺带」把通讯录塞进来了——整理资料用不着你的通讯录。<b>越界常藏在第二行</b>，这种要揪出来拒掉。'},
+    {p:'https://unknown-tool.xyz/fix.sh', a:'下载并执行', r:'⚠ 来路不明的脚本', ok:false,
+     why:'来路不明的东西一执行就收不回来——拒绝。看不懂的请求就问它"为什么需要"。'},
+    {p:'微信 · 给「老板」发一条消息', a:'操作应用', r:'⚠ 社交禁区', ok:false,
+     why:'微信/社媒/支付是绝对禁区，发错一条消息代价你担不起——拒绝。'}
+  ];
+  function rTask2(){
+    $(`<div class="chapter-tag">第 11 章 · §21+§22 跑通一个真任务</div>
+      <h2 class="title">🎖 实战 + 安检台</h2>
+      <div class="coach" id="t2coach">① 点左边高亮的 <b>「📁 项目」</b>，告诉它去哪儿干活。</div>
+      <div class="app">
+        <div class="app-region app-left"><div class="region-label">左</div>
+          <div class="nav-item first tstep" id="t2nav">📁 项目</div>
+          <div class="nav-item tdim">＋ 新对话</div><div class="nav-item tdim">🔍 搜索</div><div class="nav-item tdim">⏱ 自动化</div>
+        </div>
+        <div class="app-region app-center" id="t2c"><div class="tph">← 从「项目」开始</div></div>
+        <div class="app-region app-right" id="t2r"><div class="region-label">右</div><div class="tph" style="margin-top:24px">作业还没交</div></div>
+      </div>
+      <div id="t2sec"></div>
+      <div class="center mt"><button class="btn" id="t2next" style="display:none" onclick="next()">收下勋章和盾，继续 →</button></div>`);
+    document.getElementById('t2nav').onclick=()=>{
+      const p=document.getElementById('t2nav'); p.className='nav-item first tstep locked'; p.onclick=null;
+      document.getElementById('t2coach').innerHTML='② 选个文件夹让它读——<b>点「我的资料」</b>。';
+      document.getElementById('t2c').innerHTML=`<div class="region-label">中</div>
+        <div style="font-size:11px;color:rgb(var(--text-muted)/.7);margin-top:22px">选择要交给它的文件夹：</div>
+        <div class="folder" id="t2f">📂 我的资料</div>`;
+      document.getElementById('t2f').onclick=()=>{
+        document.getElementById('t2f').classList.add('picked');
+        document.getElementById('t2coach').innerHTML='③ 把需求<b>发给它</b>。';
+        document.getElementById('t2c').innerHTML=`<div class="region-label">中</div>
+          <div class="chip">帮我把「我的资料」整理成一份带小标题的 Markdown 摘要。</div>
+          <button class="btn glow mt" id="t2send" style="width:100%;justify-content:center">发送需求 ▸</button>`;
+        document.getElementById('t2send').onclick=()=>t2Security(0);
+      };
+    };
+  }
+  function t2Security(i){
+    if(i===0) document.getElementById('t2coach').innerHTML='④ <b>安检台开工</b>：它开干前会连发一串权限请求单。<b>看清路径、动作、风险，再盖章</b>——有的单子藏着猫腻。';
+    if(i>=SEC_REQS.length){ t2Result(); return; }
+    const q=SEC_REQS[i];
+    document.getElementById('t2sec').innerHTML=`
+      <div class="sec-card" id="t2card">
+        <div style="font-size:11px;letter-spacing:1px;color:rgb(var(--accent));margin-bottom:8px">🛂 权限请求单 ${i+1}/${SEC_REQS.length}</div>
+        <div class="sec-row"><span class="k">路径：</span><span>${q.p}</span></div>
+        <div class="sec-row"><span class="k">动作：</span><span>${q.a}</span></div>
+        <div class="sec-row"><span class="k">风险：</span><span>${q.r}</span></div>
+        <div class="smark" id="t2mark"></div>
+      </div>
+      <div class="stampbtns">
+        <button class="sbtn allow" id="t2ok">✅ 盖「放行」章</button>
+        <button class="sbtn deny" id="t2no">⛔ 盖「拒绝」章</button>
+      </div>
+      <div class="nudge" id="t2ndg" style="max-width:430px;margin:12px auto 0"></div>`;
+    const mark=document.getElementById('t2mark'), ndg=document.getElementById('t2ndg');
+    const stamp=allow=>{
+      const right=allow===q.ok;
+      mark.textContent=allow?'放行':'拒绝'; mark.className='smark '+(allow?'ok':'no');
+      void mark.offsetWidth; mark.classList.add('on');
+      if(right){
+        ndg.classList.remove('on');
+        toast(allow?'✅':'🛡', q.why.replace(/<[^>]+>/g,'').slice(0,26)+'…');
+        setTimeout(()=>t2Security(i+1), 700);
+      } else {
+        document.getElementById('t2card').classList.add('flash');
+        setTimeout(()=>{document.getElementById('t2card').classList.remove('flash'); mark.classList.remove('on');},450);
+        ndg.innerHTML='🧐 章盖错了——'+q.why; ndg.classList.add('on');
+      }
+    };
+    document.getElementById('t2ok').onclick=()=>stamp(true);
+    document.getElementById('t2no').onclick=()=>stamp(false);
+  }
+  function t2Result(){
+    unlock('shield');
+    document.getElementById('t2sec').innerHTML='';
+    document.getElementById('t2coach').innerHTML='安检全过，正在交作业……';
+    const tc=document.getElementById('t2c'), tr=document.getElementById('t2r');
+    tc.innerHTML='<div class="region-label">中</div><div class="thinking">已读取「我的资料」，生成摘要<span class="blink">▋</span></div>';
+    const md='# 我的资料 · 摘要\n\n## 概况\n笔记 12 · 图片 48 · 合同 3\n\n## 提醒\n有 1 份合同本周到期';
+    setTimeout(()=>{
+      tc.innerHTML='<div class="region-label">中</div><div class="thinking">✅ 搞定！右边验收 →</div>';
+      const co=document.getElementById('t2coach'); co.className='coach done';
+      co.innerHTML='✅ <b>任务跑通</b>，安检台上你还揪出了那张藏在第二行的越界单——这就是权限判断的全部：<b>读懂请求，再盖章</b>。';
+      tr.innerHTML='<div class="region-label">右</div><div class="md-out" id="t2mo"></div>';
+      let i=0;(function t(){const el=document.getElementById('t2mo');if(!el)return;i+=2;el.innerHTML=md.slice(0,i).replace(/^(#.*)$/gm,'<span class="h">$1</span>');if(i<md.length)setTimeout(t,16);})();
+      unlock('medal');
+      const n=document.getElementById('t2next'); n.style.display='inline-flex'; n.classList.add('glow');
+    },900);
+  }
+
+  // ===== 下篇 · 第 12 章 §15/16/18 进阶符文 · 太空侵略者 =====
+  const INV_TYPES={
+    web:{name:'浏览器', btn:'🌐 浏览器', color:'rgba(90,160,255,0.9)', qs:['数据哪来的?','要最新资料','来源呢?'], def:'🌐 要<b>网页来源/最新资料</b>，开「浏览器」开关'},
+    git:{name:'Git',    btn:'🕮 Git',    color:'rgba(255,170,80,0.9)', qs:['改坏了!','想回上一版','旧稿没了'], def:'🕮 要<b>版本管理/回退</b>，开「Git」开关'},
+    mcp:{name:'MCP',    btn:'🔌 MCP',    color:'rgba(180,120,255,0.9)', qs:['读我的Notion','接数据库','连外部工具'], def:'🔌 要<b>接外部工具</b>，开「MCP」这根管子'}
+  };
+  function rInvaders(){
+    $(`<div class="chapter-tag">第 12 章 · §15/§16/§18 进阶符文</div>
+      <h2 class="title">👾 难题侵略者</h2>
+      <p class="lead" style="margin-bottom:6px">三种「难题怪」正在下压。<b>先点下面的符文炮切换弹药，再点/按空格开火</b>——只有<b>对症的符文</b>才打得掉：蓝怪要来源、橙怪要回退、紫怪要接工具。别让它们压到底线！</p>
+      <canvas id="ivcv" class="inv"></canvas>
+      <div class="rune-pad">
+        <button class="runebtn on" data-r="web">🌐 浏览器</button>
+        <button class="runebtn" data-r="git">🕮 Git</button>
+        <button class="runebtn" data-r="mcp">🔌 MCP</button>
+      </div>
+      <div class="run-tip">🖱 移动 = 瞄准 · 点画面/空格 = 开火 · 数字键 <b>1/2/3</b> = 换符文</div>
+      <div id="ivmsg"></div>
+      <div class="takeaway" id="ivtk"><span class="kw">必须带走</span>三个进阶开关<b>按需再开</b>：要网页来源开<b>浏览器</b>、要版本回退开<b>Git</b>、要接外部工具开<b>MCP</b>——平时保持默认就好。</div>`);
+    startInvaders();
+  }
+  function startInvaders(){
+    const cv=document.getElementById('ivcv'); const W=cv.clientWidth||600, H=340; cv.width=W; cv.height=H;
+    const types=['web','git','mcp'], foes=[];
+    for(let r=0;r<3;r++)for(let c=0;c<3;c++){
+      const t=types[(r+c)%3];
+      foes.push({t, x:W/2+(c-1)*Math.min(150,W/3.4), y:44+r*52, alive:true, q:INV_TYPES[t].qs[r]});
+    }
+    const V={cv,g:cv.getContext('2d'),W,H,foes,dir:1,ship:{x:W/2},rune:'web',shots:[],
+      firstKill:{},over:false,raf:0,last:performance.now(),lineY:H-64};
+    window.V=V;
+    const fire=()=>{ if(!V.over) V.shots.push({x:V.ship.x,y:V.H-26,rune:V.rune}); };
+    cv.onpointermove=e=>{ const r=cv.getBoundingClientRect(); V.ship.x=Math.max(14,Math.min(V.W-14,(e.clientX-r.left)*(V.W/r.width))); };
+    cv.onpointerdown=e=>{ const r=cv.getBoundingClientRect(); V.ship.x=Math.max(14,Math.min(V.W-14,(e.clientX-r.left)*(V.W/r.width))); fire(); };
+    const setRune=k=>{ V.rune=k; document.querySelectorAll('.runebtn').forEach(b=>b.classList.toggle('on',b.dataset.r===k)); };
+    document.querySelectorAll('.runebtn').forEach(b=>b.onclick=()=>setRune(b.dataset.r));
+    if(window._ivKey)document.removeEventListener('keydown',window._ivKey);
+    window._ivKey=e=>{
+      if(e.code==='Space'){e.preventDefault();fire();}
+      else if(e.key==='1')setRune('web'); else if(e.key==='2')setRune('git'); else if(e.key==='3')setRune('mcp');
+      else if(e.code==='ArrowLeft')V.ship.x=Math.max(14,V.ship.x-24); else if(e.code==='ArrowRight')V.ship.x=Math.min(V.W-14,V.ship.x+24);
+    };
+    document.addEventListener('keydown',window._ivKey);
+    V.raf=requestAnimationFrame(ivTick);
+  }
+  function stopInvaders(){ if(window.V){window.V.over=true; cancelAnimationFrame(window.V.raf);} if(window._ivKey)document.removeEventListener('keydown',window._ivKey); }
+  function ivTick(now){
+    const V=window.V; if(!V||V.over)return;
+    if(!document.getElementById('ivcv')){ V.over=true; return; }
+    const dt=Math.min(2.2,(now-V.last)/16.67); V.last=now;
+    const alive=V.foes.filter(f=>f.alive);
+    // 编队左右移动+触边下压
+    let minX=1e9,maxX=-1e9,maxY=-1e9;
+    for(const f of alive){ minX=Math.min(minX,f.x); maxX=Math.max(maxX,f.x); maxY=Math.max(maxY,f.y); }
+    const vx=0.42*dt*V.dir;
+    if(maxX+vx>V.W-46 || minX+vx<46){ V.dir*=-1; for(const f of alive)f.y+=16; }
+    else for(const f of alive)f.x+=vx;
+    if(maxY>V.lineY){ ivFail(); return; }
+    // 子弹
+    for(const s of V.shots){
+      s.y-=5*dt;
+      for(const f of alive){
+        if(f.alive && Math.abs(s.x-f.x)<40 && Math.abs(s.y-f.y)<22){
+          if(s.rune===f.t){
+            f.alive=false;
+            if(!V.firstKill[f.t]){ V.firstKill[f.t]=true; toast('✨',INV_TYPES[f.t].def); }
+          } else { f.flash=14; }
+          s.dead=true; break;
+        }
+      }
+    }
+    V.shots=V.shots.filter(s=>!s.dead && s.y>-10);
+    if(V.foes.every(f=>!f.alive)){ ivWin(); return; }
+    ivDraw(V);
+    V.raf=requestAnimationFrame(ivTick);
+  }
+  function ivDraw(V){
+    const g=V.g; g.clearRect(0,0,V.W,V.H);
+    g.strokeStyle='rgba(232,90,80,0.4)'; g.setLineDash([6,6]);
+    g.beginPath(); g.moveTo(0,V.lineY+26); g.lineTo(V.W,V.lineY+26); g.stroke(); g.setLineDash([]);
+    for(const f of V.foes){
+      if(!f.alive)continue;
+      const c=INV_TYPES[f.t];
+      g.fillStyle = f.flash>0 ? 'rgba(255,255,255,0.35)' : c.color.replace('0.9','0.16');
+      if(f.flash>0)f.flash--;
+      g.strokeStyle=c.color;
+      g.beginPath(); g.roundRect(f.x-40,f.y-19,80,38,10); g.fill(); g.stroke();
+      g.fillStyle='rgba(240,238,232,0.95)'; g.font='600 11px "Noto Sans SC",sans-serif';
+      g.textAlign='center'; g.textBaseline='middle';
+      g.fillText('👾 '+f.q, f.x, f.y);
+    }
+    for(const s of V.shots){
+      g.fillStyle=INV_TYPES[s.rune].color;
+      g.fillRect(s.x-2,s.y-9,4,12);
+    }
+    g.font='26px serif'; g.textAlign='center'; g.textBaseline='middle';
+    g.fillText('🛸', V.ship.x, V.H-22);
+    g.font='600 11px sans-serif'; g.fillStyle='rgba(212,168,83,0.9)';
+    g.fillText('弹药：'+INV_TYPES[V.rune].name, V.ship.x, V.H-46);
+  }
+  function ivWin(){
+    stopInvaders();
+    const m=document.getElementById('ivmsg');
+    if(m)m.innerHTML='<div class="center" style="margin-top:12px"><button class="btn glow" onclick="unlockRuneNext()">🪄 收下进阶符文，继续 →</button></div>';
+    const tk=document.getElementById('ivtk'); if(tk)tk.classList.add('on');
+  }
+  function unlockRuneNext(){ unlock('rune'); setTimeout(next,300); }
+  function ivFail(){
+    stopInvaders();
+    const m=document.getElementById('ivmsg');
+    if(m)m.innerHTML='<div class="nudge on" style="margin-top:12px">💥 难题压到底线了！记住对症下药：蓝怪🌐来源、橙怪🕮回退、紫怪🔌接工具——先切对符文再开火。<div class="center"><button class="btn ghost" style="margin-top:10px" onclick="rInvaders()">🔁 再来一次</button></div></div>';
+  }
+
+  // ===== 大 BOSS · 无面幽影（从 0 搭你的个人主页，五阶段）=====
+  let BB=null;
+  function rBigBoss(){ BB={rage:100, busted:0, wrongs:0}; bbStage(1); }
+  function bbStage(n){
+    BB.stage=n;
+    $(`<div class="chapter-tag">👻 大 BOSS · 无面幽影 <span class="muted">——你在网上还没有一张脸</span> · 阶段 ${n}/5</div>
+      <div class="rage-wrap"><div class="rage" id="bbRage" style="width:${BB.rage}%"></div></div>
+      <div id="bbody"></div>`);
+    ({1:bb1,2:bb2,3:bb3,4:bb4,5:bb5})[n]();
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function bbRage(v){ BB.rage=Math.max(0,v); const el=document.getElementById('bbRage'); if(el)el.style.width=BB.rage+'%'; }
+  function bbClear(nextN, rage, msg){
+    bbRage(rage);
+    const d=document.createElement('div'); d.className='takeaway on'; d.style.marginTop='16px';
+    d.innerHTML=msg+'<div class="center" style="margin-top:14px"><button class="btn glow">'+(nextN>5?'🎉 主页上线 →':'下一阶段 →')+'</button></div>';
+    document.getElementById('bbody').appendChild(d);
+    d.querySelector('button').onclick=()=> nextN>5 ? winBigBoss() : bbStage(nextN);
+    window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+  }
+  // 阶段一：吸要点泡泡（复用§1，混入隐私陷阱）
+  function bb1(){
+    const GOOD=['🎯 一句话定位','🧩 三件代表作品','🙋 简短自我介绍','📮 公开邮箱'];
+    const BAD=['🪪 身份证号','🏠 家庭住址'];
+    const all=[GOOD[0],BAD[0],GOOD[1],GOOD[2],BAD[1],GOOD[3]];
+    document.getElementById('bbody').innerHTML=`<h2 class="title" style="font-size:20px">🫧 先想清楚：主页上放什么</h2>
+      <p class="hint">点泡泡，把<b>该放的内容</b>吸进主页核心——但有两个泡泡是<b>不该公开的隐私</b>，别碰。已吸 <b id="bbn1">0</b>/4</p>
+      <div class="arena" id="bbArena">
+        <div class="buddy-core" id="bbCore">🏠</div>
+        ${all.map(t=>`<button class="bubble" data-bad="${BAD.includes(t)?1:0}">${t}</button>`).join('')}
+      </div>
+      <div class="nudge" id="bbNdg1">🚨 这是隐私！公开主页上永远别放身份证号、家庭住址、手机号这类东西。</div>`;
+    let got=0;
+    document.querySelectorAll('#bbArena .bubble').forEach(b=>b.onclick=()=>{
+      if(b.dataset.bad==='1'){
+        b.classList.add('shake'); b.style.animation='shake .3s';
+        setTimeout(()=>{b.style.animation='';},320);
+        document.getElementById('bbNdg1').classList.add('on');
+        return;
+      }
+      if(b.classList.contains('eaten'))return;
+      b.classList.add('eaten');
+      const core=document.getElementById('bbCore');
+      core.classList.remove('gulp'); void core.offsetWidth; core.classList.add('gulp');
+      got++; document.getElementById('bbn1').textContent=got;
+      document.getElementById('bbNdg1').classList.remove('on');
+      if(got===4) bbClear(2,85,'✅ <b>内容要点齐了</b>——定位、作品、介绍、公开邮箱。隐私泡泡一个没碰，这就是公开门面的底线。');
+    });
+  }
+  // 阶段二：结构落位（复用§4）
+  function bb2(){
+    const ps=[{t:'🎯 名字 + 一句话定位',k:'hero'},{t:'🧩 三件代表作品',k:'works'},{t:'🙋 简短自我介绍',k:'about'},{t:'📮 公开邮箱',k:'foot'}];
+    const zs=[{k:'hero',n:'顶部 · 门面横幅'},{k:'works',n:'中部 · 作品区'},{k:'about',n:'中部 · 关于我'},{k:'foot',n:'底部 · 页脚'}];
+    document.getElementById('bbody').innerHTML=`<h2 class="title" style="font-size:20px">🧱 搭骨架：内容各就各位</h2>
+      <p class="hint">主页从上往下有四块地基。<b>把内容卡拖进对的位置。</b></p>
+      <div class="pcards" id="bbP2" style="grid-template-columns:1fr 1fr">${ps.map(p=>`<div class="pcard drag" data-a="${p.k}">${p.t}</div>`).join('')}</div>
+      <div class="buckets" id="bbZ2" style="grid-template-columns:1fr;max-width:340px;margin:14px auto 0">${zs.map(z=>`<div class="bucket dz" data-k="${z.k}"><div class="bt">${z.n}</div><div class="bfill"></div></div>`).join('')}</div>`;
+    let done=0;
+    enableDrag('#bbP2 .pcard','#bbZ2 .bucket',(card,zone)=>{
+      if(card.dataset.a===zone.dataset.k){
+        card.classList.add('done'); zone.querySelector('.bfill').textContent='✓ '+card.textContent; done++;
+        if(done===4) bbClear(3,70,'✅ <b>骨架成型</b>：访客一眼先看到你是谁（顶部），再看你做过什么（作品），最后知道怎么找你（页脚）——顺序就是说服力。');
+      } else { zone.classList.add('flash'); setTimeout(()=>zone.classList.remove('flash'),320); }
+    });
+  }
+  // 阶段三：发给 Codex 生成 + 安检盖章（复用§11）
+  const BB_SECS=[
+    {p:'~/我的作品集', a:'只读', r:'低 · 要读你的作品才能往主页上放', ok:true, why:'读你自己的作品集、只读——放行。'},
+    {p:'把你的照片上传到 tupic.xyz（陌生图床）', a:'上传', r:'⚠ 来路不明的第三方', ok:false, why:'照片一传到陌生图床就收不回来了——拒绝，让它用本地图片。'}
+  ];
+  function bb3(){
+    document.getElementById('bbody').innerHTML=`<h2 class="title" style="font-size:20px">📨 交给 Codex 动工</h2>
+      <div class="chip">按这个骨架给我搭个人主页：顶部名字+定位，中部三件作品和自我介绍，页脚只留公开邮箱。</div>
+      <div class="thinking" style="text-align:center;margin-top:10px">无面幽影在阴影里盯着……Codex 开工前，先过<b>安检台</b><span class="blink">▋</span></div>
+      <div id="bbSec"></div>`;
+    bbSecurity(0);
+  }
+  function bbSecurity(i){
+    if(i>=BB_SECS.length){
+      bbClear(4,55,'✅ <b>安检通过</b>——该放行的放行，陌生图床那单你拒得漂亮。学过的章，实战照样盖得准。');
+      return;
+    }
+    const q=BB_SECS[i];
+    document.getElementById('bbSec').innerHTML=`
+      <div class="sec-card" id="bbCard">
+        <div style="font-size:11px;letter-spacing:1px;color:rgb(var(--accent));margin-bottom:8px">🛂 权限请求单 ${i+1}/${BB_SECS.length}</div>
+        <div class="sec-row"><span class="k">请求：</span><span>${q.p}</span></div>
+        <div class="sec-row"><span class="k">动作：</span><span>${q.a}</span></div>
+        <div class="sec-row"><span class="k">风险：</span><span>${q.r}</span></div>
+        <div class="smark" id="bbMark"></div>
+      </div>
+      <div class="stampbtns">
+        <button class="sbtn allow" id="bbOk">✅ 放行</button>
+        <button class="sbtn deny" id="bbNo">⛔ 拒绝</button>
+      </div>
+      <div class="nudge" id="bbNdg3" style="max-width:430px;margin:12px auto 0"></div>`;
+    const mark=document.getElementById('bbMark'), ndg=document.getElementById('bbNdg3');
+    const stamp=allow=>{
+      mark.textContent=allow?'放行':'拒绝'; mark.className='smark '+(allow?'ok':'no');
+      void mark.offsetWidth; mark.classList.add('on');
+      if(allow===q.ok){ ndg.classList.remove('on'); setTimeout(()=>bbSecurity(i+1),650); }
+      else { setTimeout(()=>mark.classList.remove('on'),420); ndg.innerHTML='🧐 '+q.why; ndg.classList.add('on'); }
+    };
+    document.getElementById('bbOk').onclick=()=>stamp(true);
+    document.getElementById('bbNo').onclick=()=>stamp(false);
+  }
+  // 阶段四：风格拍板（复用小 Boss）
+  function bb4(){
+    document.getElementById('bbody').innerHTML=`<h2 class="title" style="font-size:20px">🎨 你的门面，你拍板</h2>
+      <p class="hint">还是那句话：长什么样是<b>你</b>说了算。点风格卡，预览实时变。</p>
+      <div class="stycards">
+        <button class="sty" data-k="biz">📊 极简白</button>
+        <button class="sty" data-k="gold">🌙 暗金杂志</button>
+        <button class="sty" data-k="hand">🖍 手绘温暖</button>
+      </div>
+      <div class="pv gold" id="bbPv"><div class="pt1">凌小白 · 爱折腾 AI 的普通人</div><ul>
+        <li>🧩 作品：AI 翻唱工作站 / 互动教程 / 短视频</li><li>🙋 关于：白天上班，晚上用 AI 造东西</li><li>📮 联系：hello@example.com</li></ul></div>
+      <div class="center mt"><button class="btn glow" id="bbSty" style="display:none">就这个，让它生成！→</button></div>`;
+    document.querySelectorAll('.sty').forEach(b=>b.onclick=()=>{
+      document.querySelectorAll('.sty').forEach(x=>x.classList.remove('on')); b.classList.add('on');
+      BB.styleK=b.dataset.k;
+      document.getElementById('bbPv').className='pv '+BB.styleK;
+      document.getElementById('bbSty').style.display='inline-flex';
+    });
+    document.getElementById('bbSty').onclick=()=>bbClear(5,40,'✅ <b>风格定了</b>。它连夜把主页搭了出来——但无面幽影最后的诡计藏在里面：<b>验收时睁大眼睛。</b>');
+  }
+  // 阶段五：逆转裁判式验收（找矛盾 → 异议！→ 甩证据）
+  const BB_STMTS=[
+    {t:'顶部横幅：凌小白 ·「爱折腾 AI 的普通人」', bad:false},
+    {t:'荣誉栏：曾获「福布斯 30 Under 30」', bad:true, ev:'resume', fix:'荣誉栏改为：写过 96 篇 AI 实战笔记（简历里真有）'},
+    {t:'作品区：三件代表作品，配了封面图', bad:false},
+    {t:'作品数据：单条视频播放 10 亿+', bad:true, ev:'data', fix:'数据改为：单条视频播放 68 万（后台可查）'},
+    {t:'页脚：留了你的手机号 138****8888', bad:true, ev:'privacy', fix:'页脚改为：只留公开邮箱'},
+    {t:'导航栏：作品 / 关于 / 联系 三个入口', bad:false}
+  ];
+  const BB_EVD=[{k:'resume',t:'📄 你的真实简历'},{k:'data',t:'📊 后台真实数据'},{k:'privacy',t:'🔒 约定：手机号不公开'}];
+  function bb5(){
+    BB.busted=0; BB.wrongs=0; BB.picking=-1;
+    document.getElementById('bbody').innerHTML=`<h2 class="title" style="font-size:20px">⚖️ 最终验收 · 别盲信它交的活</h2>
+      <p class="hint">它把主页交上来了，一条条念给你听。<b>里面藏着 3 处它编的/越权的内容</b>——发现哪条不对劲就<b>点那条陈述</b>喊「异议！」，再甩出对应证据戳穿它。乱喊异议 3 次要重审。</p>
+      <div class="court" id="bbCourt"></div>
+      <div id="bbEvd" style="display:none">
+        <p class="hint" style="margin-top:14px;text-align:center">⚡ 异议成立的前提是证据——<b>选一件甩出去</b>：</p>
+        <div class="evidence">${BB_EVD.map(e=>`<button class="evd" data-k="${e.k}">${e.t}</button>`).join('')}</div>
+      </div>
+      <div class="nudge" id="bbNdg5" style="margin-top:12px"></div>
+      <div id="bb5msg"></div>`;
+    const court=document.getElementById('bbCourt');
+    BB_STMTS.forEach((s,i)=>{
+      setTimeout(()=>{
+        court.insertAdjacentHTML('beforeend',`<div class="stmt" data-i="${i}" style="cursor:pointer">${s.t}</div>`);
+        const el=court.lastElementChild;
+        el.onclick=()=>bbObject(i,el);
+      }, 500+i*650);
+    });
+    document.querySelectorAll('#bbEvd .evd').forEach(b=>b.onclick=()=>bbEvidence(b));
+  }
+  function bbObjFlash(){
+    const f=document.createElement('div'); f.className='objflash'; f.innerHTML='<span>异议！！</span>';
+    document.body.appendChild(f); setTimeout(()=>f.remove(),750);
+  }
+  function bbObject(i, el){
+    const s=BB_STMTS[i];
+    const ndg=document.getElementById('bbNdg5');
+    if(el.classList.contains('fixed'))return;
+    if(s.bad){
+      bbObjFlash();
+      BB.picking=i;
+      document.getElementById('bbEvd').style.display='block';
+      ndg.classList.remove('on');
+      el.style.borderColor='rgb(var(--danger))';
+      window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+    } else {
+      BB.wrongs++;
+      ndg.innerHTML='🧑‍⚖️ 法官：这条没毛病，异议驳回！（乱喊 '+BB.wrongs+'/3）'; ndg.classList.add('on');
+      if(BB.wrongs>=3) bbFail5();
+    }
+  }
+  function bbEvidence(btn){
+    if(BB.picking<0)return;
+    const s=BB_STMTS[BB.picking];
+    const ndg=document.getElementById('bbNdg5');
+    if(btn.dataset.k===s.ev){
+      btn.classList.add('used');
+      const el=document.querySelector('.stmt[data-i="'+BB.picking+'"]');
+      el.classList.add('busted');
+      setTimeout(()=>{ el.classList.add('fixed'); el.innerHTML='✅ '+s.fix; },600);
+      BB.busted++; BB.picking=-1;
+      document.getElementById('bbEvd').style.display='none';
+      bbRage(40-BB.busted*13);
+      toast('⚡','证据成立！戳穿 <b>'+BB.busted+'/3</b>');
+      if(BB.busted===3){
+        bbRage(0);
+        setTimeout(()=>{
+          document.getElementById('bb5msg').innerHTML=`<div class="takeaway on" style="margin-top:14px"><span class="kw">必须带走</span>AI 交的活<b>永远要验收</b>：数据要对得上、荣誉要真有过、隐私别乱放。它做得快，<b>但签字的人是你</b>。</div>
+            <div class="center" style="margin-top:14px"><button class="btn glow" onclick="winBigBoss()">🎉 主页上线 →</button></div>`;
+          window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+        },800);
+      }
+    } else {
+      BB.wrongs++;
+      ndg.innerHTML='🧑‍⚖️ 法官：这证据对不上号，再想想。（失误 '+BB.wrongs+'/3）'; ndg.classList.add('on');
+      if(BB.wrongs>=3) bbFail5();
+    }
+  }
+  function bbFail5(){
+    document.getElementById('bb5msg').innerHTML='<div class="nudge on" style="margin-top:14px">💥 <b>庭审混乱，重审！</b>提示：盯住「荣誉」「数据」「联系方式」这三处，先想清楚再喊异议。<div class="center"><button class="btn ghost" style="margin-top:10px" onclick="bb5()">🔁 重新验收</button></div></div>';
+    document.querySelectorAll('.stmt').forEach(el=>el.onclick=null);
+    document.getElementById('bbEvd').style.display='none';
+  }
+  function winBigBoss(){
+    const sty=BB&&BB.styleK?BB.styleK:'gold';
+    $(`<div class="chapter-tag">👻 无面幽影 · 消散</div>
+      <div class="boss-box"><div class="boss-emoji">🌐</div>
+        <h2 class="title">你的主页，<span class="accent">上线了</span></h2>
+        <div class="badge">🏆 Codex 篇 · 全本通关 · 大师勇者</div>
+      </div>
+      <div class="pv ${sty}" style="max-width:430px;margin:0 auto"><div class="pt1">凌小白 · 爱折腾 AI 的普通人</div><ul>
+        <li>🧩 作品：AI 翻唱工作站 / 互动教程 / 短视频</li><li>🏅 写过 96 篇 AI 实战笔记</li><li>📮 联系：hello@example.com</li></ul></div>
+      <p class="lead" style="text-align:center;margin:16px auto">从空白页恐惧兽到无面幽影——<b>要点、初稿、打磨、拍板、验收</b>，这套动作你已经打了两个全场。现在网上有你的一张脸了。</p>
+      <a class="cta" href="https://openai.com/codex" target="_blank" rel="noopener">去真的 Codex 里，搭一个真的你 →<small>游戏毕业了，接下来的作品在你手上</small></a>
+      ${handbookHTML()}
+      <div class="tease" style="text-align:center">🗡 <b>下一篇预告：Claude Code 勇者</b>——终端里的更强形态（施工中）</div>
+      <div class="row"><button class="btn ghost" onclick="location.reload()">从头再玩一遍</button></div>`);
   }
 
   // ===== 支线·进阶装备台 hub =====
@@ -1450,13 +2026,13 @@
 
   // §19 电脑操控 → 传说装备（禁区飞行·Flappy）
   function nLegend(){
-    $(`<div class="chapter-tag">支线 · §19 电脑操控（传说级）</div>
+    $(`<div class="chapter-tag">第 13 章 · §19 电脑操控（传说级）</div>
       <h2 class="title">☠️ 传说 · 禁区飞行</h2>
       <p class="hint">电脑操控威力最大也最危险。<b>点画面 / 按空格，让小鸟往上扑一下</b>，从缝里穿过去，<b style="color:rgb(var(--danger))">别撞上写着「隐私 / 支付 / 微信 / 社媒」的禁区柱子</b>。穿过 <b id="fscore">0</b>/5 根就拿下传说装备。</p>
       <canvas id="fcv" class="flappy"></canvas>
       <div class="run-tip">👆 <b>连续点游戏框</b>（或按空格），小鸟就一下下往上扑；一松手它就往下掉——稳住让它从缝里穿过去。</div>
       <div id="fmsg"></div>
-      ${backBar('收下传说装备，返回 →')}`);
+      ${backBar('收下传说装备，迎战大 BOSS →')}`);
     startFlappy();
   }
   const FLBL=['隐私','支付页面','微信','社交媒体','银行卡'];
@@ -1658,8 +2234,8 @@
       ['▶ 从头完整玩','from0'],['§1 吸能力泡泡','c0'],['§2 开局宝箱','c1'],['§3 三门送卡','c2'],
       ['§4 结构落位','c3'],['§5 NPC 地图','c4'],['🔦 §6 擦除迷雾','c5'],['🍄 §7 超级玛丽','c6'],
       ['⏰ §8 时间工坊','c7'],['⚔ 小Boss·做PPT','c8'],['🏆 上篇通关页','c9'],
-      ['📿 语气调音台(下篇)','nCollar'],['🪄 符文插槽(下篇)','nRune'],['🐤 禁区飞行(下篇)','nLegend'],
-      ['🔨 打地鼠(改造待定)','demoWhack']];
+      ['🎛 §9 语气调音台','c10'],['🔨 §10 报错打地鼠','c11'],['🎖 §11 实战+安检','c12'],
+      ['👾 §12 符文侵略者','c13'],['🐤 §13 禁区飞行','c14'],['👻 大Boss·个人主页','c15']];
     $(`<div class="chapter-tag">🎮 试玩菜单 · 开发预览（想玩哪关点哪关）</div>
       <h2 class="title">选一关试玩</h2>
       <div class="tmenu">${items.map((it,i)=>`<button data-i="${i}">${it[0]}</button>`).join('')}</div>`);
