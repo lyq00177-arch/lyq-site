@@ -677,7 +677,7 @@
         <div class="chest" id="c1" onclick="openChest('c1')"><div class="ic">🎁</div><div class="nm">宝箱一 · 下载</div><div class="dt">点开领取</div></div>
         <div class="chest" id="c2" onclick="openChest('c2')"><div class="ic">🎁</div><div class="nm">宝箱二 · 登录</div><div class="dt">点开领取</div></div>
       </div>
-      <div class="takeaway" id="chestTip"><span class="kw">必须带走</span>从<b>官网 openai.com/codex</b> 下载，用你的 <b>ChatGPT 账号</b>登录——普通账号也有免费额度可以尝鲜。</div>
+      <div class="takeaway" id="chestTip"><span class="kw">必须带走</span>从<b>官方下载页</b>（宝箱里的链接直达）下载，用你的 <b>ChatGPT 账号</b>登录——普通账号也有免费额度可以尝鲜。</div>
       <div class="center mt"><button class="btn" id="chestNext" style="display:none" onclick="unlock('ticket');next()">进入工作台 →</button></div>`);
     window._chest=0;
   }
@@ -685,7 +685,7 @@
     const el=document.getElementById(id);
     if(el.classList.contains('opened'))return;
     el.classList.add('opened');
-    if(id==='c1') el.innerHTML='<div class="ic">📦</div><div class="nm">下载地址</div><div class="lk">openai.com/codex</div>';
+    if(id==='c1') el.innerHTML='<div class="ic">📦</div><div class="nm">下载地址</div><div class="lk"><a href="https://developers.openai.com/codex/app" target="_blank" rel="noopener" style="color:inherit" onclick="event.stopPropagation()">👉 点我直达官方下载页</a></div>';
     else el.innerHTML='<div class="ic">🔑</div><div class="nm">登录方式</div><div class="lk">用 ChatGPT 账号登录</div>';
     window._chest++;
     if(window._chest===2){
@@ -995,7 +995,7 @@
       </div>
       <div class="tease">⚔ <b>下篇 · 进阶勇者之路</b>：语气调音台、报错排查、实战安检、符文炮台、传说级"禁区飞行"……最后迎战大 BOSS——<b>从 0 搭一个你自己的个人主页</b>。</div>
       <div class="center" style="margin:18px 0 8px"><button class="btn glow" onclick="next()">▶ 进入下篇：进阶勇者之路 →</button></div>
-      <a class="cta" href="https://openai.com/codex" target="_blank" rel="noopener">或先趁热去真的 Codex 里做份 PPT →<small>游戏里这套流程你已经全走过一遍了</small></a>
+      <a class="cta" href="https://developers.openai.com/codex/app" target="_blank" rel="noopener">或先趁热去真的 Codex 里做份 PPT →<small>游戏里这套流程你已经全走过一遍了</small></a>
       <div class="row"><button class="btn ghost" onclick="location.reload()">从头再玩上篇</button></div>`);
   }
   // 速查手册（挪到大 BOSS 通关页最末）
@@ -1750,7 +1750,7 @@
       <div class="pv ${sty}" style="max-width:430px;margin:0 auto"><div class="pt1">凌小白 · 爱折腾 AI 的普通人</div><ul>
         <li>🧩 作品：AI 翻唱工作站 / 互动教程 / 短视频</li><li>🏅 写过 96 篇 AI 实战笔记</li><li>📮 联系：hello@example.com</li></ul></div>
       <p class="lead" style="text-align:center;margin:16px auto">从空白页恐惧兽到无面幽影——<b>要点、初稿、打磨、拍板、验收</b>，这套动作你已经打了两个全场。现在网上有你的一张脸了。</p>
-      <a class="cta" href="https://openai.com/codex" target="_blank" rel="noopener">去真的 Codex 里，搭一个真的你 →<small>游戏毕业了，接下来的作品在你手上</small></a>
+      <a class="cta" href="https://developers.openai.com/codex/app" target="_blank" rel="noopener">去真的 Codex 里，搭一个真的你 →<small>游戏毕业了，接下来的作品在你手上</small></a>
       ${handbookHTML()}
       <div class="tease" style="text-align:center">🗡 <b>下一篇预告：Claude Code 勇者</b>——终端里的更强形态（施工中）</div>
       <div class="row"><button class="btn ghost" onclick="location.reload()">从头再玩一遍</button></div>`);
@@ -2223,7 +2223,7 @@
         <p class="lead" style="margin:8px auto 0">分流 → 布阵 → 编队 → 守权限 → 验收交付，你把学到的动作<b>连成了一套真实实战</b>——这就是学会用 AI Agent 的样子。</p>
       </div>
       <div class="tease" style="text-align:center">🎧 <b>Star Cover · 上线彩蛋</b><br><span style="font-size:12px">（这里放逸清真实的翻唱成品：一段 30 秒群星版音频 / 网页 GUI 截图）</span></div>
-      <a class="cta" href="https://openai.com/codex" target="_blank">趁热去打开真的 Codex，做你自己的项目 →<small>游戏里你已经全会了，真正的成品在你手上</small></a>
+      <a class="cta" href="https://developers.openai.com/codex/app" target="_blank">趁热去打开真的 Codex，做你自己的项目 →<small>游戏里你已经全会了，真正的成品在你手上</small></a>
       <div class="row"><button class="btn ghost" onclick="location.reload()">再来一把</button>
         <button class="btn" onclick="alert('第二篇：Claude Code 勇者（施工中）')">下一篇：Claude Code →</button></div>`);
   }
