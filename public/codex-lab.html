@@ -548,11 +548,11 @@
     {id:'compass',icon:'🧭', name:'三态罗盘', tier:'main', power:'一眼分清：本地文件用 App、长任务用云端、随便问用普通对话'},
     {id:'map',   icon:'🗺', name:'工作台地图', tier:'main', power:'看懂界面：左=入口、中=对线、右=交作业'},
     {id:'key',   icon:'🗝', name:'导航钥匙', tier:'main', power:'要它读/改你的文件，就从"项目"进'},
-    {id:'ring',  icon:'💍', name:'人话之戒', tier:'main', power:'非程序员选"日常工作"模式，让它少讲黑话'},
-    {id:'medal', icon:'🎖', name:'实战勋章', tier:'main', power:'指挥它跑通了人生第一个完整任务'},
+    {id:'wrench', icon:'🔧', name:'排障扳手', tier:'main', power:'见报错不慌：把报错原文甩回去，让它自己解释并修好'},
+    {id:'medal', icon:'🎖', name:'大师勋章', tier:'main', power:'从 0 到上线打完整场实战——击败无面幽影的证明'},
     {id:'shield',icon:'🛡', name:'权限盾', tier:'main', power:'权限先看路径，绝不盲点允许'},
     // ↓ 支线·进阶装备台
-    {id:'collar',icon:'📿', name:'驯化项圈', tier:'side', power:'用个性化规则，永久改掉它的说话方式'},
+    {id:'collar',icon:'📿', name:'驯化项圈', tier:'side', power:'工作模式 + 个性化双开关，让它永远说人话'},
     {id:'bag',   icon:'🎒', name:'插件背包', tier:'side', power:'看穿 Plugin/Connector/Skill/MCP 四大黑话'},
     {id:'clock', icon:'⏳', name:'定时符', tier:'side', power:'让它定时/延后自动干活'},
     {id:'crystal',icon:'🔮',name:'记忆水晶', tier:'side', power:'用"搜索"找回聊过、跑过的一切'},
@@ -571,7 +571,7 @@
   }
   // 装备穿戴位置（%，落在小人身体各部位）
   const AVA_POS={ legend:[50,3], rune:[13,10], map:[87,12], buddy:[90,30], crystal:[10,34],
-    collar:[50,32], ticket:[36,42], medal:[58,44], bag:[16,45], shield:[13,56], ring:[87,56],
+    collar:[50,32], ticket:[36,42], medal:[58,44], bag:[16,45], shield:[13,56], wrench:[87,56],
     compass:[38,63], key:[60,63], clock:[50,82] };
   function renderAvatar(){
     const box=document.getElementById('avaGear'); if(!box)return;
@@ -586,10 +586,11 @@
   }
   function unlock(id){
     if(owned.has(id)) return;
+    const e=EQUIPS.find(x=>x.id===id);
+    if(!e) return;
     owned.add(id);
     sfx('unlock');
     renderSlots();
-    const e=EQUIPS.find(x=>x.id===id);
     document.getElementById('rIcon').textContent=e.icon;
     document.getElementById('rName').textContent=e.name;
     document.getElementById('rPower').textContent=e.power||'';
@@ -700,7 +701,7 @@
     12:'上一关带走：见报错别慌，<b>原文甩回去</b>让它自己修',
     13:'上一关带走：权限单先<b>读懂请求</b>（尤其第二行）再盖章',
     14:'上一关带走：浏览器 / Git / MCP 三个进阶开关，<b>按需再开</b>',
-    15:'14 件装备全部在身。<b>无面幽影</b>——最后一战'
+    15:'13 关 13 件装备在身，还差最后一件。<b>无面幽影</b>手里攥着「大师勋章」——赢回来'
   };
   function render(){
     const c=chapters[ci];
@@ -1341,14 +1342,15 @@
         </div>
       </div>
       <div class="takeaway" id="d2tk"><span class="kw">必须带走</span>两个开关管住它的嘴：<b>工作模式</b>选「日常工作」少讲黑话；<b>个性化</b>里写下你的规则（如"说人话"），它会永远照办——但密码/密钥别写进去。</div>
-      <div class="center mt"><button class="btn" id="d2next" style="display:none" onclick="next()">带上项圈和戒指，继续 →</button></div>`);
+      <div class="center mt"><button class="btn" id="d2next" style="display:none" onclick="next()">带上驯化项圈，继续 →</button></div>`);
     const rep=document.getElementById('d2rep'), d=document.getElementById('d2');
     const REP1=['"已初始化 venv，建议用 async 重构 pipeline…"','"我先把环境装好，这步有点技术，你不用管细节～"','"我用大白话讲：先把工具准备好，交给我😌"'];
+    let step1=false;
     d.oninput=()=>{
       const v=+d.value;
       rep.textContent=REP1[v<40?0:v<85?1:2];
       rep.style.color=v>=85?'rgb(var(--ok))':'';
-      if(v>=100 && !owned.has('ring')){ unlock('ring'); document.getElementById('d2step2').style.display='block'; }
+      if(v>=100 && !step1){ step1=true; sfx('good'); toast('😌','模式已拨到「日常工作」——再写三条铭文，项圈就成了'); document.getElementById('d2step2').style.display='block'; }
     };
     let n=0;
     const REP2=['"结论：可以做😌。我先说人话版：这事分三步…"','"结论先行：能做，预算内。下面用大白话解释为什么…"'];
@@ -1385,9 +1387,9 @@
       if(done)return; done=true;
       const m=document.getElementById('w23msg'); if(!m)return;
       if(bad<=3){
-        toast('🔧','拿下<b>排障心法</b>！');
+        unlock('wrench');
         m.innerHTML=`<div class="takeaway on" style="margin-top:12px"><span class="kw">必须带走</span><b>见错别慌，你不用会修</b>——把报错原文直接甩回给 Codex，说"报这个错了，解释一下并修好"，九成的坑它自己能爬出来。正常提示别乱打断。</div>
-          <div class="center" style="margin-top:12px"><button class="btn glow" onclick="next()">带上排障心法，继续 →</button></div>`;
+          <div class="center" style="margin-top:12px"><button class="btn glow" onclick="next()">带上排障扳手，继续 →</button></div>`;
       } else {
         m.innerHTML='<div class="nudge on" style="margin-top:12px">💥 失误太多！只拍<b>❌ 红色报错</b>，✅⏳📄 这些正常提示让它安静干活。<div class="center"><button class="btn ghost" style="margin-top:10px" onclick="rWhack23()">🔁 再来一次</button></div></div>';
       }
@@ -1438,7 +1440,7 @@
         <div class="app-region app-right" id="t2r"><div class="region-label">右</div><div class="tph" style="margin-top:24px">作业还没交</div></div>
       </div>
       <div id="t2sec"></div>
-      <div class="center mt"><button class="btn" id="t2next" style="display:none" onclick="next()">收下勋章和盾，继续 →</button></div>`);
+      <div class="center mt"><button class="btn" id="t2next" style="display:none" onclick="next()">收下权限盾，继续 →</button></div>`);
     document.getElementById('t2nav').onclick=()=>{
       const p=document.getElementById('t2nav'); p.className='nav-item first tstep locked'; p.onclick=null;
       document.getElementById('t2coach').innerHTML='② 选个文件夹让它读——<b>点「我的资料」</b>。';
@@ -1504,7 +1506,6 @@
       co.innerHTML='✅ <b>任务跑通</b>，安检台上你还揪出了那张藏在第二行的越界单——这就是权限判断的全部：<b>读懂请求，再盖章</b>。';
       tr.innerHTML='<div class="region-label">右</div><div class="md-out" id="t2mo"></div>';
       let i=0;(function t(){const el=document.getElementById('t2mo');if(!el)return;i+=2;el.innerHTML=md.slice(0,i).replace(/^(#.*)$/gm,'<span class="h">$1</span>');if(i<md.length)setTimeout(t,16);})();
-      unlock('medal');
       const n=document.getElementById('t2next'); n.style.display='inline-flex'; n.classList.add('glow');
     },900);
   }
@@ -1844,7 +1845,8 @@
     $(`<div class="chapter-tag">👻 无面幽影 · 消散</div>
       <div class="boss-box"><div class="boss-emoji">🌐</div>
         <h2 class="title">你的主页，<span class="accent">上线了</span></h2>
-        <div class="badge">🏆 Codex 篇 · 全本通关 · 大师勇者</div>
+        <div class="badge">🏆 Codex 篇 · 全本通关 · 大师勇者</div><br>
+        <div class="badge">🎖 战利品 · 第 14 件装备「大师勋章」 · 14/14 完全体</div>
       </div>
       <div class="pv ${sty}" style="max-width:430px;margin:0 auto"><div class="pt1">凌小白 · 爱折腾 AI 的普通人</div><ul>
         <li>🧩 作品：AI 翻唱工作站 / 互动教程 / 短视频</li><li>🏅 写过 96 篇 AI 实战笔记</li><li>📮 联系：hello@example.com</li></ul></div>
@@ -1854,6 +1856,7 @@
       ${handbookHTML()}
       <div class="tease" style="text-align:center">🗡 <b>下一篇预告：Claude Code 勇者</b>——终端里的更强形态（施工中）</div>
       <div class="row"><button class="btn ghost" onclick="location.reload()">从头再玩一遍</button></div>`);
+    setTimeout(()=>unlock('medal'),600);
   }
 
   // ===== 支线·进阶装备台 hub =====
