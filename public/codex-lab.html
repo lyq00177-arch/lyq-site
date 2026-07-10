@@ -429,6 +429,9 @@
   @keyframes gpop{0%{transform:translate(-50%,-50%) scale(0)}70%{transform:translate(-50%,-50%) scale(1.35)}100%{transform:translate(-50%,-50%) scale(1)}}
   .ava-count{font-size:12px;margin-top:6px}.ava-count b{color:rgb(var(--accent))}
   .ava-hint{font-size:10.5px;color:rgb(var(--text-muted));margin-top:2px;line-height:1.3}
+  .ava-trophy{margin-top:6px;font-size:16px;min-height:20px;letter-spacing:3px}
+  .ava-trophy span{display:inline-block;animation:eqpop .6s cubic-bezier(.2,1.5,.4,1)}
+  .ava-trophy-lbl{font-size:9.5px;color:rgb(var(--text-muted));letter-spacing:1px}
   /* 中等窗口(681-1160)：avatar 保持正常大小，正文让出左边距、避开它 */
   @media(max-width:1160px) and (min-width:681px){
     body{padding-left:176px}
@@ -440,6 +443,8 @@
     .ava-title{font-size:9px;margin-bottom:3px}
     .ava-count{font-size:9.5px;margin-top:4px}
     .ava-hint{display:none}
+    .ava-trophy{font-size:11px;margin-top:3px;min-height:14px;letter-spacing:1px}
+    .ava-trophy-lbl{display:none}
     .gear{font-size:9px}
     body{padding-left:72px}
   }
@@ -514,6 +519,7 @@
   </div>
   <div class="ava-count">装备 <b id="avaCount">0/14</b></div>
   <div class="ava-hint" id="avaHint">白 T 小白 · 待装备</div>
+  <div class="ava-trophy" id="avaTrophy"><span class="ava-trophy-lbl">🏆 战利品陈列</span></div>
 </div>
 <div class="wrap">
   <div class="hud">
@@ -598,6 +604,29 @@
     r.classList.add('on');
     r.classList.remove('pop'); void r.offsetWidth; r.classList.add('pop');
     clearTimeout(window._rt); window._rt=setTimeout(()=>r.classList.remove('on'), 2000);
+  }
+  // ===== 战利品奖杯（非装备，Boss 战成果陈列）=====
+  const TROPHIES={
+    ppt: {icon:'🏆', name:'战利品 · 第一份 AI 出品 PPT', power:'击败小 BOSS 空白页恐惧兽的证明'},
+    home:{icon:'👑', name:'战利品 · 我的个人主页', power:'击败大 BOSS 无面幽影的证明——网上有你的一张脸了'}
+  };
+  const trophies=new Set();
+  function winTrophy(id){
+    if(trophies.has(id))return;
+    const t=TROPHIES[id]; if(!t)return;
+    trophies.add(id);
+    sfx('win');
+    const box=document.getElementById('avaTrophy');
+    if(box)box.insertAdjacentHTML('beforeend','<span title="'+t.name+'">'+t.icon+'</span>');
+    document.getElementById('rIcon').textContent=t.icon;
+    document.getElementById('rName').textContent=t.name;
+    document.getElementById('rPower').textContent=t.power;
+    document.querySelector('#reward .r-lbl').textContent='🏆 战利品入库';
+    const r=document.getElementById('reward');
+    r.classList.add('on');
+    r.classList.remove('pop'); void r.offsetWidth; r.classList.add('pop');
+    clearTimeout(window._rt); window._rt=setTimeout(()=>{r.classList.remove('on');
+      document.querySelector('#reward .r-lbl').textContent='⚔ 恭喜获得新装备';},2200);
   }
   if(!CanvasRenderingContext2D.prototype.roundRect){
     CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){ this.rect(x,y,w,h); return this; };
@@ -1082,8 +1111,8 @@
       </div>
       <div class="tease">⚔ <b>下篇 · 进阶勇者之路</b>：语气调音台、报错排查、实战安检、符文炮台、传说级"禁区飞行"……最后迎战大 BOSS——<b>从 0 搭一个你自己的个人主页</b>。</div>
       <div class="center" style="margin:18px 0 8px"><button class="btn glow" onclick="next()">▶ 进入下篇：进阶勇者之路 →</button></div>
-      <a class="cta" href="https://developers.openai.com/codex/app" target="_blank" rel="noopener">或先趁热去真的 Codex 里做份 PPT →<small>游戏里这套流程你已经全走过一遍了</small></a>
-      <div class="row"><button class="btn ghost" onclick="location.reload()">从头再玩上篇</button></div>`);
+      <div class="row"><button class="btn ghost" onclick="location.reload()">从头再玩上篇</button></div>
+      <p style="text-align:center;font-size:12px;margin-top:14px"><a href="https://developers.openai.com/codex/app" target="_blank" rel="noopener" style="color:rgb(var(--text-muted))">等不及的话，也可以现在就去真的 Codex 做份 PPT →</a></p>`);
   }
   // 速查手册（挪到大 BOSS 通关页最末）
   function handbookHTML(){
@@ -1312,8 +1341,7 @@
       const out=document.getElementById('sbOut');
       if(out)out.innerHTML=pages.map((p,i)=>`<div class="slide-th pv ${sty}" style="animation-delay:${i*0.15}s;min-height:64px;padding:14px 10px"><div class="pt1" style="font-size:12.5px;margin:0">${p}</div></div>`).join('');
       setTimeout(()=>{
-        sfx('win');
-        toast('🏆','击败小 BOSS <b>空白页恐惧兽</b>！');
+        winTrophy('ppt');
         const m=document.getElementById('sb5msg');
         if(m)m.innerHTML=`<div class="boss-box" style="padding-top:14px"><div class="boss-emoji">🏆</div><div class="badge">⚔ 小 BOSS 击败 · 你的第一份 AI 出品 PPT</div></div>
           <div class="takeaway on"><span class="kw">复盘这套流程（真 Codex 里一模一样）</span>💭 空泛想法<b>打碎成要点</b> → 📨 发需求<b>出初稿</b> → 🔍 空话<b>打回去要具体</b> → 🎨 风格<b>你拍板</b> → ⚙️ 生成。记住：<b>AI 出手快，方向盘在你手里。</b></div>
@@ -1857,6 +1885,7 @@
       <div class="tease" style="text-align:center">🗡 <b>下一篇预告：Claude Code 勇者</b>——终端里的更强形态（施工中）</div>
       <div class="row"><button class="btn ghost" onclick="location.reload()">从头再玩一遍</button></div>`);
     setTimeout(()=>unlock('medal'),600);
+    setTimeout(()=>winTrophy('home'),3000);
   }
 
   // ===== 支线·进阶装备台 hub =====
