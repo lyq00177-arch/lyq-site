@@ -199,6 +199,14 @@
   .pcard.drag{cursor:grab;touch-action:none;-webkit-user-select:none;user-select:none}
   .pcard.dragging{cursor:grabbing;opacity:.97;border-color:rgb(var(--accent));box-shadow:0 16px 38px rgb(0 0 0/.55);position:relative;z-index:30;transition:none;will-change:transform}
   .bucket.hot{border-style:solid;border-color:rgb(var(--accent));background:rgb(var(--accent)/.16);transform:scale(1.04)}
+  .pcard.picked{border-color:rgb(var(--accent));background:rgb(var(--accent)/.14);animation:glow 1.6s infinite;transform:translateY(-2px)}
+  .recap{font-size:12.5px;color:rgb(var(--text-muted));background:rgb(var(--line)/.04);border-left:2px solid rgb(var(--accent)/.5);
+    border-radius:0 9px 9px 0;padding:7px 12px;margin:0 0 14px;line-height:1.5}
+  .recap b{color:rgb(var(--accent))}
+  #sfxBtn{position:fixed;right:16px;bottom:64px;z-index:70;width:42px;height:42px;border-radius:50%;border:1px solid rgb(var(--line)/.2);
+    background:rgb(var(--bg-elevated));color:rgb(var(--text-primary));font-size:17px;cursor:pointer;box-shadow:0 8px 24px rgb(0 0 0/.4)}
+  @media (max-width:680px){ #sfxBtn{top:10px;bottom:auto;right:64px;width:34px;height:34px;font-size:14px;z-index:60} }
+  .stmt[data-i]:hover{border-color:rgb(var(--accent)/.6);transform:translateX(3px);transition:.15s}
   .buckets{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
   .bucket{background:rgb(var(--bg-card));border:1px dashed rgb(var(--line)/.22);border-radius:12px;padding:12px;text-align:center;cursor:pointer;min-height:58px;transition:.15s}
   .bucket:hover{border-color:rgb(var(--accent))}
@@ -516,6 +524,7 @@
   <div id="stage"></div>
 </div>
 <button id="testBtn" onclick="testMenu()">🎮 试玩</button>
+<button id="sfxBtn" onclick="sfxToggle()" title="音效开关">🔊</button>
 
 <div class="popover" id="pop"><div class="popcard">
   <div class="chapter-tag" id="popTag"></div>
@@ -578,6 +587,7 @@
   function unlock(id){
     if(owned.has(id)) return;
     owned.add(id);
+    sfx('unlock');
     renderSlots();
     const e=EQUIPS.find(x=>x.id===id);
     document.getElementById('rIcon').textContent=e.icon;
@@ -598,6 +608,49 @@
     t.classList.add('show');
     clearTimeout(window._tt); window._tt=setTimeout(()=>t.classList.remove('show'),2400);
   }
+
+  // ===== 8-bit 音效（Web Audio 现场合成，零文件零请求）=====
+  const SFX={ctx:null, on:(function(){try{return localStorage.getItem('sfx')!=='off';}catch(e){return true;}})()};
+  function afx(){
+    if(!SFX.ctx){ try{ SFX.ctx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return null; } }
+    if(SFX.ctx && SFX.ctx.state==='suspended') SFX.ctx.resume();
+    return SFX.ctx;
+  }
+  function tone(f,d,type,vol,when,slide){
+    const c=afx(); if(!c)return;
+    type=type||'square'; vol=vol||.12; when=when||0;
+    const t0=c.currentTime+when;
+    const o=c.createOscillator(), g=c.createGain();
+    o.type=type; o.frequency.setValueAtTime(f,t0);
+    if(slide) o.frequency.exponentialRampToValueAtTime(Math.max(30,f+slide),t0+d);
+    g.gain.setValueAtTime(vol,t0); g.gain.exponentialRampToValueAtTime(.001,t0+d);
+    o.connect(g); g.connect(c.destination);
+    o.start(t0); o.stop(t0+d+.02);
+  }
+  const SFX_BANK={
+    tap:   ()=>tone(660,.06,'square',.07),
+    good:  ()=>{tone(523,.09,'square',.11); tone(784,.13,'square',.11,.07);},
+    bad:   ()=>{tone(170,.2,'sawtooth',.11,0,-70); vib(30);},
+    unlock:()=>{[523,659,784,1047].forEach((f,i)=>tone(f,.12,'square',.11,i*.075)); vib(20);},
+    win:   ()=>{[392,523,659,784,1047,1319].forEach((f,i)=>tone(f,.16,'triangle',.13,i*.09)); vib([30,40,30]);},
+    shoot: ()=>tone(900,.09,'square',.07,0,-560),
+    boom:  ()=>{tone(130,.22,'sawtooth',.14,0,-80); vib(15);},
+    jump:  ()=>tone(300,.13,'square',.08,0,270),
+    coin:  ()=>{tone(988,.07,'square',.1); tone(1319,.15,'square',.1,.06);},
+    flap:  ()=>tone(480,.05,'triangle',.06,0,130),
+    stamp: ()=>{tone(210,.08,'square',.13); tone(140,.13,'square',.11,.05); vib(20);},
+    obj:   ()=>{[660,660,880].forEach((f,i)=>tone(f,.09,'sawtooth',.14,i*.09)); tone(440,.4,'sawtooth',.12,.3,-120); vib([40,30,60]);}
+  };
+  function sfx(name){ if(!SFX.on)return; const f=SFX_BANK[name]; if(f)try{f();}catch(e){} }
+  function vib(p){ if(navigator.vibrate)try{navigator.vibrate(p);}catch(e){} }
+  function sfxToggle(){
+    SFX.on=!SFX.on;
+    try{localStorage.setItem('sfx',SFX.on?'on':'off');}catch(e){}
+    document.getElementById('sfxBtn').textContent=SFX.on?'🔊':'🔇';
+    if(SFX.on)sfx('good');
+  }
+  // 所有金色按钮统一"哔"一声（事件委托，不逐个埋点）
+  document.addEventListener('click',e=>{ if(e.target.closest&&e.target.closest('.btn'))sfx('tap'); },true);
 
   // ===== 章节数据 =====
   const chapters=[
@@ -632,10 +685,33 @@
   let ci=0;
 
   function next(){ ci++; render(); window.scrollTo({top:0,behavior:'smooth'}); }
+  // 每章开场"上一关带走"承接条——把 16 关的知识点串成一条链
+  const RECAPS={
+    1:'上一关带走：Codex 是个<b>做事型伙伴</b>，不是问一句答一句的聊天框',
+    2:'上一关带走：官方下载页 + <b>ChatGPT 账号</b>直接登录',
+    3:'上一关带走：本地文件找 <b>App</b>、长任务丢<b>云端</b>、随便聊用普通对话',
+    4:'上一关带走：工作台一句话——<b>左入口、中对话、右交作业</b>',
+    5:'上一关带走：五个入口各管一摊，动本地文件走「<b>项目</b>」',
+    6:'上一关带走：聊过跑过的东西，都能用「<b>搜索</b>」找回来',
+    7:'上一关带走：四种插件 = 四种<b>外挂能力</b>，对症才有用',
+    8:'上一关带走：自动化 = 把明确任务<b>交给未来的 Codex</b>。八件装备在身，去会会小 BOSS',
+    10:'下篇开工。上篇你学会了<b>让它干活</b>，下篇学会让它<b>听话、安全、更强</b>',
+    11:'上一关带走：<b>模式 + 个性化</b>两个开关，管住它的嘴',
+    12:'上一关带走：见报错别慌，<b>原文甩回去</b>让它自己修',
+    13:'上一关带走：权限单先<b>读懂请求</b>（尤其第二行）再盖章',
+    14:'上一关带走：浏览器 / Git / MCP 三个进阶开关，<b>按需再开</b>',
+    15:'14 件装备全部在身。<b>无面幽影</b>——最后一战'
+  };
   function render(){
     const c=chapters[ci];
     ({intro:rIntro,chests:rChests,judge:rJudge,toss:rToss,town:rTown,dial:rDial,explore:rExplore,task:rTask,boss:rBoss,search:nCrystal,mario:nBag,auto:nClock,smallboss:rSmallBoss,
       dial2:rDial2,whack23:rWhack23,task2:rTask2,invaders:rInvaders,flappy2:nLegend,bigboss:rBigBoss})[c.type](c);
+    const rc=RECAPS[ci];
+    if(rc){
+      const st=document.getElementById('stage');
+      const d=document.createElement('div'); d.className='recap'; d.innerHTML='⛓ '+rc;
+      st.insertBefore(d, st.children[1]||null);
+    }
   }
   const $=h=>{document.getElementById('stage').innerHTML=h;};
 
@@ -660,6 +736,7 @@
       b.style.animation='none';
       b.style.transition='transform .5s cubic-bezier(.5,-0.15,.75,.5),opacity .5s';
       requestAnimationFrame(()=>{ b.style.transform='translate('+dx+'px,'+dy+'px) scale(.05)'; b.style.opacity='0'; });
+      sfx('coin');
       got++; document.getElementById('absn').textContent=got;
       core.style.fontSize=(52+got*8)+'px';
       core.classList.remove('gulp'); void core.offsetWidth; core.classList.add('gulp');
@@ -684,6 +761,7 @@
   function openChest(id){
     const el=document.getElementById(id);
     if(el.classList.contains('opened'))return;
+    sfx('coin');
     el.classList.add('opened');
     if(id==='c1') el.innerHTML='<div class="ic">📦</div><div class="nm">下载地址</div><div class="lk"><a href="https://developers.openai.com/codex/app" target="_blank" rel="noopener" style="color:inherit" onclick="event.stopPropagation()">👉 点我直达官方下载页</a></div>';
     else el.innerHTML='<div class="ic">🔑</div><div class="nm">登录方式</div><div class="lk">用 ChatGPT 账号登录</div>';
@@ -707,6 +785,7 @@
     document.querySelectorAll('#ch .choice').forEach(b=>b.onclick=()=>{
       const i=+b.dataset.i;
       if(c.choices[i].ok){
+        sfx('good');
         document.querySelectorAll('#ch .choice').forEach(x=>x.style.pointerEvents='none');
         b.classList.add('right');
         document.getElementById('nudge').classList.remove('on');
@@ -715,6 +794,7 @@
         const n=document.getElementById('jNext');
         n.style.display='inline-flex'; n.classList.add('glow'); n.onclick=next;
       } else {
+        sfx('bad');
         b.classList.add('wrong'); b.style.pointerEvents='none';
         document.getElementById('nudge').classList.add('on');
       }
@@ -745,6 +825,7 @@
       box.innerHTML=`<div class="pcard drag" style="animation:flyin .45s;text-align:center">${CARDS[i].t}</div>`;
       enableDrag('#tossc .pcard','#doors .bucket',(card,zone)=>{
         if(zone.dataset.k===CARDS[i].a){
+          sfx('good');
           ndg.classList.remove('on');
           zone.classList.add('opened');
           card.style.transition='transform .4s ease,opacity .4s'; card.style.transform='scale(.1)'; card.style.opacity='0';
@@ -758,6 +839,7 @@
             } else spawn();
           },430);
         } else {
+          sfx('bad');
           zone.classList.add('flash'); setTimeout(()=>zone.classList.remove('flash'),340);
           ndg.textContent=CARDS[i].ndg; ndg.classList.add('on');
         }
@@ -800,6 +882,7 @@
     blds.forEach(b=>b.onclick=()=>{
       if(idx>=NPCS.length)return;
       if(b.dataset.k===NPCS[idx].want){
+        sfx('good');
         const sRect=stage.getBoundingClientRect(), bRect=b.getBoundingClientRect();
         const tx=Math.round(bRect.left+bRect.width/2-(sRect.left+sRect.width/2));
         npc.style.transform=`translateX(calc(-50% + ${tx}px))`;
@@ -811,6 +894,7 @@
           },420);
         },520);
       } else {
+        sfx('bad');
         b.classList.add('wrong'); setTimeout(()=>b.classList.remove('wrong'),320);
         ndg.textContent='他要的不是这个——再琢磨下这个需求该去哪个入口。'; ndg.style.display='block';
       }
@@ -874,6 +958,7 @@
     function land(){
       const want=KEY[T.cur.k], hit=T.col;
       if(hit===want){
+        sfx('coin');
         T.el.remove(); T.el=null;
         const blk=document.createElement('div'); blk.className='tet-block'; blk.textContent=T.cur.t;
         cols[hit].querySelector('.tet-stack').appendChild(blk);
@@ -882,6 +967,7 @@
         if(cols[hit].querySelectorAll('.tet-block').length===2) cols[hit].classList.add('lit');
         spawn();
       } else {
+        sfx('bad');
         T.el.classList.add('bad');
         document.getElementById('tetNdg').classList.add('on');
         const cur=T.cur;
@@ -1082,12 +1168,13 @@
       for(const bk of K.bricks){
         if(!bk.alive)continue;
         if(b.x+b.r>bk.x && b.x-b.r<bk.x+bk.w && b.y+b.r>bk.y && b.y-b.r<bk.y+bk.h){
-          bk.alive=false; b.vy*=-1;
+          bk.alive=false; b.vy*=-1; sfx('boom');
           K.chips.push({x:bk.x+bk.w/2, y:bk.y+bk.h, vy:1.0, i:bk.i});
           break;
         }
       }
       if(b.y-b.r>K.H){ // 球漏了
+        sfx('bad');
         K.lives--; const lv=document.getElementById('bklives'); if(lv)lv.textContent=K.lives;
         if(K.lives<=0){ bkFail(); return; }
         b.stuck=true; b.x=pad.x+pad.w/2; b.y=K.H-34; b.vx=0; b.vy=0;
@@ -1098,7 +1185,7 @@
       if(c.done)continue;
       c.y+=c.vy*dt;
       if(c.y>=pad.y-8 && c.y<=pad.y+pad.h+10 && c.x>pad.x-8 && c.x<pad.x+pad.w+8){
-        c.done=true; K.got++;
+        c.done=true; K.got++; sfx('coin');
         const g=document.getElementById('bkgot'); if(g)g.textContent=K.got;
         const l=document.getElementById('bklist');
         if(l)l.insertAdjacentHTML('beforeend','<span class="sb-pill">✓ '+SB_BRICKS[c.i].p+'</span>');
@@ -1134,7 +1221,7 @@
     if(K.ball.stuck){ g.fillStyle='rgba(255,255,255,0.5)'; g.font='12px sans-serif'; g.textAlign='center'; g.fillText('点一下发球', K.W/2, K.H-52); }
   }
   function bkWin(){
-    stopBreakout();
+    stopBreakout(); sfx('win');
     const m=document.getElementById('bkmsg');
     if(m)m.innerHTML=`<div class="takeaway on" style="margin-top:12px"><span class="kw">必须带走</span>"做个高大上的PPT"AI 接不住，<b>受众/目的/重点/篇幅/风格</b>这样的具体要点它才接得住——把空话打碎成要点，是用 AI 的第一步。</div>
       <div class="center" style="margin-top:14px"><button class="btn glow" onclick="sbStage(2)">📨 拿着需求清单，去找 Codex →</button></div>`;
@@ -1183,6 +1270,7 @@
       <div id="sb3msg"></div>`);
     let n=0;
     document.querySelectorAll('#sbDraft .fluff').forEach(b=>b.onclick=()=>{
+      sfx('good');
       b.classList.add('ok'); b.innerHTML='✅ '+SB_FLUFF[+b.dataset.i].p; n++;
       document.getElementById('sbFn').textContent=n;
       if(n===3){
@@ -1201,6 +1289,7 @@
         <li>客服响应时长：4 小时 → 40 分钟</li><li>Q2 营收 +18%，超目标 6 个百分点</li><li>新渠道试点：2 个已上线</li></ul></div>
       <div class="center mt"><button class="btn glow" id="sbSty" style="display:none" onclick="sbStage(5)">就这个风格，生成！→</button></div>`);
     document.querySelectorAll('.sty').forEach(b=>b.onclick=()=>{
+      sfx('tap');
       document.querySelectorAll('.sty').forEach(x=>x.classList.remove('on')); b.classList.add('on');
       SB.styleK=b.dataset.k;
       document.getElementById('sbPv').className='pv '+SB.styleK;
@@ -1222,6 +1311,7 @@
       const out=document.getElementById('sbOut');
       if(out)out.innerHTML=pages.map((p,i)=>`<div class="slide-th pv ${sty}" style="animation-delay:${i*0.15}s;min-height:64px;padding:14px 10px"><div class="pt1" style="font-size:12.5px;margin:0">${p}</div></div>`).join('');
       setTimeout(()=>{
+        sfx('win');
         toast('🏆','击败小 BOSS <b>空白页恐惧兽</b>！');
         const m=document.getElementById('sb5msg');
         if(m)m.innerHTML=`<div class="boss-box" style="padding-top:14px"><div class="boss-emoji">🏆</div><div class="badge">⚔ 小 BOSS 击败 · 你的第一份 AI 出品 PPT</div></div>
@@ -1263,6 +1353,7 @@
     let n=0;
     const REP2=['"结论：可以做😌。我先说人话版：这事分三步…"','"结论先行：能做，预算内。下面用大白话解释为什么…"'];
     document.querySelectorAll('#d2insc .insc').forEach(b=>b.onclick=()=>{
+      sfx('coin');
       b.classList.add('in');
       document.getElementById('d2per').insertAdjacentHTML('beforeend','<span class="ptag">'+b.textContent+'</span>');
       n++;
@@ -1310,7 +1401,7 @@
       requestAnimationFrame(()=>m.classList.add('up'));
       let handled=false;
       m.onclick=()=>{ if(handled||done)return; handled=true; m.classList.add('hit');
-        if(r.d){ ok++; const el=document.getElementById('wok'); if(el)el.textContent=ok; } else { bad++; setBad(); }
+        if(r.d){ ok++; sfx('boom'); const el=document.getElementById('wok'); if(el)el.textContent=ok; } else { bad++; sfx('bad'); setBad(); }
         setTimeout(()=>m.remove(),200); };
       setTimeout(()=>{
         if(!handled){ handled=true; if(r.d){ bad++; setBad(); } m.classList.remove('up'); setTimeout(()=>m.remove(),220); }
@@ -1386,6 +1477,7 @@
       const right=allow===q.ok;
       mark.textContent=allow?'放行':'拒绝'; mark.className='smark '+(allow?'ok':'no');
       void mark.offsetWidth; mark.classList.add('on');
+      sfx(right?'stamp':'bad');
       if(right){
         ndg.classList.remove('on');
         toast(allow?'✅':'🛡', q.why.replace(/<[^>]+>/g,'').slice(0,26)+'…');
@@ -1448,7 +1540,7 @@
     const V={cv,g:cv.getContext('2d'),W,H,foes,dir:1,ship:{x:W/2},rune:'web',shots:[],
       firstKill:{},over:false,raf:0,last:performance.now(),lineY:H-64};
     window.V=V;
-    const fire=()=>{ if(!V.over) V.shots.push({x:V.ship.x,y:V.H-26,rune:V.rune}); };
+    const fire=()=>{ if(!V.over){ V.shots.push({x:V.ship.x,y:V.H-26,rune:V.rune}); sfx('shoot'); } };
     cv.onpointermove=e=>{ const r=cv.getBoundingClientRect(); V.ship.x=Math.max(14,Math.min(V.W-14,(e.clientX-r.left)*(V.W/r.width))); };
     cv.onpointerdown=e=>{ const r=cv.getBoundingClientRect(); V.ship.x=Math.max(14,Math.min(V.W-14,(e.clientX-r.left)*(V.W/r.width))); fire(); };
     const setRune=k=>{ V.rune=k; document.querySelectorAll('.runebtn').forEach(b=>b.classList.toggle('on',b.dataset.r===k)); };
@@ -1481,9 +1573,9 @@
       for(const f of alive){
         if(f.alive && Math.abs(s.x-f.x)<40 && Math.abs(s.y-f.y)<22){
           if(s.rune===f.t){
-            f.alive=false;
+            f.alive=false; sfx('boom');
             if(!V.firstKill[f.t]){ V.firstKill[f.t]=true; toast('✨',INV_TYPES[f.t].def); }
-          } else { f.flash=14; }
+          } else { f.flash=14; sfx('tap'); }
           s.dead=true; break;
         }
       }
@@ -1518,14 +1610,14 @@
     g.fillText('弹药：'+INV_TYPES[V.rune].name, V.ship.x, V.H-46);
   }
   function ivWin(){
-    stopInvaders();
+    stopInvaders(); sfx('win');
     const m=document.getElementById('ivmsg');
     if(m)m.innerHTML='<div class="center" style="margin-top:12px"><button class="btn glow" onclick="unlockRuneNext()">🪄 收下进阶符文，继续 →</button></div>';
     const tk=document.getElementById('ivtk'); if(tk)tk.classList.add('on');
   }
   function unlockRuneNext(){ unlock('rune'); setTimeout(next,300); }
   function ivFail(){
-    stopInvaders();
+    stopInvaders(); sfx('bad');
     const m=document.getElementById('ivmsg');
     if(m)m.innerHTML='<div class="nudge on" style="margin-top:12px">💥 难题压到底线了！记住对症下药：蓝怪🌐来源、橙怪🕮回退、紫怪🔌接工具——先切对符文再开火。<div class="center"><button class="btn ghost" style="margin-top:10px" onclick="rInvaders()">🔁 再来一次</button></div></div>';
   }
@@ -1565,12 +1657,14 @@
     let got=0;
     document.querySelectorAll('#bbArena .bubble').forEach(b=>b.onclick=()=>{
       if(b.dataset.bad==='1'){
+        sfx('bad');
         b.classList.add('shake'); b.style.animation='shake .3s';
         setTimeout(()=>{b.style.animation='';},320);
         document.getElementById('bbNdg1').classList.add('on');
         return;
       }
       if(b.classList.contains('eaten'))return;
+      sfx('coin');
       b.classList.add('eaten');
       const core=document.getElementById('bbCore');
       core.classList.remove('gulp'); void core.offsetWidth; core.classList.add('gulp');
@@ -1630,6 +1724,7 @@
     const stamp=allow=>{
       mark.textContent=allow?'放行':'拒绝'; mark.className='smark '+(allow?'ok':'no');
       void mark.offsetWidth; mark.classList.add('on');
+      sfx(allow===q.ok?'stamp':'bad');
       if(allow===q.ok){ ndg.classList.remove('on'); setTimeout(()=>bbSecurity(i+1),650); }
       else { setTimeout(()=>mark.classList.remove('on'),420); ndg.innerHTML='🧐 '+q.why; ndg.classList.add('on'); }
     };
@@ -1649,6 +1744,7 @@
         <li>🧩 作品：AI 翻唱工作站 / 互动教程 / 短视频</li><li>🙋 关于：白天上班，晚上用 AI 造东西</li><li>📮 联系：hello@example.com</li></ul></div>
       <div class="center mt"><button class="btn glow" id="bbSty" style="display:none">就这个，让它生成！→</button></div>`;
     document.querySelectorAll('.sty').forEach(b=>b.onclick=()=>{
+      sfx('tap');
       document.querySelectorAll('.sty').forEach(x=>x.classList.remove('on')); b.classList.add('on');
       BB.styleK=b.dataset.k;
       document.getElementById('bbPv').className='pv '+BB.styleK;
@@ -1688,6 +1784,7 @@
     document.querySelectorAll('#bbEvd .evd').forEach(b=>b.onclick=()=>bbEvidence(b));
   }
   function bbObjFlash(){
+    sfx('obj');
     const f=document.createElement('div'); f.className='objflash'; f.innerHTML='<span>异议！！</span>';
     document.body.appendChild(f); setTimeout(()=>f.remove(),750);
   }
@@ -1703,7 +1800,7 @@
       el.style.borderColor='rgb(var(--danger))';
       window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
     } else {
-      BB.wrongs++;
+      BB.wrongs++; sfx('bad');
       ndg.innerHTML='🧑‍⚖️ 法官：这条没毛病，异议驳回！（乱喊 '+BB.wrongs+'/3）'; ndg.classList.add('on');
       if(BB.wrongs>=3) bbFail5();
     }
@@ -1713,6 +1810,7 @@
     const s=BB_STMTS[BB.picking];
     const ndg=document.getElementById('bbNdg5');
     if(btn.dataset.k===s.ev){
+      sfx('good');
       btn.classList.add('used');
       const el=document.querySelector('.stmt[data-i="'+BB.picking+'"]');
       el.classList.add('busted');
@@ -1730,7 +1828,7 @@
         },800);
       }
     } else {
-      BB.wrongs++;
+      BB.wrongs++; sfx('bad');
       ndg.innerHTML='🧑‍⚖️ 法官：这证据对不上号，再想想。（失误 '+BB.wrongs+'/3）'; ndg.classList.add('on');
       if(BB.wrongs>=3) bbFail5();
     }
@@ -1741,6 +1839,7 @@
     document.getElementById('bbEvd').style.display='none';
   }
   function winBigBoss(){
+    sfx('win');
     const sty=BB&&BB.styleK?BB.styleK:'gold';
     $(`<div class="chapter-tag">👻 无面幽影 · 消散</div>
       <div class="boss-box"><div class="boss-emoji">🌐</div>
@@ -1830,7 +1929,7 @@
       ],
       goal:{x:1060,y:groundY-30,w:26,h:30}, won:false, raf:0, last:performance.now()};
     window.M=M;
-    const jump=()=>{ if(M.p.onG){ M.p.vy=M.p.big?-10.6:-7.4; M.p.onG=false; } };
+    const jump=()=>{ if(M.p.onG){ M.p.vy=M.p.big?-10.6:-7.4; M.p.onG=false; sfx('jump'); } };
     M.jump=jump;
     M._kd=e=>{ if(e.code==='ArrowLeft')M.keys.left=true; else if(e.code==='ArrowRight')M.keys.right=true; else if(e.code==='ArrowUp'||e.code==='Space'){e.preventDefault();jump();} };
     M._ku=e=>{ if(e.code==='ArrowLeft')M.keys.left=false; else if(e.code==='ArrowRight')M.keys.right=false; };
@@ -1843,7 +1942,7 @@
     M.raf=requestAnimationFrame(marioTick);
   }
   function stopMario(){ if(window.M){window.M.won=true; cancelAnimationFrame(window.M.raf);} if(window._mKd)document.removeEventListener('keydown',window._mKd); if(window._mKu)document.removeEventListener('keyup',window._mKu); }
-  function pickup(M,gt){ if(gt.got)return; gt.got=true; M.toast={text:gt.emoji+' 装上「'+gt.name+'」——'+gt.note, t:120};
+  function pickup(M,gt){ if(gt.got)return; gt.got=true; sfx('coin'); M.toast={text:gt.emoji+' 装上「'+gt.name+'」——'+gt.note, t:120};
     const el=document.getElementById('mcount'); if(el)el.textContent=String(M.gates.filter(g=>g.got).length); }
   function marioTick(now){
     const M=window.M; if(!M||M.won)return;
@@ -1918,8 +2017,8 @@
     const p=M.p; g.font=(p.big?34:24)+'px serif'; g.fillText('🦸',X(p.x)-3,p.y-6);
     if(M.toast){ g.fillStyle='rgba(212,168,83,0.98)'; g.font='bold 13px sans-serif'; g.textAlign='center'; g.fillText(M.toast.text,W/2,16); g.textAlign='left'; }
   }
-  function marioWin(){ stopMario(); const m=document.getElementById('mmsg'); if(m)m.innerHTML='<div class="qdef on" style="text-align:center">🏁 <b>四种插件全上手了！</b><br>🌉连接器搭桥过河 · 🍄插件变大跳墙 · 📜技能开锁门 · 🔌MCP接信号塔——这就是给 Codex 装能力的四条路。</div>'; document.getElementById('btk').classList.add('on'); unlock('bag'); showBack(); }
-  function marioFail(){ stopMario(); const m=document.getElementById('mmsg'); if(m)m.innerHTML='<div class="nudge on" style="text-align:center">💥 掉下去了！过河、过信号缺口前，记得先<b>捡上对应的插件道具</b>，桥才会出现。<div class="center"><button class="btn ghost" style="margin-top:8px" onclick="startMario()">🔁 再来一次</button></div></div>'; }
+  function marioWin(){ stopMario(); sfx('win'); const m=document.getElementById('mmsg'); if(m)m.innerHTML='<div class="qdef on" style="text-align:center">🏁 <b>四种插件全上手了！</b><br>🌉连接器搭桥过河 · 🍄插件变大跳墙 · 📜技能开锁门 · 🔌MCP接信号塔——这就是给 Codex 装能力的四条路。</div>'; document.getElementById('btk').classList.add('on'); unlock('bag'); showBack(); }
+  function marioFail(){ stopMario(); sfx('bad'); const m=document.getElementById('mmsg'); if(m)m.innerHTML='<div class="nudge on" style="text-align:center">💥 掉下去了！过河、过信号缺口前，记得先<b>捡上对应的插件道具</b>，桥才会出现。<div class="center"><button class="btn ghost" style="margin-top:8px" onclick="startMario()">🔁 再来一次</button></div></div>'; }
 
   // §8 自动化 → 时间工坊（把任务放进未来，预演三天）
   function nClock(){
@@ -1944,11 +2043,12 @@
     let n=0;
     enableDrag('#twr .pcard','#tl .tl-slot',(card,zone)=>{
       if(card.dataset.a===zone.dataset.k){
+        sfx('good');
         card.classList.add('done'); zone.classList.add('set');
         zone.querySelector('.tw').textContent=card.dataset.a==='t8'?'🗞':'💾';
         n++;
         if(n===2) document.getElementById('tlPlay').style.display='inline-flex';
-      } else { zone.classList.add('fire'); setTimeout(()=>zone.classList.remove('fire'),420); }
+      } else { sfx('bad'); zone.classList.add('fire'); setTimeout(()=>zone.classList.remove('fire'),420); }
     });
     document.getElementById('tlPlay').onclick=()=>{
       const btn=document.getElementById('tlPlay'); btn.style.display='none';
@@ -1964,9 +2064,9 @@
         const d=days[i++];
         day.textContent=d+' ——';
         const s8=document.querySelector('.tl-slot[data-k="t8"]'), s20=document.querySelector('.tl-slot[data-k="t20"]');
-        setTimeout(()=>{ s8.classList.add('fire'); setTimeout(()=>s8.classList.remove('fire'),400);
+        setTimeout(()=>{ s8.classList.add('fire'); setTimeout(()=>s8.classList.remove('fire'),400); sfx('coin');
           log.insertAdjacentHTML('beforeend','<div>📩 '+d.slice(2)+' 08:00 · 行业新闻日报，已送到</div>'); },350);
-        setTimeout(()=>{ s20.classList.add('fire'); setTimeout(()=>s20.classList.remove('fire'),400);
+        setTimeout(()=>{ s20.classList.add('fire'); setTimeout(()=>s20.classList.remove('fire'),400); sfx('coin');
           log.insertAdjacentHTML('beforeend','<div>✅ '+d.slice(2)+' 20:00 · 备份检查完成，一切正常</div>'); },900);
         setTimeout(playDay,1400);
       })();
@@ -1995,14 +2095,14 @@
     const erase=(x,y)=>{ ctx.globalCompositeOperation='destination-out'; ctx.beginPath(); ctx.arc(x,y,28,0,7); ctx.fill(); ctx.globalCompositeOperation='source-over';
       const tr=target.getBoundingClientRect(), cr=cv.getBoundingClientRect();
       const tx=tr.left+tr.width/2-cr.left, ty=tr.top+tr.height/2-cr.top;
-      if(Math.abs(x-tx)<66 && Math.abs(y-ty)<40){ hit++; if(hit>6 && !lit){ lit=true; target.classList.add('lit'); cv.style.pointerEvents='none'; } }
+      if(Math.abs(x-tx)<66 && Math.abs(y-ty)<40){ hit++; if(hit>6 && !lit){ lit=true; sfx('good'); target.classList.add('lit'); cv.style.pointerEvents='none'; } }
     };
     const pos=e=>{const r=cv.getBoundingClientRect(); return [e.clientX-r.left, e.clientY-r.top];};
     cv.addEventListener('pointerdown',e=>{drawing=true; const[x,y]=pos(e); erase(x,y);});
     cv.addEventListener('pointermove',e=>{ if(!drawing)return; const[x,y]=pos(e); erase(x,y);});
     window.addEventListener('pointerup',()=>{drawing=false;});
     document.querySelectorAll('#fogwrap .memo').forEach(b=>b.onclick=()=>{
-      if(b.dataset.ok==='1' && b.classList.contains('lit')){ b.classList.add('caught'); document.getElementById('stk').classList.add('on'); unlock('crystal'); showBack(); }
+      if(b.dataset.ok==='1' && b.classList.contains('lit')){ sfx('coin'); b.classList.add('caught'); document.getElementById('stk').classList.add('on'); unlock('crystal'); showBack(); }
     });
   }
 
@@ -2021,7 +2121,7 @@
     enableDrag('#rrune .pcard','#rsock .bucket',(card,zone)=>{
       if(card.dataset.a===zone.dataset.k){ card.classList.add('done'); zone.querySelector('.bfill').textContent='✓'; n++; document.getElementById('rn').textContent=n;
         if(n===3){ document.getElementById('rtk').classList.add('on'); unlock('rune'); showBack(); } }
-      else { zone.classList.add('flash'); setTimeout(()=>zone.classList.remove('flash'),320); }
+      else { sfx('bad'); zone.classList.add('flash'); setTimeout(()=>zone.classList.remove('flash'),320); }
     });
   }
 
@@ -2041,7 +2141,7 @@
     const cv=document.getElementById('fcv'); const W=cv.clientWidth||340, H=360; cv.width=W; cv.height=H;
     const F={cv, ctx:cv.getContext('2d'), W, H, x:64, y:H/2, vy:0, pipes:[], score:0, alive:true, raf:0, last:performance.now(), li:0};
     window.F=F;
-    const flap=()=>{ if(window.F&&window.F.alive)window.F.vy=-3.7; };
+    const flap=()=>{ if(window.F&&window.F.alive){window.F.vy=-3.7; sfx('flap');} };
     if(window._flapKey) document.removeEventListener('keydown',window._flapKey);
     window._flapKey=e=>{ if(e.code==='Space'){e.preventDefault();flap();} };
     document.addEventListener('keydown',window._flapKey);
@@ -2059,7 +2159,7 @@
     }
     for(const p of F.pipes){
       p.x-=1.4*dt;
-      if(!p.passed && p.x+28<F.x){ p.passed=true; F.score++; const s=document.getElementById('fscore'); if(s)s.textContent=F.score; if(F.score>=5){ fWin(); return; } }
+      if(!p.passed && p.x+28<F.x){ p.passed=true; F.score++; sfx('coin'); const s=document.getElementById('fscore'); if(s)s.textContent=F.score; if(F.score>=5){ fWin(); return; } }
     }
     F.pipes=F.pipes.filter(p=>p.x>-44);
     const bx=F.x, by=F.y, br=11;
@@ -2075,8 +2175,8 @@
     ctx.font='22px serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('🐤', F.x, F.y);
     F.raf=requestAnimationFrame(fTick);
   }
-  function fWin(){ stopFlappy(); const m=document.getElementById('fmsg'); if(m)m.innerHTML='<div class="takeaway on" style="margin-top:12px"><span class="kw">必须带走</span>电脑操控能替你操作整台电脑、威力最大，但<b>隐私 / 支付 / 微信 / 社媒是绝对禁区</b>——边界一定给它划死。</div>'; unlock('legend'); showBack(); }
-  function fLose(){ stopFlappy(); const m=document.getElementById('fmsg'); if(m)m.innerHTML='<div class="nudge on" style="margin-top:12px">💥 撞上禁区了！这些正是绝不能让 AI 碰的地方。<div class="center"><button class="btn ghost" style="margin-top:10px" onclick="nLegend()">🔁 再飞一次</button></div></div>'; }
+  function fWin(){ stopFlappy(); sfx('win'); const m=document.getElementById('fmsg'); if(m)m.innerHTML='<div class="takeaway on" style="margin-top:12px"><span class="kw">必须带走</span>电脑操控能替你操作整台电脑、威力最大，但<b>隐私 / 支付 / 微信 / 社媒是绝对禁区</b>——边界一定给它划死。</div>'; unlock('legend'); showBack(); }
+  function fLose(){ stopFlappy(); sfx('bad'); const m=document.getElementById('fmsg'); if(m)m.innerHTML='<div class="nudge on" style="margin-top:12px">💥 撞上禁区了！这些正是绝不能让 AI 碰的地方。<div class="center"><button class="btn ghost" style="margin-top:10px" onclick="nLegend()">🔁 再飞一次</button></div></div>'; }
 
   // ===== 最终 BOSS · 混沌项目兽（五阶段任务战役）=====
   let B=null;
@@ -2103,18 +2203,31 @@
     d.querySelector('button').onclick=()=> nextN>5 ? winBoss() : bossPhase(nextN);
   }
   // 可复用拖拽引擎（pointer，transform 位移 + 落区坐标按下时缓存一次，避免逐帧重排卡顿）
+  // 同时支持"点卡片选中 → 再点目标放置"的点击兜底（很多新手不知道要拖，以为死机）
   function enableDrag(cardSel, zoneSel, onDrop){
+    // 首次进入拖拽关，提示两种手势（每次会话只提示一次）
+    if(!window._dragHintShown){ window._dragHintShown=true;
+      setTimeout(()=>toast('👆','<b>拖动</b>卡片过去；拖不动就<b>先点卡片、再点目标</b>'),600); }
+    const zones=()=>[...document.querySelectorAll(zoneSel)];
+    const pickedOf=()=>document.querySelector(cardSel+'.picked');
+    zones().forEach(z=>{
+      z.addEventListener('click',()=>{
+        const p=pickedOf();
+        if(p && !p.classList.contains('done')){ p.classList.remove('picked'); onDrop(p, z); }
+      });
+    });
     document.querySelectorAll(cardSel).forEach(card=>{
       card.addEventListener('pointerdown', e=>{
         if(card.classList.contains('done'))return;
         e.preventDefault();
         const sx=e.clientX, sy=e.clientY;
-        const zones=[...document.querySelectorAll(zoneSel)].map(z=>({el:z, r:z.getBoundingClientRect()}));
-        const hit=(x,y)=>zones.find(z=>x>=z.r.left&&x<=z.r.right&&y>=z.r.top&&y<=z.r.bottom);
+        const zs=zones().map(z=>({el:z, r:z.getBoundingClientRect()}));
+        const hit=(x,y)=>zs.find(z=>x>=z.r.left&&x<=z.r.right&&y>=z.r.top&&y<=z.r.bottom);
         try{ card.setPointerCapture(e.pointerId); }catch(_){}
         card.classList.add('dragging');
-        let cur=null;
+        let cur=null, moved=false;
         const move=ev=>{
+          if(Math.abs(ev.clientX-sx)+Math.abs(ev.clientY-sy)>6)moved=true;
           card.style.transform='translate('+(ev.clientX-sx)+'px,'+(ev.clientY-sy)+'px)';
           const z=hit(ev.clientX,ev.clientY);
           if(z!==cur){ if(cur)cur.el.classList.remove('hot'); if(z)z.el.classList.add('hot'); cur=z; }
@@ -2124,7 +2237,13 @@
           if(cur)cur.el.classList.remove('hot');
           card.classList.remove('dragging'); card.style.transform='';
           const z=hit(ev.clientX,ev.clientY);
-          if(z) onDrop(card, z.el);
+          if(moved && z){ onDrop(card, z.el); return; }
+          if(!moved){ // 当作点击：切换选中态
+            const prev=pickedOf();
+            if(prev && prev!==card) prev.classList.remove('picked');
+            card.classList.toggle('picked');
+            if(card.classList.contains('picked')) sfx('tap');
+          }
         };
         card.addEventListener('pointermove',move); card.addEventListener('pointerup',up);
       });
@@ -2141,7 +2260,7 @@
     enableDrag('#tc .pcard','#tb .bucket',(card,zone)=>{
       if(card.dataset.a===zone.dataset.k){ card.classList.add('done'); zone.querySelector('.bfill').textContent='✓ '+card.textContent; done++;
         if(done===4) bossClear(2,80,'✅ <b>分流全对！</b>读本地文件用 App、长任务用云端、找记录用搜索——不同任务先选对入口。'); }
-      else { zone.classList.add('flash'); setTimeout(()=>zone.classList.remove('flash'),320); }
+      else { sfx('bad'); zone.classList.add('flash'); setTimeout(()=>zone.classList.remove('flash'),320); }
     });
   }
   // 阶段二：工作台布阵（拖拽）
@@ -2155,7 +2274,7 @@
     enableDrag('#p2 .pcard','#r2 .bucket',(card,zone)=>{
       if(card.dataset.r===zone.dataset.k){ card.classList.add('done'); zone.querySelector('.bfill').textContent='✓ '+card.textContent; done++;
         if(done===3) bossClear(3,60,'✅ <b>工作台归位！</b>左边选入口、中间下指令、右边验收结果。'); }
-      else { zone.classList.add('flash'); setTimeout(()=>zone.classList.remove('flash'),320); }
+      else { sfx('bad'); zone.classList.add('flash'); setTimeout(()=>zone.classList.remove('flash'),320); }
     });
   }
   // 阶段三：装备编队
@@ -2279,6 +2398,7 @@
 
   // 启动
   renderSlots(); render();
+  document.getElementById('sfxBtn').textContent=SFX.on?'🔊':'🔇';
 </script>
 </body>
 </html>
