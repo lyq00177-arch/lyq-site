@@ -45,6 +45,8 @@
   h2.title{font-size:23px;margin-bottom:8px;font-weight:700}
   .lead{color:rgb(var(--text-muted));font-size:16px;margin-bottom:26px}
   .lead b{color:rgb(var(--text-primary))}
+  .hint{color:rgb(var(--text-muted));font-size:14.5px;line-height:1.75;margin-bottom:12px}
+  .hint b{color:rgb(var(--text-primary))}
 
   .btn{display:inline-flex;align-items:center;gap:8px;cursor:pointer;border:none;
     background:rgb(var(--accent));color:#171310;font-weight:600;font-size:15px;
@@ -689,7 +691,7 @@
      q:'你想让 Codex 帮你整理电脑里的一个<b>本地文件夹</b>。三兄弟里该进哪个？',
      choices:[{t:'普通 ChatGPT 对话',ok:false},{t:'本地 Codex App',ok:true},{t:'云端 Codex',ok:false}],
      equip:'compass', kw:'必须带走',
-     good:'处理<b>本地文件</b>就用 Codex App，要它在远程<b>长时间跑任务</b>用云端 Codex，随便问问用普通对话。',
+     good:'处理<b>本地文件</b>就用 Codex App，要它在远程<b>长时间跑任务</b>用云端 Codex（云端功能需 Plus），随便问问用普通对话。',
      nudge:'普通对话/云端都碰不到你电脑里的文件。要读本地文件夹，得用装在你电脑上的 Codex App。'},
     {type:'explore'},
     {type:'town', tag:'第 5 章 · §5 左侧导航', sec:'该从哪个门进去干活？',
@@ -901,7 +903,7 @@
       {k:'project',i:'📁',n:'项目'}
     ];
     const NPCS=[
-      {say:'我想让它读我电脑里那个项目文件夹，帮我改代码', want:'project'},
+      {say:'我想让它读我电脑里的资料文件夹，帮我把文件整理归类', want:'project'},
       {say:'我上周跟它聊的营销方案，翻不到了…', want:'search'},
       {say:'我想让它每天早上八点，自动帮我总结行业新闻', want:'auto'},
       {say:'我就随口问问它，今天穿什么合适', want:'newchat'},
@@ -984,7 +986,7 @@
         <div class="tet-col" data-c="2"><div class="tet-cap">右 · 交作业</div><div class="tet-stack"></div></div>
       </div>
       <div class="nudge" id="tetNdg">不在这列——想想这块是「去哪儿开工的入口」、「和它对话的内容」，还是「它交的作业」？</div>
-      <div class="takeaway" id="tetTk"><span class="kw">必须带走</span>工作台一句话：<b>左=入口</b>（去哪儿开工）、<b>中=对线</b>（甩需求、看它干活）、<b>右=交作业</b>（网页/文档/改动都在这验收）。</div>
+      <div class="takeaway" id="tetTk"><span class="kw">必须带走</span>工作台一句话：<b>左=入口</b>（去哪儿开工）、<b>中=对话</b>（甩需求、看它干活）、<b>右=交作业</b>（网页/文档/改动都在这验收）。</div>
       <div class="center mt"><button class="btn" id="exNext" style="display:none" onclick="unlock('map');next()">收下地图 →</button></div>`);
     const KEY={left:0,center:1,right:2};
     const tet=document.getElementById('tet');
@@ -1139,7 +1141,7 @@
     return `<div class="handbook">
         <div class="hb-head">📒 随身速查手册 · 截图存好</div>
         <div class="hb-grid">
-          <div class="hb-card"><div class="hb-t">🗺 界面一句话</div><ul><li>左=入口</li><li>中=对线</li><li>右=交作业</li></ul></div>
+          <div class="hb-card"><div class="hb-t">🗺 界面一句话</div><ul><li>左=入口</li><li>中=对话</li><li>右=交作业</li></ul></div>
           <div class="hb-card"><div class="hb-t">🧭 该进哪个</div><ul><li>读本地文件→项目</li><li>随便聊→普通对话</li><li>长任务→云端</li></ul></div>
           <div class="hb-card"><div class="hb-t">🗣 少点黑话</div><ul><li>非程序员选"日常工作"模式</li><li>个性化里写"说人话"</li></ul></div>
           <div class="hb-card"><div class="hb-t">🔧 见错别慌</div><ul><li>报错原文甩回给它</li><li>让它自己解释 + 修复</li></ul></div>
@@ -2135,7 +2137,7 @@
         ${frags.map(f=>`<button class="memo${f.ok?' target':''}" data-ok="${f.ok}" style="left:${f.x}%;top:${f.y}%">${f.t}</button>`).join('')}
         <canvas id="fog" class="fog"></canvas>
       </div>
-      <div class="takeaway" id="stk"><span class="kw">必须带走</span>聊过、跑过的东西都能在左侧<b>「搜索」</b>里找回，不怕忘。</div>
+      <div class="takeaway" id="stk"><span class="kw">必须带走</span>聊过、跑过的东西都能在左侧<b>「搜索」</b>里找回——记不清全名没关系，<b>搜个关键词</b>就行。</div>
       ${backBar('收下水晶，返回 →')}`);
     const wrap=document.getElementById('fogwrap'), cv=document.getElementById('fog');
     const W=wrap.clientWidth||600, H=200; cv.width=W; cv.height=H;
