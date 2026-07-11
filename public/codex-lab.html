@@ -37,6 +37,19 @@
     animation:pop .4s ease}
   @keyframes pop{0%{transform:scale(.4);opacity:0}60%{transform:scale(1.2)}100%{transform:scale(1)}}
 
+  /* ===== 全局进度条 ===== */
+  .gprog{height:5px;background:rgb(var(--line)/.07);border-radius:99px;overflow:hidden;margin:-10px 0 18px}
+  .gprog>div{height:100%;width:0;background:linear-gradient(90deg,rgb(var(--accent)),rgb(var(--ok)));transition:width .5s ease;border-radius:99px}
+  /* ===== 标题画面 ===== */
+  .tscreen{text-align:center;padding:44px 0 30px}
+  .tscreen .tlogo{font-size:64px;line-height:1;animation:bob 2.6s ease-in-out infinite}
+  .tscreen h1{font-size:44px;margin:14px 0 4px;font-weight:700;letter-spacing:2px}
+  .tscreen .tsub{font-size:14px;letter-spacing:4px;color:rgb(var(--accent));margin-bottom:20px}
+  .tscreen .tsell{color:rgb(var(--text-muted));font-size:15.5px;line-height:1.8;max-width:420px;margin:0 auto 8px}
+  .tscreen .tsell b{color:rgb(var(--text-primary))}
+  .tmeta{font-size:12.5px;color:rgb(var(--text-muted)/.8);margin:10px 0 24px;letter-spacing:1px}
+  @media(max-width:680px){ .tscreen h1{font-size:34px} .tscreen{padding-top:26px} }
+
   /* ===== stage ===== */
   #stage{animation:fade .45s ease}
   @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
@@ -526,6 +539,7 @@
     <div class="slots" id="slots"></div>
   </div>
   <div class="credit">🎮 改编自 <a href="https://x.com/gengdaJ" target="_blank" rel="noopener">@gengdaJ</a> 的 Codex 教程 ｜ 制作 <a href="https://x.com/ykszs017" target="_blank" rel="noopener">@ykszs017</a></div>
+  <div class="gprog"><div id="gprogBar"></div></div>
   <div id="stage"></div>
 </div>
 <button id="testBtn" onclick="testMenu()">🎮 试玩</button>
@@ -596,6 +610,7 @@
     owned.add(id);
     sfx('unlock');
     renderSlots();
+    if(typeof saveGame==='function')saveGame();
     document.getElementById('rIcon').textContent=e.icon;
     document.getElementById('rName').textContent=e.name;
     document.getElementById('rPower').textContent=e.power||'';
@@ -614,6 +629,7 @@
     if(trophies.has(id))return;
     const t=TROPHIES[id]; if(!t)return;
     trophies.add(id);
+    saveGame();
     sfx('win');
     const box=document.getElementById('avaTrophy');
     if(box)box.insertAdjacentHTML('beforeend','<span title="'+t.name+'">'+t.icon+'</span>');
@@ -743,6 +759,48 @@
       const d=document.createElement('div'); d.className='recap'; d.innerHTML='⛓ '+rc;
       st.insertBefore(d, st.children[1]||null);
     }
+    const gp=document.getElementById('gprogBar');
+    if(gp)gp.style.width=Math.round(ci/(chapters.length-1)*100)+'%';
+    saveGame();
+  }
+
+  // ===== 存档（进度/装备/奖杯，刷新不丢）=====
+  function saveGame(){
+    try{ localStorage.setItem('xcv1', JSON.stringify({ci, o:[...owned], t:[...trophies]})); }catch(e){}
+  }
+  function loadGame(){
+    try{ const s=JSON.parse(localStorage.getItem('xcv1')); return (s&&s.ci>0)?s:null; }catch(e){ return null; }
+  }
+  function resetGame(){ try{localStorage.removeItem('xcv1');}catch(e){} location.reload(); }
+
+  // ===== 标题画面 =====
+  function rTitle(){
+    const sv=loadGame();
+    const CN=['第 1 关','第 2 关','第 3 关','第 4 关','第 5 关','第 6 关','第 7 关','第 8 关','小 BOSS','上篇通关','第 9 关','第 10 关','第 11 关','第 12 关','第 13 关','大 BOSS'];
+    const tag=sv?('上次玩到 '+(CN[sv.ci]||'')):'';
+    $(`<div class="tscreen">
+      <div class="tlogo">🗡</div>
+      <h1 class="display">AI 新手村</h1>
+      <div class="tsub">CODEX 篇 · 玩着学会用 AI</div>
+      <p class="tsell">一篇 <b>122 万人看过</b>的 Codex 教程，被改造成了 <b>13 关街机小游戏 + 2 场 BOSS 战</b>。打砖块、超级玛丽、太空侵略者……<b>玩到通关，你就真的敢打开 Codex 了。</b></p>
+      <div class="tmeta">🕹 上篇约 10 分钟 · 手机电脑都能玩 · 免费无需注册</div>
+      ${sv?`<div class="center"><button class="btn glow" id="tCont">▶ 继续冒险 <small style="font-weight:400;margin-left:6px">${tag}</small></button></div>
+            <div class="center" style="margin-top:12px"><button class="btn ghost" onclick="resetGame()">从头开始</button></div>`
+          :`<div class="center"><button class="btn glow" id="tStart">▶ 开始冒险</button></div>`}
+    </div>`);
+    const st=document.getElementById('tStart');
+    if(st)st.onclick=()=>{ sfx('good'); ci=0; render(); window.scrollTo({top:0,behavior:'smooth'}); };
+    const ct=document.getElementById('tCont');
+    if(ct)ct.onclick=()=>{
+      sfx('good');
+      (sv.o||[]).forEach(id=>owned.add(id));
+      (sv.t||[]).forEach(id=>{ if(!trophies.has(id)&&TROPHIES[id]){ trophies.add(id);
+        const b1=document.getElementById('avaTrophy'), b2=document.getElementById('hudTrophy');
+        if(b1)b1.insertAdjacentHTML('beforeend','<span title="'+TROPHIES[id].name+'">'+TROPHIES[id].icon+'</span>');
+        if(b2)b2.insertAdjacentHTML('beforeend','<span title="'+TROPHIES[id].name+'">'+TROPHIES[id].icon+'</span>'); } });
+      renderSlots();
+      ci=sv.ci; render(); window.scrollTo({top:0,behavior:'smooth'});
+    };
   }
   const $=h=>{document.getElementById('stage').innerHTML=h;};
 
@@ -854,7 +912,7 @@
       {t:'🏗 挂一个要跑一小时的大活儿', a:'cloud',ndg:'一小时的长任务挂本地得开着电脑干等——这种活儿扔给云端，关电脑它也接着跑。'},
       {t:'💬 随口问一句：MCP 是啥',   a:'chat', ndg:'就问个概念，用不着动文件也用不着挂长任务——普通对话就够了。'}];
     $(`<div class="chapter-tag">${c.tag}</div><h2 class="title">${c.sec}</h2>
-      <p class="lead" style="margin-bottom:10px">「它」其实有三兄弟，各管一摊。三张需求卡挨个飞来，<b>把卡拖进对的那扇门</b>——对了门就开，错了门会晃头。送对 <b id="tossN">0</b>/3</p>
+      <p class="lead" style="margin-bottom:10px">「它」有三兄弟，各管一摊。<b>把飞来的需求卡拖进对的门</b>——错了门会晃头。送对 <b id="tossN">0</b>/3</p>
       <div class="pcards" id="tossc" style="grid-template-columns:1fr;max-width:300px;margin:0 auto;min-height:54px"></div>
       <div class="buckets" id="doors" style="grid-template-columns:1fr 1fr 1fr;margin-top:16px">
         <div class="bucket dz" data-k="chat"><div class="door-ic">🚪</div><div class="bt">💬 普通<br>ChatGPT</div></div>
@@ -910,7 +968,7 @@
       {say:'我想给它接上我的 Notion，让它能读我的笔记', want:'plugin'}
     ];
     $(`<div class="chapter-tag">${c.tag}</div><h2 class="title">${c.sec}</h2>
-      <p class="lead">村民来找 Codex 帮忙，<b>点建筑，把每个人带到该去的入口</b>。送对 <b id="tprog">0</b>/${NPCS.length} 个，拿下「导航钥匙」。</p>
+      <p class="lead">村民来求助。<b>点建筑，把他带到对的入口</b>。送对 <b id="tprog">0</b>/${NPCS.length}</p>
       <div class="npcmap">
         <div class="blds" id="blds">
           ${BLDS.map(b=>`<div class="bld" data-k="${b.k}"><div class="bi">${b.i}</div><div class="bn">${b.n}</div></div>`).join('')}
@@ -979,7 +1037,7 @@
       {t:'📁 项目',k:'left'},{t:'🤖 它：正在读取…',k:'center'},{t:'📄 改动与来源',k:'right'}];
     $(`<div class="chapter-tag">第 4 章 · §4 主界面地图</div>
       <h2 class="title">🧩 拼回你的赛博工位</h2>
-      <p class="lead" style="margin-bottom:10px">Codex 的工作台被打乱成了方块。方块会一块块落下来——<b>点它该去的那一列</b>（同一列<b>再点一下 = 秒降</b>；电脑可按 ← → 移动、<b>↓ 秒降</b>），把左中右拼回去。已归位 <b id="tetN">0</b>/6</p>
+      <p class="lead" style="margin-bottom:10px">工作台被打乱了。<b>点方块该去的列</b>（同列再点一下=秒降；键盘 ←→ 移动、↓ 秒降），拼回左中右。已归位 <b id="tetN">0</b>/6</p>
       <div class="tet" id="tet">
         <div class="tet-col" data-c="0"><div class="tet-cap">左 · 入口</div><div class="tet-stack"></div></div>
         <div class="tet-col" data-c="1"><div class="tet-cap">中 · 对话</div><div class="tet-stack"></div></div>
@@ -1133,7 +1191,7 @@
       </div>
       <div class="tease">⚔ <b>下篇 · 进阶勇者之路</b>：语气调音台、报错排查、实战安检、符文炮台、传说级"禁区飞行"……最后迎战大 BOSS——<b>从 0 搭一个你自己的个人主页</b>。</div>
       <div class="center" style="margin:18px 0 8px"><button class="btn glow" onclick="next()">▶ 进入下篇：进阶勇者之路 →</button></div>
-      <div class="row"><button class="btn ghost" onclick="location.reload()">从头再玩上篇</button></div>
+      <div class="row"><button class="btn ghost" onclick="resetGame()">从头再玩上篇</button></div>
       <p style="text-align:center;font-size:12px;margin-top:14px"><a href="https://developers.openai.com/codex/app" target="_blank" rel="noopener" style="color:rgb(var(--text-muted))">等不及的话，也可以现在就去真的 Codex 做份 PPT →</a></p>`);
   }
   // 速查手册（挪到大 BOSS 通关页最末）
@@ -1177,9 +1235,9 @@
   // 阶段一：打砖块——打碎空泛想法，接住具体要点
   function sb1(){
     $(sbTag(1)+`<h2 class="title">🧱 打碎空泛的想法</h2>
-      <p class="lead" style="margin-bottom:10px">领导说"做个汇报 PPT"，你脑子里全是右边这种空泛念头——这样发给 AI 它只能瞎猜。<b>用挡板弹球把空话砖打碎</b>，砖里会掉出<b>具体要点</b>，<b>再用挡板接住它</b>收进需求清单。球漏掉 3 次就得重来。</p>
+      <p class="lead" style="margin-bottom:10px">满脑子空泛念头，AI 接不住。<b>弹球打碎空话砖，再用挡板接住掉出来的具体要点</b>。漏球 3 次重来。</p>
       <canvas id="bkcv" class="bkcv"></canvas>
-      <div class="run-tip">🖱 在游戏框里<b>左右移动</b>控制挡板，<b>点一下发球</b>；要点碎片掉下来记得用挡板去接。</div>
+      <div class="run-tip">🖱 左右移动控挡板，<b>点一下发球</b>。</div>
       <div class="sb-hud"><span>❤️ 剩余机会 <b id="bklives">3</b></span><span>📋 需求清单 <b id="bkgot">0</b>/5</span></div>
       <div class="sb-list" id="bklist"></div>
       <div id="bkmsg"></div>`);
@@ -1296,6 +1354,7 @@
       const btn=document.getElementById('sbSend'); btn.style.display='none';
       document.getElementById('sbThink').style.display='block';
       setTimeout(()=>{
+        if(!document.getElementById('sbThink'))return;
         document.getElementById('sbThink').style.display='none';
         const TH=[
           {t:'① 封面',lis:['Q2 工作汇报','—— 汇报人：你']},
@@ -1315,7 +1374,7 @@
   // 阶段三：打磨——把空话打回去，要具体
   function sb3(){
     $(sbTag(3)+`<h2 class="title">🔍 把空话打回去</h2>
-      <p class="lead" style="margin-bottom:10px">初稿里混着 <b>3 句红框空话</b>。<b>点它</b>，就等于对 Codex 说"这句太空，给我具体数据"——看它怎么改。已打磨 <b id="sbFn">0</b>/3</p>
+      <p class="lead" style="margin-bottom:10px">初稿混着 <b>3 句红框空话。点它 = 打回去要具体数据</b>。已打磨 <b id="sbFn">0</b>/3</p>
       <div class="pv gold" id="sbDraft"><div class="pt1">② 三项成果 · 初稿</div>
         ${SB_FLUFF.map((x,i)=>`<button class="fluff" data-i="${i}">💨 ${x.f}</button>`).join('')}
       </div>
@@ -1376,7 +1435,7 @@
   function rDial2(){
     $(`<div class="chapter-tag">第 9 章 · §11 工作模式 + §14 个性化</div>
       <h2 class="title">🎛 语气调音台</h2>
-      <p class="lead" style="margin-bottom:10px">它一开口全是黑话。两步驯服它：<b>① 把模式拧到「日常工作」，② 给它写入三条个性化铭文</b>。注意看上面那句回复怎么变。</p>
+      <p class="lead" style="margin-bottom:10px">它一开口全是黑话。<b>① 拧到「日常工作」 ② 写入三条铭文</b>——盯着上面那句回复变。</p>
       <div class="dial-wrap">
         <div class="dial-reply" id="d2rep" style="margin:0 0 14px">"已初始化 venv，建议用 async 重构 pipeline…"</div>
         <div class="dial-ends"><span>😵 编程</span><span>😌 日常工作</span></div>
@@ -1426,7 +1485,7 @@
       {t:'❌ 内存不足 OOM',d:1}];
     $(`<div class="chapter-tag">第 10 章 · §23 踩坑指南 · 报错排查</div>
       <h2 class="title">🔨 报错怪打地鼠</h2>
-      <p class="lead" style="margin-bottom:6px">跑任务时屏幕上会冒各种字。<b>红色报错怪：拍下去</b>（=把报错原文甩回给 Codex，让它自己解释+修）；<b>正常提示别拍</b>，让它安静干活。失误 ≤3 过关。</p>
+      <p class="lead" style="margin-bottom:6px"><b>红色报错怪拍下去</b>（=甩回给 Codex 让它自己修）；✅⏳<b>正常提示别拍</b>。失误 ≤3 过关。</p>
       <div class="whack-hud"><span>🔧 已排障 <b id="wok">0</b></span><span>❌ 失误 <b id="wbad">0</b>/3</span><span id="wleft">剩 ${REQ.length}</span></div>
       <div class="whack" id="whack">${[0,1,2,3,4,5].map(i=>`<div class="hole" data-h="${i}"></div>`).join('')}</div>
       <div id="w23msg"></div>`);
@@ -1569,7 +1628,7 @@
   function rInvaders(){
     $(`<div class="chapter-tag">第 12 章 · §15/§16/§18 进阶符文</div>
       <h2 class="title">👾 难题侵略者</h2>
-      <p class="lead" style="margin-bottom:6px">三种「难题怪」正在下压。<b>先点下面的符文炮切换弹药，再点/按空格开火</b>——只有<b>对症的符文</b>才打得掉：蓝怪要来源、橙怪要回退、紫怪要接工具。别让它们压到底线！</p>
+      <p class="lead" style="margin-bottom:6px"><b>先切符文炮，再点开火</b>——对症才打得掉：蓝怪要来源、橙怪要回退、紫怪要接工具。别让怪压线！</p>
       <canvas id="ivcv" class="inv"></canvas>
       <div class="rune-pad">
         <button class="runebtn on" data-r="web">🌐 浏览器</button>
@@ -1816,7 +1875,7 @@
   function bb5(){
     BB.busted=0; BB.wrongs=0; BB.picking=-1;
     document.getElementById('bbody').innerHTML=`<h2 class="title" style="font-size:20px">⚖️ 最终验收 · 别盲信它交的活</h2>
-      <p class="hint">它把主页交上来了，一条条念给你听。<b>里面藏着 3 处它编的/越权的内容</b>——发现哪条不对劲就<b>点那条陈述</b>喊「异议！」，再甩出对应证据戳穿它。乱喊异议 3 次要重审。</p>
+      <p class="hint">交付的主页里<b>藏着 3 处编造/越权</b>。<b>点可疑陈述喊「异议！」，再甩证据戳穿</b>。乱喊 3 次重审。</p>
       <div class="court" id="bbCourt"></div>
       <div id="bbEvd" style="display:none">
         <p class="hint" style="margin-top:14px;text-align:center">⚡ 异议成立的前提是证据——<b>选一件甩出去</b>：</p>
@@ -1905,7 +1964,7 @@
       <a class="cta" href="https://www.lyq017.cn/ai/prompts" target="_top" style="background:rgb(var(--bg-elevated));color:rgb(var(--accent));border:1px solid rgb(var(--accent)/.4)">🎁 通关奖励：我的私藏提示词库 →<small style="color:rgb(var(--text-muted))">挖掘天赋 / 数字人生 / 写日记 / 文字表达——我自己天天在用的那几条</small></a>
       ${handbookHTML()}
       <div class="tease" style="text-align:center">🗡 <b>下一篇预告：Claude Code 勇者</b>——终端里的更强形态（施工中）</div>
-      <div class="row"><button class="btn ghost" onclick="location.reload()">从头再玩一遍</button></div>`);
+      <div class="row"><button class="btn ghost" onclick="resetGame()">从头再玩一遍</button></div>`);
     setTimeout(()=>unlock('medal'),600);
     setTimeout(()=>winTrophy('home'),3000);
   }
@@ -1956,7 +2015,7 @@
   function nBag(){
     $(`<div class="chapter-tag">第 7 章 · §7 插件</div>
       <h2 class="title">🧩 插件商店 · 超级玛丽</h2>
-      <p class="hint">Codex 的插件有四种，一路各捡一件、各破一道关：<b>🌉连接器</b>搭桥过河、<b>🍄插件</b>顶问号砖变大跳墙、<b>📜技能</b>开锁门、<b>🔌MCP</b>接信号塔——集齐 4 件冲到 🏁。</p>
+      <p class="hint">沿路捡四种插件道具，各破一道障碍——过河、跳墙、开门、接信号。<b>集齐 4 件冲到 🏁</b>。</p>
       <div class="hint" style="text-align:center;margin:2px 0 8px">🎒 已装插件 <b id="mcount" style="color:rgb(var(--accent))">0</b> / 4</div>
       <canvas id="mcv" class="mario"></canvas>
       <div class="mario-pad"><button class="mbtn" data-k="left">◀</button><button class="mbtn" data-k="jump">⤒ 跳</button><button class="mbtn" data-k="right">▶</button></div>
@@ -2078,7 +2137,7 @@
   function nClock(){
     $(`<div class="chapter-tag">第 8 章 · §8 自动化</div>
       <h2 class="title">⏰ 时间工坊 · 把任务放进未来</h2>
-      <p class="lead" style="margin-bottom:10px">有两件你不想天天手动干的事。<b>把任务塔拖到时间轴上对的时刻</b>，装好后<b>点 ▶ 预演</b>，看未来三天它替你干活。</p>
+      <p class="lead" style="margin-bottom:10px"><b>把两座任务塔拖到时间轴上对的时刻</b>，然后点 ▶ 预演，看未来三天它替你干活。</p>
       <div class="pcards" id="twr" style="grid-template-columns:1fr 1fr">
         <div class="pcard drag" data-a="t8">🗞 每天 <b>早上 8 点</b><br>总结行业新闻</div>
         <div class="pcard drag" data-a="t20">💾 每天 <b>晚上 8 点</b><br>检查文件备份</div>
@@ -2183,9 +2242,9 @@
   function nLegend(){
     $(`<div class="chapter-tag">第 13 章 · §19 电脑操控（传说级）</div>
       <h2 class="title">☠️ 传说 · 禁区飞行</h2>
-      <p class="hint">电脑操控威力最大也最危险。<b>点画面 / 按空格，让小鸟往上扑一下</b>，从缝里穿过去，<b style="color:rgb(var(--danger))">别撞上写着「隐私 / 支付 / 微信 / 社媒」的禁区柱子</b>。穿过 <b id="fscore">0</b>/5 根就拿下传说装备。</p>
+      <p class="hint"><b>点画面让小鸟上扑</b>，穿过缝隙，<b style="color:rgb(var(--danger))">别撞「隐私/支付/微信」禁区柱</b>。穿过 <b id="fscore">0</b>/5 根拿传说装备。</p>
       <canvas id="fcv" class="flappy"></canvas>
-      <div class="run-tip">👆 <b>连续点游戏框</b>（或按空格），小鸟就一下下往上扑；一松手它就往下掉——稳住让它从缝里穿过去。</div>
+      <div class="run-tip">👆 <b>连续点</b>（或按空格），稳住节奏。</div>
       <div id="fmsg"></div>
       ${backBar('收下传说装备，迎战大 BOSS →')}`);
     startFlappy();
@@ -2451,8 +2510,10 @@
   }
 
   // 启动
-  renderSlots(); render();
+  renderSlots(); rTitle();
   document.getElementById('sfxBtn').textContent=SFX.on?'🔊':'🔇';
+  // 试玩菜单是开发工具，生产环境隐藏（加 ?dev=1 显示）
+  if(!/[?&]dev=1/.test(location.search)) document.getElementById('testBtn').style.display='none';
 </script>
 </body>
 </html>
