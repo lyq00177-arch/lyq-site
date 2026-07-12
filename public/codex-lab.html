@@ -517,16 +517,7 @@
 <div id="avatar">
   <div class="ava-title">🗡 AI 勇者</div>
   <div class="ava-stage">
-    <svg viewBox="0 0 100 140" class="ava-svg">
-      <rect x="38" y="92" width="9" height="34" rx="4" fill="#2b2f3a"/>
-      <rect x="53" y="92" width="9" height="34" rx="4" fill="#2b2f3a"/>
-      <rect x="22" y="52" width="9" height="33" rx="4" fill="#efe9dd"/>
-      <rect x="69" y="52" width="9" height="33" rx="4" fill="#efe9dd"/>
-      <rect x="30" y="48" width="40" height="46" rx="11" fill="#f2efe8"/>
-      <rect x="44" y="39" width="12" height="9" fill="#e8c9a0"/>
-      <circle cx="50" cy="27" r="15" fill="#e8c9a0"/>
-      <path d="M34 24 a16 16 0 0 1 32 0 q-16 -11 -32 0 z" fill="#3a3027"/>
-    </svg>
+    <canvas class="ava-svg" id="avaCv" width="114" height="150"></canvas>
     <div id="avaGear"></div>
   </div>
   <div class="ava-count">装备 <b id="avaCount">0/14</b></div>
@@ -583,7 +574,7 @@
   const owned=new Set();
   function renderSlots(){
     document.getElementById('slots').innerHTML=EQUIPS.map(e=>
-      `<div class="slot${owned.has(e.id)?' on':''}" title="${e.name}">${owned.has(e.id)?e.icon:''}</div>`).join('');
+      `<div class="slot${owned.has(e.id)?' on':''}" title="${e.name}">${owned.has(e.id)?pxTag(e.icon,1):''}</div>`).join('');
     document.getElementById('eqcount').textContent=owned.size+'/'+EQUIPS.length;
     document.getElementById('lv').textContent='Lv.'+(1+Math.floor(owned.size/2));
     renderAvatar();
@@ -596,7 +587,7 @@
     const box=document.getElementById('avaGear'); if(!box)return;
     box.innerHTML=EQUIPS.filter(e=>owned.has(e.id)).map(e=>{
       const p=AVA_POS[e.id]||[50,50];
-      return `<span class="gear" style="left:${p[0]}%;top:${p[1]}%" title="${e.name}">${e.icon}</span>`;
+      return `<span class="gear" style="left:${p[0]}%;top:${p[1]}%" title="${e.name}">${pxTag(e.icon,1)}</span>`;
     }).join('');
     const hint=document.getElementById('avaHint');
     if(hint) hint.textContent = owned.size===0?'白 T 小白 · 待装备'
@@ -611,7 +602,7 @@
     sfx('unlock');
     renderSlots();
     if(typeof saveGame==='function')saveGame();
-    document.getElementById('rIcon').textContent=e.icon;
+    document.getElementById('rIcon').innerHTML=pxTag(e.icon,1);
     document.getElementById('rName').textContent=e.name;
     document.getElementById('rPower').textContent=e.power||'';
     const r=document.getElementById('reward');
@@ -632,10 +623,10 @@
     saveGame();
     sfx('win');
     const box=document.getElementById('avaTrophy');
-    if(box)box.insertAdjacentHTML('beforeend','<span title="'+t.name+'">'+t.icon+'</span>');
+    if(box)box.insertAdjacentHTML('beforeend','<span title="'+t.name+'">'+pxTag(t.icon,1)+'</span>');
     const hb=document.getElementById('hudTrophy');
-    if(hb)hb.insertAdjacentHTML('beforeend','<span title="'+t.name+'">'+t.icon+'</span>');
-    document.getElementById('rIcon').textContent=t.icon;
+    if(hb)hb.insertAdjacentHTML('beforeend','<span title="'+t.name+'">'+pxTag(t.icon,1)+'</span>');
+    document.getElementById('rIcon').innerHTML=pxTag(t.icon,1);
     document.getElementById('rName').textContent=t.name;
     document.getElementById('rPower').textContent=t.power;
     document.querySelector('#reward .r-lbl').textContent='🏆 战利品入库';
@@ -644,6 +635,82 @@
     r.classList.remove('pop'); void r.offsetWidth; r.classList.add('pop');
     clearTimeout(window._rt); window._rt=setTimeout(()=>{r.classList.remove('on');
       document.querySelector('#reward .r-lbl').textContent='⚔ 恭喜获得新装备';},2200);
+  }
+  // ===== 8-bit 像素化引擎（emoji → 低分辨率采样 → 关闭平滑放大 = 统一像素风，零素材）=====
+  const _pxCache={};
+  function pxSprite(ch,res){
+    res=res||14;
+    const key=ch+'@'+res;
+    if(_pxCache[key])return _pxCache[key];
+    const c=document.createElement('canvas'); c.width=res; c.height=res;
+    const g=c.getContext('2d');
+    g.textAlign='center'; g.textBaseline='middle';
+    g.font=Math.round(res*0.92)+'px serif';
+    g.fillText(ch,res/2,res/2+res*0.04);
+    _pxCache[key]=c; return c;
+  }
+  function drawPx(g,ch,x,y,size,res){
+    const s=pxSprite(ch,res);
+    const prev=g.imageSmoothingEnabled;
+    g.imageSmoothingEnabled=false;
+    g.drawImage(s,x,y,size,size);
+    g.imageSmoothingEnabled=prev;
+  }
+  function pxURL(ch,res){
+    const key='url:'+ch+'@'+(res||14);
+    if(_pxCache[key])return _pxCache[key];
+    const s=pxSprite(ch,res);
+    const c=document.createElement('canvas'); c.width=s.width*4; c.height=s.height*4;
+    const g=c.getContext('2d'); g.imageSmoothingEnabled=false;
+    g.drawImage(s,0,0,c.width,c.height);
+    return _pxCache[key]=c.toDataURL();
+  }
+  function pxTag(ch,em){
+    return '<img src="'+pxURL(ch)+'" alt="'+ch+'" style="width:'+(em||1.05)+'em;height:'+(em||1.05)+'em;image-rendering:pixelated;vertical-align:-0.14em">';
+  }
+  // 页面上的大 emoji（Boss 立绘/门/标题 logo）统一过像素滤镜
+  function pixelizeAll(){
+    document.querySelectorAll('.boss-emoji,.door-ic,.tlogo').forEach(e=>{
+      const ch=e.textContent.trim();
+      if(!ch || e.querySelector('img'))return;
+      if(e.dataset.pxch===ch)return;
+      e.dataset.pxch=ch;
+      e.innerHTML=pxTag(ch,1.02);
+    });
+  }
+  // 手绘像素勇者（14×18，唯一手工精灵）
+  const HERO_ROWS=[
+    '.....HHHH.....',
+    '....HHHHHH....',
+    '....HSSSSH....',
+    '....SSSSSS....',
+    '....SESSES....',
+    '....SSSSSS....',
+    '.....SSSS.....',
+    '....TTTTTT....',
+    '...TTTTTTTT...',
+    '..STTTTTTTTS..',
+    '..STTTTTTTTS..',
+    '...TTTTTTTT...',
+    '....TTTTTT....',
+    '....PPPPPP....',
+    '....PP..PP....',
+    '....PP..PP....',
+    '....BB..BB....',
+    '....BB..BB....'
+  ];
+  const HERO_PAL={H:'#3a3027',S:'#e8c9a0',E:'#26221d',T:'#f2efe8',P:'#2b2f3a',B:'#191c24'};
+  function drawHero(cv){
+    if(!cv)return;
+    const cols=HERO_ROWS[0].length, rows=HERO_ROWS.length;
+    const s=Math.floor(Math.min(cv.width/cols, cv.height/rows));
+    const ox=Math.floor((cv.width-cols*s)/2), oy=Math.floor((cv.height-rows*s)/2);
+    const g=cv.getContext('2d'); g.clearRect(0,0,cv.width,cv.height);
+    for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){
+      const k=HERO_ROWS[r][c]; if(k==='.')continue;
+      g.fillStyle=HERO_PAL[k]||'#fff';
+      g.fillRect(ox+c*s, oy+r*s, s, s);
+    }
   }
   if(!CanvasRenderingContext2D.prototype.roundRect){
     CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){ this.rect(x,y,w,h); return this; };
@@ -761,6 +828,7 @@
     }
     const gp=document.getElementById('gprogBar');
     if(gp)gp.style.width=Math.round(ci/(chapters.length-1)*100)+'%';
+    pixelizeAll();
     saveGame();
   }
 
@@ -788,6 +856,7 @@
             <div class="center" style="margin-top:12px"><button class="btn ghost" onclick="resetGame()">从头开始</button></div>`
           :`<div class="center"><button class="btn glow" id="tStart">▶ 开始冒险</button></div>`}
     </div>`);
+    pixelizeAll();
     const st=document.getElementById('tStart');
     if(st)st.onclick=()=>{ sfx('good'); ci=0; render(); window.scrollTo({top:0,behavior:'smooth'}); };
     const ct=document.getElementById('tCont');
@@ -1706,17 +1775,17 @@
       if(f.flash>0)f.flash--;
       g.strokeStyle=c.color;
       g.beginPath(); g.roundRect(f.x-40,f.y-19,80,38,10); g.fill(); g.stroke();
+      drawPx(g,'👾',f.x-36,f.y-8,16);
       g.fillStyle='rgba(240,238,232,0.95)'; g.font='600 11px "Noto Sans SC",sans-serif';
       g.textAlign='center'; g.textBaseline='middle';
-      g.fillText('👾 '+f.q, f.x, f.y);
+      g.fillText(f.q, f.x+7, f.y);
     }
     for(const s of V.shots){
       g.fillStyle=INV_TYPES[s.rune].color;
       g.fillRect(s.x-2,s.y-9,4,12);
     }
-    g.font='26px serif'; g.textAlign='center'; g.textBaseline='middle';
-    g.fillText('🛸', V.ship.x, V.H-22);
-    g.font='600 11px sans-serif'; g.fillStyle='rgba(212,168,83,0.9)';
+    drawPx(g,'🛸',V.ship.x-15,V.H-37,30);
+    g.font='600 11px sans-serif'; g.fillStyle='rgba(212,168,83,0.9)'; g.textAlign='center'; g.textBaseline='middle';
     g.fillText('弹药：'+INV_TYPES[V.rune].name, V.ship.x, V.H-46);
   }
   function ivWin(){
@@ -1967,6 +2036,7 @@
       <div class="row"><button class="btn ghost" onclick="resetGame()">从头再玩一遍</button></div>`);
     setTimeout(()=>unlock('medal'),600);
     setTimeout(()=>winTrophy('home'),3000);
+    pixelizeAll();
   }
 
   // ===== 支线·进阶装备台 hub =====
@@ -2113,21 +2183,21 @@
         else { g.fillStyle='rgba(90,150,255,0.35)'; g.fillRect(x1,groundY,w,H-groundY); } }
       else { g.fillStyle=gt.signal?'rgba(120,255,180,0.55)':'rgba(180,130,80,0.9)'; g.fillRect(x1,groundY,w,6); }
       if(gt.signal){ const tcx=X((gt.x1+gt.x2)/2);
-        if(!gt.got){ g.strokeStyle='rgba(255,120,120,0.45)'; g.setLineDash([3,4]); g.beginPath(); g.moveTo(tcx,0); g.lineTo(tcx,gt.ty-8); g.stroke(); g.setLineDash([]); g.font='14px serif'; g.textAlign='center'; g.textBaseline='alphabetic'; g.fillText('🔒',tcx,gt.ty-42); }
-        g.font='38px serif'; g.textAlign='center'; g.textBaseline='alphabetic'; g.fillText('🗼',tcx,gt.ty); g.textAlign='left'; g.textBaseline='top'; } }
+        if(!gt.got){ g.strokeStyle='rgba(255,120,120,0.45)'; g.setLineDash([3,4]); g.beginPath(); g.moveTo(tcx,0); g.lineTo(tcx,gt.ty-8); g.stroke(); g.setLineDash([]); drawPx(g,'🔒',tcx-7,gt.ty-55,14); }
+        drawPx(g,'🗼',tcx-19,gt.ty-38,38); } }
     // 墙 & 门
     for(const gt of M.gates){
       if(gt.kind==='wall'){ g.fillStyle='rgba(150,150,162,0.9)'; g.fillRect(X(gt.x),groundY-gt.h,gt.w,gt.h); }
-      else if(gt.kind==='door'){ if(!gt.got){ g.fillStyle='rgba(150,110,70,0.95)'; g.fillRect(X(gt.x),groundY-gt.h,gt.w,gt.h); g.font='15px serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('🔒',X(gt.x)+gt.w/2,groundY-gt.h/2); g.textAlign='left'; g.textBaseline='top'; }
+      else if(gt.kind==='door'){ if(!gt.got){ g.fillStyle='rgba(150,110,70,0.95)'; g.fillRect(X(gt.x),groundY-gt.h,gt.w,gt.h); drawPx(g,'🔒',X(gt.x)+gt.w/2-8,groundY-gt.h/2-8,16); }
         else { g.strokeStyle='rgba(120,255,180,0.5)'; g.strokeRect(X(gt.x),groundY-gt.h,gt.w,gt.h); } } }
     // 问号砖
     const q=M.qb; g.fillStyle=q.used?'rgba(120,120,120,0.4)':'rgba(212,168,83,0.95)'; g.fillRect(X(q.x),q.y,q.s,q.s);
     if(!q.used){ g.fillStyle='#171310'; g.font='16px serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('?',X(q.x)+q.s/2,q.y+q.s/2); g.textAlign='left'; g.textBaseline='top'; }
     // 地上道具
-    for(const gt of M.gates){ if(gt.ix>=0 && !gt.got){ g.font='22px serif'; g.fillText(gt.emoji,X(gt.ix),groundY-30); } }
-    if(M.mush){ g.font='20px serif'; g.fillText('🍄',X(M.mush.x),M.mush.y); }
-    g.font='26px serif'; g.fillText('🏁',X(M.goal.x),M.goal.y+2);
-    const p=M.p; g.font=(p.big?34:24)+'px serif'; g.fillText('🦸',X(p.x)-3,p.y-6);
+    for(const gt of M.gates){ if(gt.ix>=0 && !gt.got){ drawPx(g,gt.emoji,X(gt.ix),groundY-30,24); } }
+    if(M.mush){ drawPx(g,'🍄',X(M.mush.x),M.mush.y,22); }
+    drawPx(g,'🏁',X(M.goal.x)-2,M.goal.y,30);
+    const p=M.p; drawPx(g,'🦸',X(p.x)-4,p.y-6,p.big?38:27);
     if(M.toast){ g.fillStyle='rgba(212,168,83,0.98)'; g.font='bold 13px sans-serif'; g.textAlign='center'; g.fillText(M.toast.text,W/2,16); g.textAlign='left'; }
   }
   function marioWin(){ stopMario(); sfx('win'); const m=document.getElementById('mmsg'); if(m)m.innerHTML='<div class="qdef on" style="text-align:center">🏁 <b>四种插件全上手了！</b><br>🌉连接器搭桥过河 · 🍄插件变大跳墙 · 📜技能开锁门 · 🔌MCP接信号塔——这就是给 Codex 装能力的四条路。</div>'; document.getElementById('btk').classList.add('on'); unlock('bag'); showBack(); }
@@ -2285,7 +2355,7 @@
       ctx.fillStyle='#fff'; ctx.font='600 12px "Noto Sans SC",sans-serif'; ctx.textAlign='center'; ctx.textBaseline='top';
       [...p.label].forEach((ch,i)=>ctx.fillText(ch, p.x+14, 6+i*13));
     }
-    ctx.font='22px serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('🐤', F.x, F.y);
+    drawPx(ctx,'🐤',F.x-13,F.y-13,26);
     F.raf=requestAnimationFrame(fTick);
   }
   function fWin(){ stopFlappy(); sfx('win'); const m=document.getElementById('fmsg'); if(m)m.innerHTML='<div class="takeaway on" style="margin-top:12px"><span class="kw">必须带走</span>电脑操控能替你操作整台电脑、威力最大，但<b>隐私 / 支付 / 微信 / 社媒是绝对禁区</b>——边界一定给它划死。</div>'; unlock('legend'); showBack(); }
@@ -2510,7 +2580,7 @@
   }
 
   // 启动
-  renderSlots(); rTitle();
+  renderSlots(); rTitle(); drawHero(document.getElementById('avaCv'));
   document.getElementById('sfxBtn').textContent=SFX.on?'🔊':'🔇';
   // 试玩菜单是开发工具，生产环境隐藏（加 ?dev=1 显示）
   if(!/[?&]dev=1/.test(location.search)) document.getElementById('testBtn').style.display='none';
