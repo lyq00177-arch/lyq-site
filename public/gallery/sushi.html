@@ -317,15 +317,21 @@ seal.position.set(CW/2 - .04, 1.35, .8); seal.rotation.y = -Math.PI/2; scene.add
 
 // ── 右墙：苏轼年表（与左墙画作对望）──
 const TIMELINE = [
-  ["1037", "生于眉山"],
-  ["1057", "进士及第，名动京师"],
-  ["1071", "通判杭州"],
-  ["1074", "知密州"],
-  ["1079", "乌台诗案，下狱百日"],
-  ["1080", "贬谪黄州"],
-  ["1094", "再贬惠州"],
-  ["1097", "渡海贬儋州"],
-  ["1101", "北归，卒于常州"],
+  ["1037", "生于眉山", "父苏洵、弟苏辙，一门三杰"],
+  ["1057", "进士及第", "主考欧阳修误以为是门生曾巩之作，避嫌取第二"],
+  ["1061", "制科入三等", "宋开国百年间最高等，人称「百年第一」"],
+  ["1066", "父洵病逝", "扶柩还蜀，守孝三年"],
+  ["1071", "通判杭州", "反对新法自请外放；「欲把西湖比西子」"],
+  ["1074", "知密州", "出猎、记梦、中秋问月——本展前四幅皆出于此"],
+  ["1077", "知徐州", "黄河决口，亲率军民抗洪，筑黄楼"],
+  ["1079", "乌台诗案", "因诗文下狱一百三十日，几死"],
+  ["1080", "贬谪黄州", "躬耕东坡，自号东坡居士；定风波、赤壁皆成于此"],
+  ["1085", "起复还朝", "高太后垂帘，官至翰林学士知制诰"],
+  ["1089", "再守杭州", "疏浚西湖，筑长堤——今日苏堤"],
+  ["1094", "再贬惠州", "「日啖荔枝三百颗，不辞长作岭南人」"],
+  ["1097", "渡海贬儋州", "在海南办学授业，儋州文脉自此而开"],
+  ["1100", "遇赦北归", "「九死南荒吾不恨，兹游奇绝冠平生」"],
+  ["1101", "卒于常州", "终点即本展终点：问汝平生功业，黄州惠州儋州"],
 ];
 {
   const tlStart = -6, tlEnd = endZ + 5;
@@ -342,7 +348,7 @@ const TIMELINE = [
   );
   tlTitle.position.set(CW/2 - .05, 3.55, tlStart - .5);
   tlTitle.rotation.y = -Math.PI/2; scene.add(tlTitle);
-  TIMELINE.forEach(([year, event], i) => {
+  TIMELINE.forEach(([year, event, note], i) => {
     const z = tlStart + (tlEnd - tlStart) * (i / (TIMELINE.length - 1));
     // 节点圆点
     const dot = new THREE.Mesh(new THREE.SphereGeometry(.045, 10, 8),
@@ -350,13 +356,14 @@ const TIMELINE = [
     dot.position.set(CW/2 - .07, 2.62, z); scene.add(dot);
     // 年份在线上方，事件在线下方
     const plate = new THREE.Mesh(
-      new THREE.PlaneGeometry(2.3, 1.15),
+      new THREE.PlaneGeometry(2.6, 1.7),
       new THREE.MeshBasicMaterial({ map: panelTexture([
-        { t: year, size:78, color:"#d4a853", weight:700, gap:26 },
-        { t: event, size:44, color:"#c9c2b4", weight:300 },
-      ], 768, 384), transparent:true })
+        { t: year, size:82, color:"#d4a853", weight:700, gap:24 },
+        { t: event, size:52, color:"#e8e3d8", weight:500, gap:28, serif:true },
+        { t: note, size:30, color:"#8a8278", weight:300 },
+      ], 1024, 672), transparent:true })
     );
-    plate.position.set(CW/2 - .05, 2.0, z);
+    plate.position.set(CW/2 - .05, 1.85, z);
     plate.rotation.y = -Math.PI/2; scene.add(plate);
   });
 }
