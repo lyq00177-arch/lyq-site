@@ -25,6 +25,13 @@ const sections = [
     desc: "9 个系列 34 张图，看 AI 配合提示词能做出什么",
     tag: "用得好",
   },
+  {
+    href: "/ai/pantheon",
+    icon: "🏯",
+    label: "赛博活佛 · 群仙殿",
+    desc: "3D 大殿供奉 AI 众神，WASD 漫游上香，Cloudflare 居 C 位享射灯",
+    tag: "玩一玩",
+  },
 ];
 
 export default function AILearnPage() {
