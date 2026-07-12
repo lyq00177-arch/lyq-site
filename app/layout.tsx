@@ -12,8 +12,23 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://www.lyq017.cn"),
   title: "凌逸清 Harry - 超级个体站",
   description: "AI 全栈创作者 · 投资人 · 超级个体 — 帮助更多人拥抱 AI 时代",
+  openGraph: {
+    type: "website",
+    url: "https://www.lyq017.cn",
+    siteName: "凌逸清 Harry - 超级个体站",
+    title: "凌逸清 Harry - 超级个体站",
+    description: "AI 全栈创作者 · 投资人 · 超级个体 — 帮助更多人拥抱 AI 时代",
+    images: [{ url: "/og.jpg", width: 1260, height: 661, alt: "凌逸清 Harry - 超级个体" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "凌逸清 Harry - 超级个体站",
+    description: "AI 全栈创作者 · 投资人 · 超级个体 — 帮助更多人拥抱 AI 时代",
+    images: ["/og.jpg"],
+  },
 };
 
 export default function RootLayout({
